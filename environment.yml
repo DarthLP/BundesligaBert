@@ -1,0 +1,26 @@
+name: bundesliga-bert
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pandas
+  - numpy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - jupyterlab
+  - beautifulsoup4
+  - requests
+  - python-dotenv
+  - tqdm
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pip
+  - pip:
+    - transformers
+    - tokenizers
+    - datasets
+    - accelerate
