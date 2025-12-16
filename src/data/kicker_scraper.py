@@ -98,7 +98,31 @@ class KickerScraper:
         options.add_argument('--disable-blink-features=AutomationControlled')
         options.add_argument('--window-size=1920,1080')  # Force Desktop view (Mobile often hides ticker data)
         
-        self.driver = uc.Chrome(options=options)
+        # Initialize driver with retry logic for network timeouts
+        max_retries = 3
+        retry_delay = 2
+        for attempt in range(max_retries):
+            try:
+                # Try to initialize with version_main=None to use cached driver if available
+                # This avoids network calls if a driver is already cached
+                self.driver = uc.Chrome(options=options, version_main=None)
+                break
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    error_msg = str(e)
+                    if "timeout" in error_msg.lower() or "URLError" in str(type(e)):
+                        logger.warning(f"Network timeout during driver initialization (attempt {attempt + 1}/{max_retries}). Retrying in {retry_delay}s...")
+                        time.sleep(retry_delay)
+                        retry_delay *= 2  # Exponential backoff
+                    else:
+                        # For other errors, re-raise immediately
+                        raise
+                else:
+                    # Last attempt failed
+                    logger.error(f"Failed to initialize WebDriver after {max_retries} attempts: {e}")
+                    logger.error("This may be due to network connectivity issues. Please check your internet connection.")
+                    raise RuntimeError(f"Failed to initialize Chrome WebDriver: {e}") from e
+        
         self.wait = WebDriverWait(self.driver, timeout=10)
         
         # Track if we've handled cookie consent (optimization)
@@ -286,14 +310,17 @@ class KickerScraper:
         
         # Pattern 1: German number words (e.g., "Eine Minute wird nachgespielt", "Drei Minuten gibt es oben drauf")
         # Check for full phrases first to avoid partial matches
-        for word, num in german_numbers.items():
+        # Sort by length (longest first) to avoid matching "zwei" in "zwölf" or "eine" in "seine"
+        sorted_numbers = sorted(german_numbers.items(), key=lambda x: len(x[0]), reverse=True)
+        for word, num in sorted_numbers:
             if word in text_lower and ('minute' in text_lower or 'minuten' in text_lower):
                 # Check context: should be about added time
                 # Look for phrases like "Drei Minuten gibt es oben drauf" or "Eine Minute wird nachgespielt"
-                if any(phrase in text_lower for phrase in ['nachgespielt', 'obendrauf', 'oben drauf', 'nachspielzeit', 'gibt es oben drauf']):
-                    # Prioritize longer phrases to avoid matching "zwei" in "zwölf"
-                    # Check if it's a complete phrase
-                    if f'{word} minuten' in text_lower or f'{word} minute' in text_lower:
+                if any(phrase in text_lower for phrase in ['nachgespielt', 'obendrauf', 'oben drauf', 'nachspielzeit', 'gibt es oben drauf', 'wird noch nachgespielt', 'werden noch nachgespielt']):
+                    # Check if it's a complete phrase - must have the number word followed by "minute" or "minuten"
+                    # Use word boundaries to ensure we match the full word
+                    pattern = rf'\b{word}\s+(?:minute|minuten)\b'
+                    if re.search(pattern, text_lower, re.IGNORECASE):
                         return num
         
         # Pattern 2: Numeric patterns (e.g., "+4", "+ 4", "4 Minuten Nachspielzeit")
@@ -787,9 +814,9 @@ class KickerScraper:
             
             # 4. Cleaning: Convert relative links to absolute
             if href.startswith('/'):
-                full_url = f"https://www.kicker.de{href}"
+                    full_url = f"https://www.kicker.de{href}"
             elif href.startswith('https://www.kicker.de'):
-                full_url = href
+                    full_url = href
             else:
                 continue
             
@@ -1067,13 +1094,35 @@ class KickerScraper:
                 # Only match actual overtime announcement phrases
                 text_lower_check = text.lower() if text else ""
                 is_nachspielzeit_announcement = any(phrase in text_lower_check for phrase in [
-                    'minuten wird nachgespielt',  # "X Minuten wird nachgespielt"
-                    'minute wird nachgespielt',   # "Eine Minute wird nachgespielt"
-                    'minuten gibt es oben drauf', # "X Minuten gibt es oben drauf"
-                    'minuten obendrauf',          # "X Minuten obendrauf"
-                    'gibt es oben drauf',         # "gibt es oben drauf"
-                    'nachspielzeit:',             # "Nachspielzeit: X"
-                    'nachspielzeit wird',         # "Nachspielzeit wird"
+                    # Standard Phrasing
+                    'minuten wird nachgespielt', 
+                    'minuten werden nachgespielt',
+                    'minute wird nachgespielt',
+                    'minute wird noch nachgespielt',
+                    'minuten wird noch nachgespielt',
+                    'minuten werden noch nachgespielt',
+                    'nachspielzeit:',
+                    'nachspielzeit wird',
+                    'nachspielzeit beträgt',
+                    'angezeigte nachspielzeit',
+                    
+                    # "On Top" variations
+                    'minuten gibt es oben drauf',
+                    'minuten obendrauf',
+                    'gibt es oben drauf',
+                    'minuten drauf',
+                    
+                    # Colloquial / Synonyms
+                    'minuten nachschlag',
+                    'minuten zugabe',
+                    'minuten bonus',
+                    'minuten extra',
+                    'zeigerumdrehungen', # Cliché for "minutes"
+                    
+                    # The Action/Official
+                    'die tafel zeigt',
+                    'auf der tafel',
+                    'vierter offizielle', # Covers "Der vierte Offizielle zeigt..."
                 ])
                 
                 # Extract announced_time from this event if it's a nachspielzeit announcement
@@ -1084,8 +1133,12 @@ class KickerScraper:
                     if temp_announced_time is not None:
                         minute_num = self._parse_minute_to_int(minute)
                         if minute_num and minute_num <= 45:
+                            # We process events in reverse order (newest first)
+                            # We want the LAST announcement chronologically (closest to halftime)
+                            # So we always update to keep the latest one we've seen
                             targets['announced_time_45'] = temp_announced_time
                         elif minute_num and minute_num > 45:
+                            # We want the LAST announcement chronologically (closest to fulltime)
                             targets['announced_time_90'] = temp_announced_time
                     # Now skip ONLY this specific event (leakage prevention)
                     # Other events at the same minute will be processed normally
@@ -1176,16 +1229,9 @@ class KickerScraper:
                 
                 # Store targets (will be updated after processing all events with max minutes)
                 
-                # Store announced time (take the LAST one found, not the first)
-                # This ensures we get the final announcement, even if it's at 90+1
-                if announced_time is not None:
-                    minute_num = self._parse_minute_to_int(minute)
-                    if minute_num and minute_num <= 45:
-                        # Take the last announcement found (closest to halftime)
-                            targets['announced_time_45'] = announced_time
-                    elif minute_num and minute_num > 45:
-                        # Take the last announcement found (closest to fulltime)
-                            targets['announced_time_90'] = announced_time
+                # NOTE: announced_time extraction from regular events is disabled
+                # We only extract announced_time from actual nachspielzeit announcements (handled above)
+                # This prevents false positives from regular events that might mention numbers
                 
                 # Store event (no event_type field)
                 event_dict = {
@@ -1786,7 +1832,7 @@ class KickerScraper:
                     else:
                         # Fallback: look for team name classes
                         team_elems = scoreboard.find_all(class_=re.compile(r'kick__.*team.*name|kick__team', re.I))
-                        if len(team_elems) >= 2:
+            if len(team_elems) >= 2:
                             home_team = team_elems[0].get_text(strip=True).split('\n')[0].strip()
                             away_team = team_elems[1].get_text(strip=True).split('\n')[0].strip()
                 

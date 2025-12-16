@@ -1,78 +1,86 @@
 {
-  "match_id": "bayern-gegen-hoffenheim-2024-bundesliga-4862110",
+  "match_id": "bremen-gegen-bochum-2024-bundesliga-4862269",
   "metadata": {
-    "kickoff_date": "12.01.2024",
-    "kickoff_time": "20:30",
-    "kickoff": "12.01.2024, 20:30",
-    "stadium": "Allianz-Arena",
-    "stadium_city": "Stadion(München)",
-    "spectators": 75000,
-    "attendance": 75000,
+    "kickoff_date": "18.05.2024",
+    "kickoff_time": "15:30",
+    "kickoff": "18.05.2024, 15:30",
+    "stadium": "Wohninvest Weserstadion",
+    "stadium_city": "Stadion(Bremen)",
+    "spectators": 42100,
+    "attendance": 42100,
     "is_sold_out": true,
     "season": "2023-24",
-    "matchday": 17,
-    "home_team": "Bayern München",
-    "away_team": "TSG Hoffenheim",
-    "final_score": "3:0"
+    "matchday": 34,
+    "home_team": "Werder Bremen",
+    "away_team": "VfL Bochum",
+    "final_score": "4:1"
   },
   "targets": {
-    "announced_time_45": 1,
-    "actual_played_45": 1,
-    "announced_time_90": 3,
-    "actual_played_90": 3
+    "announced_time_45": 2,
+    "actual_played_45": 2,
+    "announced_time_90": 6,
+    "actual_played_90": 6
   },
   "score_timeline": {
-    "18": [
+    "6": [
       1,
       0
     ],
-    "70": [
+    "78": [
       2,
       0
     ],
-    "90": [
+    "80": [
       3,
       0
+    ],
+    "85": [
+      3,
+      1
+    ],
+    "88": [
+      4,
+      1
     ]
   },
   "match_info": {
     "info": {
-      "kickoff_date": "12.01.2024",
-      "kickoff_time": "20:30",
-      "kickoff": "12.01.2024, 20:30",
-      "stadium": "Allianz-Arena",
-      "stadium_city": "Stadion(München)",
-      "spectators": 75000,
-      "attendance": 75000,
+      "kickoff_date": "18.05.2024",
+      "kickoff_time": "15:30",
+      "kickoff": "18.05.2024, 15:30",
+      "stadium": "Wohninvest Weserstadion",
+      "stadium_city": "Stadion(Bremen)",
+      "spectators": 42100,
+      "attendance": 42100,
       "is_sold_out": true
     },
     "stats": {
       "xgoals": {
         "title": "xGoals",
-        "home": 2.77,
-        "away": 1.22
+        "home": 3.02,
+        "away": 2.09
       },
       "shots": {
         "title": "Torschüsse",
-        "home": 27,
-        "away": 11
+        "home": 26,
+        "away": 27
       },
       "pass_accuracy": {
         "title": "angekommene Pässe",
-        "home": 90,
-        "away": 82
+        "home": 76,
+        "away": 78
       },
       "possession": {
         "title": "Ballbesitz",
-        "home": 61,
-        "away": 39
+        "home": 46,
+        "away": 54
       }
     }
   },
   "ticker_data": [
     {
       "minute": "",
-      "text": "Nach etwas mehr als drei Wochen Pause startet die Bundesliga ins neue Fußballjahr. Den Auftakt zum 17.Spieltag machen der FC Bayern und die TSG Hoffenheim - in der mit dem Schriftzug \"Danke Franz\" verzierten Allianz-Arena.",
+      "text": "Saisonfinale im Weserstadion! Am 34. und letzten Bundesligaspieltag der Saison 2023/24 trifft der SV Werder Bremen auf den VfL Bochum. Besonders beim VfL ist noch einmal Spannung angesagt, denn ein Punkt fehlt noch bis zum sicheren Klassenerhalt. Ab 15.30 Uhr rollt der Ball an der Weser.",
       "home_score": null,
       "away_score": null,
       "goal_difference": null,
@@ -80,7 +88,7 @@
     },
     {
       "minute": "",
-      "text": "Das heutige Spiel steht ganz im Zeichen von Franz Beckenbauer, der am vergangenen Sonntag im Alter von 78 Jahren verstorben ist. Zu Ehren ihres langjährigen Spielers, Trainers und Präsidenten werden sich die Spieler in Shirts mit Beckenbauers Nummer 5 aufwärmen, \"Gute Freunde kann niemand trennen\" erklingt als Einlaufmusik (eventuell auch als Tormusik), außerdem läuft der FCB in einem Sondertrikot auf. Die Jerseys sollen anschließend zugunsten der Franz-Beckenbauer-Stiftung versteigert werden.",
+      "text": "Mit 39 Zählern steht der SV Werder im gesicherten Tabellenmittelfeld, möglicherweise ist mit einem Dreier heute sogar noch der Sprung auf einen einstelligen Tabellenplatz und im Idealfall auch noch die Qualifikation für den Internationalen Wettbewerb drin. Dafür schaut das Bremer Auge allerdings auch auf die anderen Plätze, wie sich die direkten Konkurrenten Augsburg, Heidenheim und Freiburg schlagen.",
       "home_score": null,
       "away_score": null,
       "goal_difference": null,
@@ -88,7 +96,7 @@
     },
     {
       "minute": "",
-      "text": "Sportlich hatte der Rekordmeister das alte Jahr nach der deftigen Pleite in Frankfurt mit drei Siegen ohne Gegentor abgeschlossen. Beim einzigen Testspiel in Basel (1:1) agierten die Bayern phasenweise noch zu kompliziert. Bei einem Spiel weniger könnten die Münchner mit einem weiteren Sieg den Abstand auf Tabellenführer Leverkusen (morgen in Augsburg) zumindest über Nacht auf einen Punkt verringern.",
+      "text": "Prekärer ist die Situation beim VfL Bochum: Bei einem Punktgewinn heute ist der Ligaverbleib unabhängig von den Ergebnissen von Union Berlin und Mainz 05 sicher. Sollten die Bochumer allerdings verlieren, droht bei einem Sieg der Berliner gegen Freiburg und bei einem Punktgewinn der Mainzer in Wolfsburg doch noch das Abrutschen auf den Relegationsplatz.",
       "home_score": null,
       "away_score": null,
       "goal_difference": null,
@@ -96,7 +104,7 @@
     },
     {
       "minute": "",
-      "text": "Die TSG verlor ihr einziges Testspiel (0:1 in Augsburg) und gestern auch noch Verteidiger Vogt (zu Union Berlin). Gute Erinnerungen an München haben die Kraichgauer zudem auch nicht, setzte es gegen den FC Bayern doch die höchsten Bundesligapleiten. 2011/12 unterlag Hoffenheim in München 1:7, 2019/20 gab es in der Rückrunde zu Hause ein 0:6.",
+      "text": "Kommen wir zu den Aufstellungen: Auch im Saisonfinale bleibt sich Werder-Coach Ole Werner treu und vertraut der selben Elf wie schon beim 1:1-Unentschieden gegen RB Leipzig. Bereits zum fünften Mal in Folge geht Werder ohne Veränderungen an den Start.",
       "home_score": null,
       "away_score": null,
       "goal_difference": null,
@@ -104,7 +112,7 @@
     },
     {
       "minute": "",
-      "text": "Auch in München ist im Winter-Transferfenster etwas passiert, Neuzugang Dier (Tottenham) steht aber noch nicht im Kader. Dort fehlen auch Kim (Asien-Cup) und Mazraoui (Afrika-Cup) - im Vergleich zum 2:1 in Wolfsburg im Dezember gibt es zwei Änderungen: Für Kim verteidigt de Ligt, Kimmich (gegen Wolfsburg krank) ersetzt Pavlovic (Bank). Guerreiro steht erneut in der Startelf und erhält den Vorzug vor Goretzka. Der 18-jährige Zvonarek steht erstmals in der Bundesliga im Kader.",
+      "text": "Auf der Gegenseite muss Bochums Trainer Heiko Butscher in seinem vermutlich vorerst letzten Auftritt als Trainer des VfL zweimal im Vergleich zur 0:5-Klatsche gegen den neuen deutschen Meister Bayer Leverkusen wechseln. Passlack fehlt nach seiner Roten Karte gesperrt und wird von Oermann ersetzt. Zudem rückt Broschinski zurück in die erste Elf und verdrängt Asano auf die Bank.",
       "home_score": null,
       "away_score": null,
       "goal_difference": null,
@@ -112,7 +120,7 @@
     },
     {
       "minute": "",
-      "text": "Bei der TSG ersetzt Nsoki den abgewanderten Vogt, der vor dem Jahreswechsel beim 3:3 gegen Darmstadt noch in der Startelf stand. Außerdem rotiert Grillitsch in die erste Elf, Brooks bleibt draußen. Weghorst ist wieder fit und startet im Sturm neben Beier, Bebou und Tohumcu müssen auf die Bank. Vier Änderungen also bei den Gästen.",
+      "text": "Ein Zahlenspiel zur theoretisch noch möglichen Qualifikation der Bremer für den internationalen Wettbewerb: Der achte Platz, den die Bremer bei einem Sieg heute noch erreichen könnten, reicht zur Qualifikation für die Play-offs der Conference League, sofern Bayer Leverkusen das Pokalfinale gegen Zweitligist Kaiserslautern gewinnt.",
       "home_score": null,
       "away_score": null,
       "goal_difference": null,
@@ -120,7 +128,7 @@
     },
     {
       "minute": "",
-      "text": "\"In dieser Woche haben wir einen großen Schritt nach vorne gemacht. Ich spüre, dass wir absolut bereit sind, um voll loszulegen“, sagte Thomas Tuchel im Vorfeld der Partie. Der Start gegen Basel war \"noch ein bisschen holprig\". In den drei anstehenden Heimspielen - 21. Januar gegen Bremen und am 24. Januar das Nachholspiel gegen Union - wollen die Münchner \"in einen Lauf kommen und den Druck (auf Tabellenführer Leverkusen) hochhalten\".",
+      "text": "Die heutige Partie ist übrigens das 75. Pflichtspiel-Aufeinandertreffen zwischen dem SV Werder und dem VfL Bochum. Die Bilanz aus den vorhergehenden 74 Spielen spricht allerdings eine deutliche Sprache: 46 Mal ging Bremen als Sieger vom Feld, 18 Begegnungen endeten remis. Nur zehn Spiele konnten die Bochumer für sich entscheiden.",
       "home_score": null,
       "away_score": null,
       "goal_difference": null,
@@ -128,15 +136,7 @@
     },
     {
       "minute": "",
-      "text": "TSG-Trainer Pellegrino Matarazzo merkt seinen Spielern an, \"dass sie die Spiele vor Weihnachten noch nicht komplett abgehakt hatten\". Vor dem Jahreswechsel gelang in sieben Partien nur ein Sieg. Nach München fahre man \"mit einer gesunden Portion Respekt\". Gelingt \"eine sehr gute Perfomance\", dann sieht der Coach \"auch eine Chance\", schließlich habe das sein Team \"bereits in der Vergangenheit bewiesen\". Etwa letzte Saison als Kramaric mit einem direkten Freistoß zum 1:1-Endstand traf.",
-      "home_score": null,
-      "away_score": null,
-      "goal_difference": null,
-      "is_home_leading": null
-    },
-    {
-      "minute": "",
-      "text": "Der Anpfiff naht - und damit auch das 500. Pflichtspiel für Neuer im Trikot des FC Bayern. Der Kapitän führt seine Mannschaft zu den Klängen von \"Gute Freunde kann niemand trennen\" aufs Feld. Im Mittelkreis ist noch ein Banner mit Beckenbauer als Spieler aufgezogen.",
+      "text": "Schiedsrichter der heutigen Partie ist Martin Petersen aus Stuttgart, der sein elftes Bundesligaspiel in dieser Saison pfeift. Seine Assistenten sind Robert Wessel und Arno Blos, als Vierter Offizieller ist Nicolas Winter im Einsatz.",
       "home_score": null,
       "away_score": null,
       "goal_difference": null,
@@ -152,7 +152,7 @@
     },
     {
       "minute": "1",
-      "text": "Nach einer Schweigeminute zu Ehren von Franz Beckenbauer, ist das Spiel nun vom Gespann um Benjamin Brand freigegeben. Als VAR sitzt Dr. Matthias Jöllenbeck vor den Bildschirmen.",
+      "text": "Anpfiff in Bremen! Der 34. Spieltag ist freigegeben.",
       "home_score": 0,
       "away_score": 0,
       "goal_difference": 0,
@@ -160,23 +160,15 @@
     },
     {
       "minute": "1",
-      "text": "Die Bayern machen vorne gleich mal Druck, Sané gelingt fast der Ballgewinn am TSG-Strafraum.",
+      "text": "Die Bremer spielen heute in den klassischen grün-weißen Trikots, Bochum ist in Blau gekleidet.",
       "home_score": 0,
       "away_score": 0,
       "goal_difference": 0,
       "is_home_leading": false
     },
     {
-      "minute": "2",
-      "text": "Auch die Gäste mit dem ersten Vorstoß, Davies passt links hinten aber auf bei Kaderabeks Steckpassversuch auf Kramaric.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "3",
-      "text": "Nach dem folgenden Einwurf flankt Prömel von rechts in die Mitte, wo Beier am Fünfer die Kugel nicht richtig trifft - vorbei.",
+      "minute": "1",
+      "text": "Nach einem Ballgewinn im Mittelfeld zieht Ducksch ein erstes Mal nach vorne, wird aber schnell von Schlotterbeck gestoppt.",
       "home_score": 0,
       "away_score": 0,
       "goal_difference": 0,
@@ -184,15 +176,23 @@
     },
     {
       "minute": "3",
-      "text": "Stach probiert es mit einem Flachschuss aus der Distanz, sehr weit links neben das Tor.",
+      "text": "Hofmann schickt Wittek auf dem linken Flügel steil, der von dort aus ein erstes Mal ins Zentrum flankt. Diese Hereingabe wird aber abgefangen.",
       "home_score": 0,
       "away_score": 0,
       "goal_difference": 0,
       "is_home_leading": false
     },
     {
-      "minute": "4",
-      "text": "Kane verlagert aus dem Zentrum nach links hinaus zu Sané, der Pass ist aber zu weit und landet im Toraus.",
+      "minute": "3",
+      "text": "Das erste Foul der Partie geht auf das Konto der Gäste: VfL-Kapitän Losilla bringt Bittencourt im Mittelfeld zu Fall.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "5",
+      "text": "Ein erster kleiner Aufreger: Witteks langer Einwurf von der linken Seite springt durch den Strafraum und landet direkt vor den Füßen von Schlotterbeck. Der Innenverteidiger wird aber noch beim Abschluss gehindert, sodass dieser keine große Gefahr für Zetterer darstellt.",
       "home_score": 0,
       "away_score": 0,
       "goal_difference": 0,
@@ -200,103 +200,15 @@
     },
     {
       "minute": "6",
-      "text": "Die Bayern lassen den Ball laufen, die TSG steht kompakt. Nach einer Verlagerung nach rechts hat Müller etwas Platz, die Flanke steigt aber zu schnell zu steil und geht weit über den Kasten hinweg.",
+      "text": "Riemann muss ran: Woltemade steckt an der Strafraumkante zu Schmid durch, der es mit einem gefühlvollen Schlenzer versucht. Riemann lenkt die Kugel aber noch am Pfosten vorbei.",
       "home_score": 0,
       "away_score": 0,
       "goal_difference": 0,
       "is_home_leading": false
     },
     {
-      "minute": "9",
-      "text": "Sané versucht links vor dem Strafraum einen Doppelpass mit Guerreiro. Irgendwie kommt er zurück an den Ball, bleibt dann im Strafraum aber hängen.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "9",
-      "text": "Beim nächsten Versuch spielt Laimer rechts im Strafraum einen Doppelpass mit Musiala, die Flanke lenkt Baumann ab - dann geht aber die Fahne hoch.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "10",
-      "text": "Nach Kaderabeks Ballverlust ist Kane links im Strafraum, der Querpass erreicht aber keinen Mitspieler.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "10",
-      "text": "Die TSG schaltet nach vorne um, Beier legt halbrechts vor dem Strafraum für Kramaric ab, der die Kugel weit über den Kasten drischt.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "11",
-      "text": "Die Gäste verstecken sich nicht und suchen durchaus den Weg nach vorne, Stach rutscht bei seiner Halbfeldflanke weg, so passiert nichts.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "11",
-      "text": "Auf der anderen Seite kommt Müller nicht an eine Davies-Flanke heran.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "13",
-      "text": "Davies hat links ganz viel Platz und startet aus der eigenen Hälfte bis an den Strafraum durch. Dort gibt er die Kugel weiter an Sané, der nach einer Drehung einen Fehlpass in den Strafraum spielt. Beim FC Bayern fehlt es noch an der allerletzten Genauigkeit.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "15",
-      "text": "Mit einem Trick verschafft sich Musiala halbrechts vor dem Strafraum Platz, der Steckpass wird zur Ecke abgefälscht.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "16",
-      "text": "Die Bayern führen die Ecke kurz aus. Guerreiro passt dann etwas später zu Laimer links in den Strafraum, der zwar Platz hat, aber in den Gegenspieler hineinrennt.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "16",
-      "text": "Stach hält Sané, der nach der Mittellinie ordentlich Tempo aufnahm, regelwidrig auf.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "18",
-      "text": "Müller hat rechts viel Platz für eine Flanke, findet in der Mitte aber nur den Kopf von Kabak, der per Kopf zur Ecke klärt.",
-      "home_score": 0,
-      "away_score": 0,
-      "goal_difference": 0,
-      "is_home_leading": false
-    },
-    {
-      "minute": "18",
-      "text": "Die Bayern führen die Ecke wieder kurz aus - und schlagen diesmal zu! Sané steckt vor dem rechten Strafraum-Eck in diesen hinein zu Musiala durch. Der Youngster schließt nach wenigen Schritten aus spitzem Winkel satt ins lange Eck ab. Der Ball fliegt an Baumanns Arm vorbei, klatscht gegen den linken Innenpfosten und von dort ins Tor.",
+      "minute": "6",
+      "text": "Die folgende Ecke führt zum Tor! Der Eckball springt im Zentrum einmal auf und dann an die Brust von Bernardo. Von dort aus fliegt der Ball unglücklich für die Gäste direkt vor die Füße von Friedl. Der Werder-Kapitän nimmt den Ball an und schweißt ihn mit dem zweiten Kontakt wuchtig in die Maschen. Für Riemann gibt es keine Abwehrchance.",
       "score_at_event": [
         1,
         0
@@ -307,8 +219,104 @@
       "is_home_leading": true
     },
     {
-      "minute": "21",
-      "text": "Sané dribbelt sich links am TSG-Strafraum fest.",
+      "minute": "8",
+      "text": "Der ganz frühe Rückschlag für das Kellerkind. Wie reagiert der VfL auf den Gegentreffer?",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "9",
+      "text": "Bremen rennt sofort wieder an: Agu macht auf dem linken Flügel Tempo, doch seine Flanke auf Ducksch wird noch abgefangen.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "11",
+      "text": "Nächster Abschluss des SV Werder: Ducksch fasst sich aus der zweiten Reihe ein Herz und zieht wuchtig ab. Riemann packt sicher zu, doch da hat einiges in der Defensive der Gäste nicht gepasst.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "12",
+      "text": "Ein kleiner Nachtrag zu Friedls Treffer: Der Kapitän der Hausherren war in den vergangenen 107 Bundesliga-Partien torlos geblieben, nun trifft er wieder.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "13",
+      "text": "Osterhage macht früh Druck auf die Bremer Defensive, doch Jung kann gerade noch auf Zetterer zurückgeben.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "14",
+      "text": "Die Defensive des VfL wackelt: Ein abgefälschter Schlag von Bittencourt landet bei Woltemade, der sofort zu Ducksch weitergibt. Am Strafraum angekommen sucht der Stürmer den Abschluss, diesen grätscht Schlotterbeck jedoch gut weg. Auch der Abpraller landet aber bei den Bremern, Schmid versucht es aus der zweiten Reihe mal. Dieser Versuch fliegt knapp einen Meter über das Tor.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "15",
+      "text": "Im Weserstadion brandet Jubel auf, als die Zwischenstände durchgegeben werden. Schließlich liegt Augsburg - ein direkter Konkurrent um Rang acht - in Leverkusen hinten.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "16",
+      "text": "Nachdem Ducksch einen weiten Ball aus der eigenen Hälfte per Kopf verlängert, zieht Schmid das Tempo an, doch Ordets hat aufgepasst und fängt die Kugel ab.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "17",
+      "text": "Die nächste Aktion im Bochumer Strafraum: Schmid findet Ducksch, der den Ball technisch hochwertig herunternimmt und sofort den Abschluss sucht. Diesen fälscht Ordets aber noch entscheidend ab.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "18",
+      "text": "Beim folgenden Eckball ist die Bochumer Defensive gut sortiert, Bernardo kann klären.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "18",
+      "text": "Weiser! Der Schienenspieler wird von Jung mit einer Flanke gesucht und gewinnt das Kopfballduell im Strafraum. Die Bogenlampe des 30-Jährigen, der erst kürzlich seinen Vertrag verlängert hat, landet aber auf dem Tordach.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "20",
+      "text": "Schmerzhafter Zusammenprall: Beim Kopfballduell im Mittelfeld rauschen Weiser und Wittek ineinander. Beide Akteure stehen aber schnell wieder.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "20",
+      "text": "Beim folgenden Freistoß steigt Losilla am zweiten Pfosten hoch, stützt sich im Kopfballduell mit Agu aber klar auf. Schiedsrichter Petersen entscheidet auf Offensivfoul.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -316,15 +324,23 @@
     },
     {
       "minute": "22",
-      "text": "Die Bayern lassen mit der Führung im Rücken den Ball laufen, die Kraichgauer haben sich etwas fallen lassen und warten nun ab der Mittellinie erst einmal ab.",
+      "text": "Bochum macht nun schon früher Druck, doch der Bremer Spielaufbau klappt mit einer großen Sicherheit. So können sich die Hausherren problemlos befreien.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
       "is_home_leading": true
     },
     {
-      "minute": "24",
-      "text": "Die Partie hängt gerade etwas durch, Hoffenheim ist gerade recht passiv, die Bayern suchen die Lücke.",
+      "minute": "23",
+      "text": "In Heidenheim hat der FCH gerade das 2:0 gegen Köln erzielt. Das sind schlechte Nachrichten für die internationalen Hoffnungen der Bremer.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "25",
+      "text": "Bernardo flankt mal ins Zentrum, kann dadurch allerdings keine Gefahr erzeugen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -332,7 +348,7 @@
     },
     {
       "minute": "26",
-      "text": "Die Bayern prallen mehrfach am Strafraum ab, die TSG-Defensive steht gut - nach vorne geht bei den Gästen dafür aber nichts mehr.",
+      "text": "Riemann verhindert das 2:0 für Werder: Beim Tempogegenstoß schickt Bittencourt Ducksch in die Spitze, der Bernardo enteilt und dann frei abschließen darf. Im Eins-gegen-Eins verkürzt Riemann den Winkel aber stark und pariert mit dem Fuß. Eine wichtige Parade des Bochumer Schlussmanns.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -340,7 +356,23 @@
     },
     {
       "minute": "27",
-      "text": "Guerreiro spielt Kane zentral am Strafraum an, doch der Angreifer hat direkt mehrere Gegenspieler um sich und kommt nicht zum Abschluss.",
+      "text": "Auf der Gegenseite hat Hofmann die große Chance auf den Ausgleich: Stögers Halbfeldflanke findet den Stürmer, der den Ball stark festmacht, aufdreht und aus spitzem Winkel abschließt. Zetterer ist aber zur Stelle und pariert den Versuch.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "28",
+      "text": "Ordets will nach einem Einwurf per Kopf querlegen, doch Friedl klärt vor dem einschussbereiten Hofmann.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "29",
+      "text": "Die Hausherren protestieren: Agu nimmt auf dem rechten Flügel Tempo auf und zieht zum Strafraum, kommt dann dort im Duell mit Bernardo zu Fall. Schiedsrichter Petersen zeigt allerdings sofort an, dass der Kontakt nicht für einen Pfiff reicht. Auch der VAR greift nicht ein.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -348,15 +380,7 @@
     },
     {
       "minute": "30",
-      "text": "Die Bayern sind weiter auf der Suche nach der Lücke im letzten Drittel. Müllers Halbfeldflanke flitscht Sané über die Stirn, Baumann nimmt den austrudelnden Ball locker auf.",
-      "home_score": 1,
-      "away_score": 0,
-      "goal_difference": 1,
-      "is_home_leading": true
-    },
-    {
-      "minute": "30",
-      "text": "Hoffenheim mal wieder! Kaderabeks Flanke von rechts köpft Upamecano vor Weghorst weg, aber nur zentral vor den Strafraum. Dort kommt Stach an, trifft die Kugel aber nicht voll und haut sie deshalb deutlich rechts neben das Tor.",
+      "text": "Immer wieder geht es über die rechte Abwehrseite der Bochumer: Ducksch gibt von dort aus frei ins Zentrum, wo Schmid herangrätscht, den Ball aber nicht voll trifft. So muss Riemann nicht eingreifen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -364,7 +388,15 @@
     },
     {
       "minute": "32",
-      "text": "Nach diesem seltenen Ausflug igeln sich die Hoffenheimer wieder ein. Die Bayern werfen die Passmaschinerie wieder an.",
+      "text": "Die langen Bälle der Bochumer bekommt der SV Werder bislang sehr gut verteidigt. Bochum muss sich etwas einfallen lassen, um für mehr offensive Gefahr zu sorgen.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "33",
+      "text": "So kann es klappen: Nach einem Abschlag springt die Kugel durchs Zentrum, wo Losilla nicht lange fackelt und einfach mal abzieht. Sein Versuch aus rund 30 Metern fliegt knapp am Bremer Tor vorbei. Zetterer wäre wohl zur Stelle gewesen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -372,23 +404,23 @@
     },
     {
       "minute": "34",
-      "text": "Während die Bayern weiter geduldig die TSG-Defensive bearbeiten lohnt sich ein erster Blick in die LIVE!-Daten. Die Münchner haben rund 70 Prozent Ballbesitz, aber nur zwei Torschüsse. Die Gäste haben deren vier.",
+      "text": "Auf der Gegenseite zittert die Latte! Schmid wird nach einem schönen Angriff im Strafraum freigespielt und kann aus zwölf Metern unbedrängt abschließen. Die gefühlvolle Variante des Offensivspielers klatscht an den Querbalken und zurück ins Feld, wo Ducksch dann das Kopfballduell gegen Ordets verliert.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
       "is_home_leading": true
     },
     {
-      "minute": "36",
-      "text": "Den Münchnern fehlt es aktuell etwas an Tempo, um im letzten Drittel Gefahr entfachen zu können. Weil die Gäste ihre Taktik nicht aufgeben, deutet sich ein Geduldspiel für das zweite Münchner Tor ab.",
+      "minute": "35",
+      "text": "Werder spielt weiter stark auf! Diesmal setzt sich Woltemade an der Strafraumkante stark durch und zieht ab, doch Bernardo wirft sich noch dazwischen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
       "is_home_leading": true
     },
     {
-      "minute": "36",
-      "text": "Bülter erobert sich links den Ball und startet einen vorsichtigen Vorstoß, der kurz nach der Mittellinie aber schon wieder beendet ist.",
+      "minute": "35",
+      "text": "Klares taktisches Foul: Lynen unterbindet einen Bochumer Konter durch ein klares Halten am Trikot von Stöger.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -396,7 +428,8 @@
     },
     {
       "minute": "37",
-      "text": "Guerreiro wird links im Strafraum bedient, ist aber schon aus spitzem Winkel nah an Baumann dran und bringt die Kugel nicht am Keeper vorbei. Dennoch keine schlechte Chance.",
+      "text": "Agu will einen langen Ball erlaufen und wird an der Seitenlinie von Wittek umgeräumt. Dafür sieht der Bochumer Gelb.",
+      "card_type": "Yellow",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -404,7 +437,7 @@
     },
     {
       "minute": "38",
-      "text": "Kane versucht es aus der Distanz, aber genau flach auf Baumann.",
+      "text": "Weiser verliert eigentlich den Ball bei einem Konter, setzt aber stark nach und holt ihn sich per Grätsche wieder. Woltemade sucht im Anschluss Ducksch im Zentrum, doch Ordets ist noch dazwischen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -412,7 +445,7 @@
     },
     {
       "minute": "40",
-      "text": "Kabak passt bei einem Steckpass auf Guerreiro auf und ist mit der Fußspitze dazwischen. Mit Ausnahme des 0:1 lässt Hoffenheim eigentlich nichts zu.",
+      "text": "Die gute Nachricht für den VfL kommt aus Berlin: Dort hat Union beim Spielstand von 0:0 gerade einen Elfmeter verschossen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -420,7 +453,7 @@
     },
     {
       "minute": "40",
-      "text": "Beiers Flankenversuch von rechts kommt weder bei Weghorst noch bei Kramaric an.",
+      "text": "Schlotterbeck kommt bei einem Kopfballduell im Bremer Strafraum zu Fall, Proteste der Gäste gibt es aber keine. Schiedsrichter Petersen ist erneut klar, ein strafwürdiger Kontakt hat nicht vorgelegen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -428,7 +461,7 @@
     },
     {
       "minute": "41",
-      "text": "Nach einigen Pässen, bei denen die Bayern nicht in den Strafraum gekommen sind, nimmt Upamecano aus rund 25 Metern Anlauf und hält einfach mal drauf. Der Ball fliegt aber recht deutlich rechts neben das Tor.",
+      "text": "Gut verteidigt von Ordets, der nach einem Steilpass von Woltemade auf Agu im richtigen Moment zur Grätsche ansetzt und so den Abschluss des Bremers fair verhindert.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -436,7 +469,7 @@
     },
     {
       "minute": "42",
-      "text": "Prömel stempelt Müller an der Mittellinie von oben auf den Fuß.",
+      "text": "Faire Aktion von Bittencourt und Stöger: Nach einem Foul des Bremers schütteln sich beide sofort die Hand.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -444,7 +477,7 @@
     },
     {
       "minute": "43",
-      "text": "Müller geht rechts bis zur Grundlinie durch und flankt hoch in die Mitte, wo Kanes Kopfball zu wenig Druck hat. Prömel köpft ihn weg.",
+      "text": "Osterhage nimmt einen springenden Ball am Strafraum der Bremer herunter und wird dann von Lynen kurz vor der Linie am Fuß getroffen. Es gibt nur Freistoß für den VfL, diesen aber aus guter Position.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -452,7 +485,7 @@
     },
     {
       "minute": "45",
-      "text": "Nsoki köpft eine Sané-Flanke vor Kane erst einmal weg. Bei der zweiten bayerischen Welle versucht es Kimmich aus der Distanz, genau auf Baumann.",
+      "text": "Da fehlt nicht viel! Stöger tritt zum Freistoß an und will diesen direkt aufs Tor schlenzen. Sein Schuss senkt sich aber etwas zu spät und fliegt deshalb knapp über die Latte.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -460,7 +493,23 @@
     },
     {
       "minute": "45+1",
-      "text": "De Ligt köpft eine Kaderabek-Flanke ins Seitenaus.",
+      "text": "Osterhage will die Kugel noch einmal ins Zentrum bringen, diese wird aber abgefangen.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "45+1",
+      "text": "Bochum fordert Elfmeter: Eine Flanke von Broschinski wird von Jung geblockt, der wohl leicht mit dem Arm am Ball war.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "45+2",
+      "text": "Schiedsrichter Petersen ist im Kontakt mit dem Kölner Keller, schnell ist aber klar, dass es keinen Elfmeter gibt. Broschinskis Flanke kam aus kurzer Distanz, ein absichtliches Handspiel ist nicht zu erkennen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -476,7 +525,7 @@
     },
     {
       "minute": "45",
-      "text": "Ein Treffer von Musiala macht bislang den Unterschied am ersten Spieltag im neuen Fußballjahr. Die Bayern sind spielbestimmend, die Gäste aus Hoffenheim lassen aber ganz wenig zu. Die TSG lauert auf Umschaltmomente, in Ansätzen waren diese teilweise auch nicht ungefährlich.",
+      "text": "Danach ist Halbzeit in Bremen! Zur Pause führt der SV Werder mit 1:0 gegen den VfL Bochum, der mit diesem Spielstand noch gut bedient ist. Die Bremer kamen mit viel Tempo auf den Rasen und setzten die Bochumer schon früh unter Druck. Auch nach Friedls Treffer zum 1:0 blieben die Grün-Weißen weiter dran, zeigten sich aber zu fahrlässig vor dem gegnerischen Tor. Bochum muss derweil deutlich mehr im zweiten Durchgang zeigen, um den Klassenerhalt aus eigener Kraft zu schaffen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -484,7 +533,7 @@
     },
     {
       "minute": "45",
-      "text": "Eins ist jetzt schon klar, das Spiel ist jetzt schon ein Rekord für die Bayern: Im 65. Heimspiel in Folge haben die Münchner mindestens ein Tor erzielt - neuer Bundesliga-Rekord.",
+      "text": "Ein kurzer Blick auf die anderen Plätze zur Halbzeit: Die internationalen Träume der Bremer sind aufgrund der deutlichen Heidenheimer Führung gegen Köln beinahe schon ausgeträumt. Derweil muss Bochum nach Berlin schauen, wo es zwischen Union und Freiburg derzeit noch 0:0 steht. Das Spiel der Mainzer, die mit einem Punktgewinn gegen Wolfsburg am VfL vorbeiziehen können, ist mit einem Stand von 1:1 in die Pause gegangen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -500,7 +549,7 @@
     },
     {
       "minute": "46",
-      "text": "Beide Teams starten unverändert in die zweite Hälfte.",
+      "text": "Der zweite Durchgang läuft: Beide Seiten haben zur Pause einmal gewechselt. Bei den Bremern ist Stage für den bereits verwarnten Lynen dabei, bei Bochum ersetzt Bero Osterhage.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -508,23 +557,39 @@
     },
     {
       "minute": "47",
-      "text": "Beier geht halblinks in der Bayern-Hälfte ins Laufduell gegen Upamecano, kommt dann aber aus dem Tritt und deshalb nicht weit.",
+      "text": "Und die Bochumer trauen sich direkt nach vorne: Broschinski zieht vom linken Flügel ins Zentrum und zieht ab, doch Agu blockt den Versuch ab.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
       "is_home_leading": true
     },
     {
-      "minute": "49",
-      "text": "Bülter flankt scharf von links in die Mitte, Neuer hat den Ball.",
+      "minute": "47",
+      "text": "Bernardo verpasst per Kopf: Stögers folgender Eckball findet den Brasilianer, der aus fünf Metern abschließt, beim Kopfball aber in Rücklage gerät. So fliegt der Versuch über die Latte.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
       "is_home_leading": true
     },
     {
-      "minute": "49",
-      "text": "Ein langer Ball geht fast durch auf Musiala, Grillitsch hat etwas Probleme, ist dann im Strafraum aber doch noch dazwischen. Nsoki klärt am Ende per Grätsche - fair sagt Schiedsrichter Benjamin Brand und lässt weiterspielen.",
+      "minute": "48",
+      "text": "Stage geht bei einem Querpass zu Stöger mit vollem Risiko rein, trifft mit seiner Grätsche aber erst den Ball und dann den Gegner. Zum Ärger der Bochumer hat auch Schiedsrichter Petersen kein Foul gesehen.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "50",
+      "text": "Riemann muss aus seinem Tor: Bittencourt schickt den lauernden Ducksch aus der eigenen Hälfte steil, doch Bochums Schlussmann hat aufgepasst, sprintet aus seinem Kasten und ist mit dem Kopf vor Ducksch am Ball.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "51",
+      "text": "Riemann pariert zweimal herausragend! Petersen lässt nach einem harten Zweikampf von Schmid und Schlotterbeck weiterlaufen, sodass Bremen in Überzahl kontern kann. Bittencourt bedient Ducksch, der im Eins-gegen-Eins am Schlussmann scheitert. Der Abpraller landet wieder bei Bittencourt, der aus spitzem Winkel aufs verlassene Tor abzieht, doch wieder ist Riemann da und pariert gerade noch vor der Linie. Tolle Aktion des Schlussmanns.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -532,15 +597,7 @@
     },
     {
       "minute": "52",
-      "text": "Kramaric läuft am Strafraum von halbrechts etwas nach innen, der Linksschuss rutscht etwas ab und geht deshalb weit drüber.",
-      "home_score": 1,
-      "away_score": 0,
-      "goal_difference": 1,
-      "is_home_leading": true
-    },
-    {
-      "minute": "52",
-      "text": "Hoffenheim presst nun mal früh am Bayern-Strafraum, beinahe mit Erfolg, Guerreiro bleibt aber am Ball, den Neuer am Ende wegdrischt.",
+      "text": "Riemann hat sich bei dieser Abwehraktion wohl verletzt und muss erst einmal behandelt werden.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -548,15 +605,23 @@
     },
     {
       "minute": "53",
-      "text": "Müller hat rechts neben Strafraum etwas Platz und flankt scharf halbhoch in die Mitte, Baumann ist mit den Fäusten dazwischen. Im linken Teil des Strafraums trifft Sané den Ball nicht richtig.",
+      "text": "Riemann hat sichtlich Schmerzen, ein Wechsel wird aber nicht nötig. Nach einer kurzen Behandlungspause steht der Torhüter wieder zwischen den Pfosten.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
       "is_home_leading": true
     },
     {
-      "minute": "55",
-      "text": "Sanés wird zentral vor dem Strafraum angespielt und hat keinen Gegenspieler in der Nähe. So kann er Maß nehmen, schießt aber genau flach auf Baumann.",
+      "minute": "54",
+      "text": "Hofmann steigt bei einer Ecke hoch, verpasst mit seinem Kopfball das Tor aber deutlich.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "54",
+      "text": "Da muss Hofmann mehr draus machen: Bero steckt stark zum Bochumer Stürmer durch, der im Strafraum aus leicht spitzem Winkel aber noch einmal querlegen will anstatt selbst abzuschließen. So findet sein Querpass keinen Abnehmer.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -564,23 +629,15 @@
     },
     {
       "minute": "56",
-      "text": "Kane ist rechts durch und passt in die Mitte, wo Sané ins linke Eck vollstreckt. Der Jubel verhallt aber sofort, weil Kane im Abseits stand - und die Fahne des Assistenten deshalb korrekterweise hochging.",
+      "text": "Ducksch sucht Woltemade im Strafraum, der den schwierig zu kontrollierenden Ball aber nicht voll trifft und so für keine Gefahr sorgen kann.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
       "is_home_leading": true
     },
     {
-      "minute": "57",
-      "text": "Musiala steckt zentral am Sechzehner für Kane durch, Kabak ist sofort dran und fälscht den Schuss entscheidend zur Ecke ab.",
-      "home_score": 1,
-      "away_score": 0,
-      "goal_difference": 1,
-      "is_home_leading": true
-    },
-    {
-      "minute": "58",
-      "text": "Die folgende Ecke führen die Bayern kurz aus, Müllers Flanke kommt nicht an. Beim nächsten Angriff über links kommt der Routinier am langen Pfosten einen Schritt zu spät bei Kanes Hereingabe.",
+      "minute": "56",
+      "text": "Nächste starke Aktion der Bremer: Diesmal bedient Woltemade Ducksch, der Ordets ins Leere grätschen lässt und dann abschließen will. Erneut ist aber ein Bochumer Bein dazwischen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -588,7 +645,15 @@
     },
     {
       "minute": "58",
-      "text": "Pfosten! Die TSG verliert im Aufbau den Ball, Musiala fackelt rund 22 Meter vor dem Tor nicht lange und hält drauf. Der satte Schuss knallt gegen das rechte Torgestänge, beim Abpraller trifft Müller die Kugel mit links nicht richtig - Baumann hat den Ball.",
+      "text": "Schmid zieht mit Tempo an Bernardo vorbei und will zur Grundlinie. Seine Ablage ins Zentrum des Strafraums wird aber auf Kosten einer Ecke geklärt.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "58",
+      "text": "Ordets geht auf Nummer sicher: Witteks Kopfballabwehr bei der folgenden Ecke ist nicht weit genug, sodass die Bremer die Kugel noch einmal scharf machen können. Veljkovic sucht Woltemade, doch da ist der Ukrainer dazwischen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -596,23 +661,7 @@
     },
     {
       "minute": "60",
-      "text": "Kimmich verlagert nach rechts zu Müller, der für den in den Strafraum eingelaufenen Laimer klatschen lässt. Baumann macht sich breit und wehrt zur Ecke ab.",
-      "home_score": 1,
-      "away_score": 0,
-      "goal_difference": 1,
-      "is_home_leading": true
-    },
-    {
-      "minute": "60",
-      "text": "Ecken werden bei den Münchnern heute kurz ausgeführt. Im weiteren Verlauf zieht Davies halblinks vor dem Strafraum ab, Baumann hat wieder die Hände dazwischen.",
-      "home_score": 1,
-      "away_score": 0,
-      "goal_difference": 1,
-      "is_home_leading": true
-    },
-    {
-      "minute": "61",
-      "text": "Der nächste Angriff der Münchner kommt sofort. Müller kann seinen Kopfball links im Strafraum aber nicht platzieren. Dennoch: Der Rekordmeister wird stärker.",
+      "text": "Eine halbe Stunde ist noch zu gehen. Zur Erinnerung: Bei den aktuellen Spielständen braucht Union Berlin nur ein Tor gegen Freiburg, um den VfL Bochum in die Relegation zu zwingen.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -620,15 +669,7 @@
     },
     {
       "minute": "62",
-      "text": "In die starke Phase der Bayern mischt sich ein Hoffenheimer Vorstoß. Bülter holt auf der linken Seite immerhin einen Eckball heraus.",
-      "home_score": 1,
-      "away_score": 0,
-      "goal_difference": 1,
-      "is_home_leading": true
-    },
-    {
-      "minute": "62",
-      "text": "De Ligt befördert Kramarics Eckball erstmal per Kopf aus der Gefahrenzone, doch die TSG bleibt in Ballbesitz.",
+      "text": "Wittek findet Hofmanns Kopf mit einem Freistoß aus dem Halbfeld, doch der Kopfball des Stürmers fliegt weit am Bremer Tor vorbei.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -636,23 +677,7 @@
     },
     {
       "minute": "63",
-      "text": "Kabak legt eine Flanke von links an den linken Pfosten quer, wo Beier vor Kane mit dem Kopf dran ist, Neuer wischt den Versuch stark zur nächsten Ecke.",
-      "home_score": 1,
-      "away_score": 0,
-      "goal_difference": 1,
-      "is_home_leading": true
-    },
-    {
-      "minute": "64",
-      "text": "Die nächste Ecke der Hoffenheimer bringt dann nichts ein.",
-      "home_score": 1,
-      "away_score": 0,
-      "goal_difference": 1,
-      "is_home_leading": true
-    },
-    {
-      "minute": "64",
-      "text": "Upamecano verlängert einen weiten Schlag von Baumann in den Lauf von Kramaric, der 20 Meter vor dem Tor alleine vor Neuer ist. Der FCB-Kapitän entschärft den Versuch des Angreifers stark.",
+      "text": "Bero sieht mal etwas Platz vor sich und zieht mit Tempo zum Strafraum. Dort angekommen will er Broschinski bedienen, doch sein Steckpass ist eine Sache für Zetterer.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -660,7 +685,15 @@
     },
     {
       "minute": "65",
-      "text": "Wieder dicke Chance für die TSG! Kramaric verlängert rechts im Strafraum für Beier, der total frei steht, die Kugel aber nicht voll trifft. Deshalb geht der Versuch nur an die Oberkante der Latte.",
+      "text": "Erstmals kann sich der VfL über eine längere Zeit in der Bremer Hälfte festbeißen. Die Kugel wandert vor der einen auf die andere Seite, doch Lücken tun sich bislang noch nicht auf.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "66",
+      "text": "Zweiter Wechsel bei den Gästen: Asano ersetzt Broschinski positionsgetreu.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -668,7 +701,15 @@
     },
     {
       "minute": "67",
-      "text": "Eigentlich hatte man bis vor wenigen Minuten das Gefühl, dass das zweite Münchner Tor bald fallen würde, dann drehten die Gäste aber auch und hatten sehr gute Chancen auf den Ausgleich.",
+      "text": "Die Bochumer probieren es weiter: Erst wird Witteks Distanzschuss abgeblockt, dann wirft sich Jung in Hofmanns zweiten Versuch.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "68",
+      "text": "Zetterer ist zur Stelle: Stöger zieht an der rechten Strafraumkante zwei Gegenspieler auf sich und bedient dann Schlotterbeck. Der Innenverteidiger lässt noch einen Gegenspieler aussteigen und zieht dann wuchtig ab, doch Zetterer ist zur Stelle.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -676,15 +717,47 @@
     },
     {
       "minute": "69",
-      "text": "Davies läuft links an den Strafraum heran, legt dann ab für Musiala, der sich die Kugel einmal hochlegt und dann aber drüberschießt.",
+      "text": "Hinein in die gute Bochumer Phase kommt die Hiobsbotschaft aus Berlin. Dort ist Union gerade mit 1:0 gegen Freiburg in Führung gegangen. Bochum braucht ein Tor, um die Relegation zu verhindern.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
       "is_home_leading": true
     },
     {
-      "minute": "70",
-      "text": "Die Bayern erhöhen! Upamecano passt zu Musiala vor den Strafraum. Der Torschütze des 1:0 verschafft sich mit einer Körpertäuschung etwas Platz und passt zu Sané weiter. Von diesem bekommt er die Kugel wieder zurück und drückt sie aus kurzer Distanz über die Linie.",
+      "minute": "71",
+      "text": "Auch auf eine mögliche Niederlage des FSV Mainz 05 scheint sich Bochum nicht verlassen zu können. Die Mainzer führen mit 2:1 gegen Wolfsburg.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "73",
+      "text": "Ein scheidender Bremer geht vom Feld, ein weiterer Bremer, der den Verein verlassen wird, kommt in die Partie. Woltemade wird vom Weserstadion gefeiert und auch Groß, der nach der Saison in die Scouting-Abteilung von Bayer Leverkusen wechseln wird, bekommt noch einmal Spielzeit. Zudem hat Friedl die Kapitänsbinde an Groß abgegeben.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "75",
+      "text": "Schlotterbeck ist zur Stelle: Kownacki wird die Linie entlang geschickt und will im Strafraum Ducksch bedienen. Der Stürmer wird allerdings von Schlotterbeck bewacht, der den Querpass abfängt.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "78",
+      "text": "Während Bochum wechselt, gibt es mal wieder Freistoß für die Hausherren, nachdem Kownacki nahe des Strafraums zu Boden gerungen wird.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "78",
+      "text": "Der Freistoß bringt das 2:0! Ducksch bringt den Ball von der rechten Seite scharf an den ersten Pfosten, wo Jung sträflich frei steht. Mit Hilfe der Latte nickt der Verteidiger ein.",
       "score_at_event": [
         2,
         0
@@ -695,120 +768,8 @@
       "is_home_leading": true
     },
     {
-      "minute": "71",
-      "text": "Bitter aus Hoffenheimer Sicht: Vor wenigen Minuten war man kurz vor dem Ausgleich, nun beträgt der Rückstand zwei Tore.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "72",
-      "text": "Kane wird links im Strafraum von Kaderabek nicht wirklich angegriffen, den Linksschuss verzieht er aber etwas - drüber.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "73",
-      "text": "Die Bayern wechseln doppelt - und das positionsgetreu.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "74",
-      "text": "Jetzt wird es ganz schwer für die TSG! Prömel kommt an der Mittellinie gegen Tel zu spät und rutscht mit seinem Fuß über den Knöchel des Bayernspielers.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "77",
-      "text": "Die TSG schaltet um, Beier schließt vor dem Strafraum etwas überhastet und genau in die Arme von Neuer ab. Auf der anderen Seite blockt Kabak wieder einmal einen Kane-Schuss.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "78",
-      "text": "Nun ist Kimmich für die Ecken zuständig und schlägt sie auf den zweiten Pfosten, wo de Ligt genau auf Baumann köpft.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "78",
-      "text": "Mit Laimers Auswechslung ergibt sich eine Systemumstellung: Kimmich geht rechts hinten in die Viererkette, Goretzka und Pavlovic sind auf der Sechs.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "81",
-      "text": "Coman geht rechts in Dribbling, muss aber abdrehen und verlagern. Die Kugel kommt nach links zu Tel, dessen Schuss zur nächsten Ecke abgefälscht wird.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "82",
-      "text": "Kimmichs Ecke findet keinen Abnehmer, der Abpraller landet bei Pavlovic, der von links im Strafraum draufhält. Abgefälscht gibt es die nächste Ecke. Diese bringt dann nichts ein.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "83",
-      "text": "Pavlovic unterbindet mit einem Halten gegen Tohumcu einen TSG-Konter.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "85",
-      "text": "Die Bayern kombinieren nochmal links im Strafraum, Tel kommt aber nicht zum Abschluss. Wenig später danach dafür aber Kane. Der Angreifer, der noch auf sein Tor wartet, setzt eine Kimmich-Flanke nur knapp rechts am Kasten vorbei.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "86",
-      "text": "Die TSG steht in Unterzahl nur noch tief, ein drittes Gegentor soll verhindert werden.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "89",
-      "text": "Kimmichs Flanke aus dem rechten Halbfeld fängt Baumann sicher runter.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "90",
-      "text": "Davies kommt mit Tempo an den Strafraum heran, dort kommt aber nicht das Anspiel zu Tel zustande.",
-      "home_score": 2,
-      "away_score": 0,
-      "goal_difference": 2,
-      "is_home_leading": true
-    },
-    {
-      "minute": "90",
-      "text": "Kane macht doch noch sein Tor! Goretzka passt aus dem Zentrum an die Strafraumkante zum Angreifer, der eiskalt mit links ins rechte Eck abschließt. Baumann ist noch dran, kann aber nicht entscheidend ablenken.",
+      "minute": "80",
+      "text": "Jetzt belohnt sich Werder für die ganzen verpassten Chancen! Schmid darf nach Ablage von Kownacki völlig unbedrängt ins Zentrum flanken. Dort steigt der eingewechselte Stage hoch und drückt die Kugel sicher über die Linie.",
       "score_at_event": [
         3,
         0
@@ -819,19 +780,131 @@
       "is_home_leading": true
     },
     {
-      "minute": "90+2",
-      "text": "Kanes Tor ist im Übrigen ein besonderes: Damit hat der Engländer 22-mal in der Hinrunde getroffen, das gelang bislang nur Lewandowski in der ersten Saisonhälfte 2020/21. Im Nachholspiel gegen Union kann sich Kane den alleinigen Rekord schnappen.",
-      "home_score": 2,
+      "minute": "81",
+      "text": "Der VfL Bochum taumelt dem Abstieg entgegen, aus eigener Kraft scheint die Rettung nicht mehr möglich zu sein.",
+      "home_score": 3,
       "away_score": 0,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "82",
+      "text": "Die nächste große Chance für die Hausherren! Wieder wird Schmid steil geschickt, im Eins gegen Eins bleibt Riemann aber mit einem starken Reflex der erste Sieger. Der Abpraller landet bei Stage, der die Kugel volley an die Latte zimmert.",
+      "home_score": 3,
+      "away_score": 0,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "84",
+      "text": "Und schon wieder taucht Schmid frei vor Riemann auf, doch dann ertönt der Pfiff von Schiedsrichter Petersen.",
+      "home_score": 3,
+      "away_score": 0,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "85",
+      "text": "Bochum erzielt den Anschlusstreffer! Stöger behauptet den Ball am Strafraum stark und setzt dann den eingewechselten Antwi-Adjei in Szene. Der bleibt aus spitzem Winkel cool und trifft über Zetterer hinweg in die Maschen.",
+      "score_at_event": [
+        3,
+        1
+      ],
+      "home_score": 3,
+      "away_score": 1,
       "goal_difference": 2,
       "is_home_leading": true
     },
     {
-      "minute": "90+3",
-      "text": "Die Bayern treffen nochmal den Pfosten - oder vielmehr die Hoffenheimer, aber den eigenen. Nsoki fälscht Tels flache Hereingabe an den eigenen Pfosten ab. Nach der folgenden Ecke schießt Kimmich weit drüber.",
-      "home_score": 2,
-      "away_score": 0,
+      "minute": "86",
+      "text": "Und für den VfL gibt es doppelten Grund zur Freude! Der SC Freiburg hat gegen Union Berlin ausgeglichen, Stand jetzt wäre Bochum gerettet.",
+      "home_score": 3,
+      "away_score": 1,
       "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "87",
+      "text": "Stöger zieht noch einmal in den Strafraum, wird aber gestoppt.",
+      "home_score": 3,
+      "away_score": 1,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "88",
+      "text": ":1 für Werder! Nach einem schlimmen Fehler von Schlotterbeck bedient Ducksch den startenden Schmid. Der nimmt es mit Ordets auf und schiebt aus neun Metern durch die Beine von Ordets in die Maschen ein.",
+      "score_at_event": [
+        4,
+        1
+      ],
+      "home_score": 4,
+      "away_score": 1,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "89",
+      "text": "Paciencia zieht aus der Distanz ab, scheitert aber an Zetterer.",
+      "home_score": 4,
+      "away_score": 1,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90",
+      "text": "Asano ist bei einem Eckball am zweiten Pfosten postiert, setzt seinen Kopfball aber einen Meter am Tor vorbei.",
+      "home_score": 4,
+      "away_score": 1,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90+1",
+      "text": "Union Berlin hat einen Elfmeter gegen den SC Freiburg zugesprochen bekommen. Bochum muss wieder zittern.",
+      "home_score": 4,
+      "away_score": 1,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90+2",
+      "text": "Unions Elfmeter-Nachschuss sitzt. Bochum ist wieder auf den Relegationsrang abgerutscht.",
+      "home_score": 4,
+      "away_score": 1,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90+3",
+      "text": "Riemann ist mal wieder zur Stelle! Weiser wird im Strafraum bedient und hält aus zwölf Metern drauf, doch der Versuch ist zentral platziert. Riemann ist zur Stelle und wehrt ab.",
+      "home_score": 4,
+      "away_score": 1,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90+4",
+      "text": "Beim derzeitigen Stand braucht Werder Bremen noch zwei Treffer, um auf den achten Tabellenplatz zu springen.",
+      "home_score": 4,
+      "away_score": 1,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90+6",
+      "text": "Stöger bedient Schlotterbeck mit einem Eckball, doch der Kopfball des Innenverteidigers ist zu zentral angesetzt. Zetterer packt sicher zu.",
+      "home_score": 4,
+      "away_score": 1,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90+6",
+      "text": "Auch da fehlt nicht viel. Paciencia versucht es aus rund 16 Metern per Flachschuss, dieser streicht aber knapp am Tor vorbei.",
+      "home_score": 4,
+      "away_score": 1,
+      "goal_difference": 3,
       "is_home_leading": true
     },
     {
@@ -844,7 +917,15 @@
     },
     {
       "minute": "",
-      "text": "Die Bayern starten perfekt ins Fußballjahr 2024! Doppelpacker Musiala brachte den Sieg erst auf den Weg und erzielte nach den besten Hoffenheimer Chancen auch das 2:0. Kane stellte mit dem Endstand zudem einen Bundesliga-Rekord ein.",
+      "text": "Schluss in Bremen! Der SV Werder feiert einen verdienten 4:1 Heimsieg gegen Bochum, doch die Blicke der Gäste gehen nach Berlin. Dort läuft die Partie zwischen Union und Freiburg noch.",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "Auch in Berlin ist nun abgepfiffen und es herrscht Gewissheit: Der VfL Bochum rutscht am 34. Spieltag tatsächlich noch auf den Relegationsrang ab und trifft dort auf Zweitligist Fortuna Düsseldorf. Das Relegations-Hinspiel steigt am Donnerstag in Bochum.",
       "home_score": null,
       "away_score": null,
       "goal_difference": null,
