@@ -1,0 +1,854 @@
+{
+  "match_id": "bayern-gegen-hoffenheim-2024-bundesliga-4862110",
+  "metadata": {
+    "kickoff_date": "12.01.2024",
+    "kickoff_time": "20:30",
+    "kickoff": "12.01.2024, 20:30",
+    "stadium": "Allianz-Arena",
+    "stadium_city": "Stadion(München)",
+    "spectators": 75000,
+    "attendance": 75000,
+    "is_sold_out": true,
+    "season": "2023-24",
+    "matchday": 17,
+    "home_team": "Bayern München",
+    "away_team": "TSG Hoffenheim",
+    "final_score": "3:0"
+  },
+  "targets": {
+    "announced_time_45": 1,
+    "actual_played_45": 1,
+    "announced_time_90": 3,
+    "actual_played_90": 3
+  },
+  "score_timeline": {
+    "18": [
+      1,
+      0
+    ],
+    "70": [
+      2,
+      0
+    ],
+    "90": [
+      3,
+      0
+    ]
+  },
+  "match_info": {
+    "info": {
+      "kickoff_date": "12.01.2024",
+      "kickoff_time": "20:30",
+      "kickoff": "12.01.2024, 20:30",
+      "stadium": "Allianz-Arena",
+      "stadium_city": "Stadion(München)",
+      "spectators": 75000,
+      "attendance": 75000,
+      "is_sold_out": true
+    },
+    "stats": {
+      "xgoals": {
+        "title": "xGoals",
+        "home": 2.77,
+        "away": 1.22
+      },
+      "shots": {
+        "title": "Torschüsse",
+        "home": 27,
+        "away": 11
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 90,
+        "away": 82
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 61,
+        "away": 39
+      }
+    }
+  },
+  "ticker_data": [
+    {
+      "minute": "",
+      "text": "Nach etwas mehr als drei Wochen Pause startet die Bundesliga ins neue Fußballjahr. Den Auftakt zum 17.Spieltag machen der FC Bayern und die TSG Hoffenheim - in der mit dem Schriftzug \"Danke Franz\" verzierten Allianz-Arena.",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "Das heutige Spiel steht ganz im Zeichen von Franz Beckenbauer, der am vergangenen Sonntag im Alter von 78 Jahren verstorben ist. Zu Ehren ihres langjährigen Spielers, Trainers und Präsidenten werden sich die Spieler in Shirts mit Beckenbauers Nummer 5 aufwärmen, \"Gute Freunde kann niemand trennen\" erklingt als Einlaufmusik (eventuell auch als Tormusik), außerdem läuft der FCB in einem Sondertrikot auf. Die Jerseys sollen anschließend zugunsten der Franz-Beckenbauer-Stiftung versteigert werden.",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "Sportlich hatte der Rekordmeister das alte Jahr nach der deftigen Pleite in Frankfurt mit drei Siegen ohne Gegentor abgeschlossen. Beim einzigen Testspiel in Basel (1:1) agierten die Bayern phasenweise noch zu kompliziert. Bei einem Spiel weniger könnten die Münchner mit einem weiteren Sieg den Abstand auf Tabellenführer Leverkusen (morgen in Augsburg) zumindest über Nacht auf einen Punkt verringern.",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "Die TSG verlor ihr einziges Testspiel (0:1 in Augsburg) und gestern auch noch Verteidiger Vogt (zu Union Berlin). Gute Erinnerungen an München haben die Kraichgauer zudem auch nicht, setzte es gegen den FC Bayern doch die höchsten Bundesligapleiten. 2011/12 unterlag Hoffenheim in München 1:7, 2019/20 gab es in der Rückrunde zu Hause ein 0:6.",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "Auch in München ist im Winter-Transferfenster etwas passiert, Neuzugang Dier (Tottenham) steht aber noch nicht im Kader. Dort fehlen auch Kim (Asien-Cup) und Mazraoui (Afrika-Cup) - im Vergleich zum 2:1 in Wolfsburg im Dezember gibt es zwei Änderungen: Für Kim verteidigt de Ligt, Kimmich (gegen Wolfsburg krank) ersetzt Pavlovic (Bank). Guerreiro steht erneut in der Startelf und erhält den Vorzug vor Goretzka. Der 18-jährige Zvonarek steht erstmals in der Bundesliga im Kader.",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "Bei der TSG ersetzt Nsoki den abgewanderten Vogt, der vor dem Jahreswechsel beim 3:3 gegen Darmstadt noch in der Startelf stand. Außerdem rotiert Grillitsch in die erste Elf, Brooks bleibt draußen. Weghorst ist wieder fit und startet im Sturm neben Beier, Bebou und Tohumcu müssen auf die Bank. Vier Änderungen also bei den Gästen.",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "\"In dieser Woche haben wir einen großen Schritt nach vorne gemacht. Ich spüre, dass wir absolut bereit sind, um voll loszulegen“, sagte Thomas Tuchel im Vorfeld der Partie. Der Start gegen Basel war \"noch ein bisschen holprig\". In den drei anstehenden Heimspielen - 21. Januar gegen Bremen und am 24. Januar das Nachholspiel gegen Union - wollen die Münchner \"in einen Lauf kommen und den Druck (auf Tabellenführer Leverkusen) hochhalten\".",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "TSG-Trainer Pellegrino Matarazzo merkt seinen Spielern an, \"dass sie die Spiele vor Weihnachten noch nicht komplett abgehakt hatten\". Vor dem Jahreswechsel gelang in sieben Partien nur ein Sieg. Nach München fahre man \"mit einer gesunden Portion Respekt\". Gelingt \"eine sehr gute Perfomance\", dann sieht der Coach \"auch eine Chance\", schließlich habe das sein Team \"bereits in der Vergangenheit bewiesen\". Etwa letzte Saison als Kramaric mit einem direkten Freistoß zum 1:1-Endstand traf.",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "Der Anpfiff naht - und damit auch das 500. Pflichtspiel für Neuer im Trikot des FC Bayern. Der Kapitän führt seine Mannschaft zu den Klängen von \"Gute Freunde kann niemand trennen\" aufs Feld. Im Mittelkreis ist noch ein Banner mit Beckenbauer als Spieler aufgezogen.",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "Anpfiff",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "1",
+      "text": "Nach einer Schweigeminute zu Ehren von Franz Beckenbauer, ist das Spiel nun vom Gespann um Benjamin Brand freigegeben. Als VAR sitzt Dr. Matthias Jöllenbeck vor den Bildschirmen.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "1",
+      "text": "Die Bayern machen vorne gleich mal Druck, Sané gelingt fast der Ballgewinn am TSG-Strafraum.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "2",
+      "text": "Auch die Gäste mit dem ersten Vorstoß, Davies passt links hinten aber auf bei Kaderabeks Steckpassversuch auf Kramaric.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "3",
+      "text": "Nach dem folgenden Einwurf flankt Prömel von rechts in die Mitte, wo Beier am Fünfer die Kugel nicht richtig trifft - vorbei.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "3",
+      "text": "Stach probiert es mit einem Flachschuss aus der Distanz, sehr weit links neben das Tor.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "4",
+      "text": "Kane verlagert aus dem Zentrum nach links hinaus zu Sané, der Pass ist aber zu weit und landet im Toraus.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "6",
+      "text": "Die Bayern lassen den Ball laufen, die TSG steht kompakt. Nach einer Verlagerung nach rechts hat Müller etwas Platz, die Flanke steigt aber zu schnell zu steil und geht weit über den Kasten hinweg.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "9",
+      "text": "Sané versucht links vor dem Strafraum einen Doppelpass mit Guerreiro. Irgendwie kommt er zurück an den Ball, bleibt dann im Strafraum aber hängen.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "9",
+      "text": "Beim nächsten Versuch spielt Laimer rechts im Strafraum einen Doppelpass mit Musiala, die Flanke lenkt Baumann ab - dann geht aber die Fahne hoch.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "10",
+      "text": "Nach Kaderabeks Ballverlust ist Kane links im Strafraum, der Querpass erreicht aber keinen Mitspieler.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "10",
+      "text": "Die TSG schaltet nach vorne um, Beier legt halbrechts vor dem Strafraum für Kramaric ab, der die Kugel weit über den Kasten drischt.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "11",
+      "text": "Die Gäste verstecken sich nicht und suchen durchaus den Weg nach vorne, Stach rutscht bei seiner Halbfeldflanke weg, so passiert nichts.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "11",
+      "text": "Auf der anderen Seite kommt Müller nicht an eine Davies-Flanke heran.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "13",
+      "text": "Davies hat links ganz viel Platz und startet aus der eigenen Hälfte bis an den Strafraum durch. Dort gibt er die Kugel weiter an Sané, der nach einer Drehung einen Fehlpass in den Strafraum spielt. Beim FC Bayern fehlt es noch an der allerletzten Genauigkeit.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "15",
+      "text": "Mit einem Trick verschafft sich Musiala halbrechts vor dem Strafraum Platz, der Steckpass wird zur Ecke abgefälscht.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "16",
+      "text": "Die Bayern führen die Ecke kurz aus. Guerreiro passt dann etwas später zu Laimer links in den Strafraum, der zwar Platz hat, aber in den Gegenspieler hineinrennt.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "16",
+      "text": "Stach hält Sané, der nach der Mittellinie ordentlich Tempo aufnahm, regelwidrig auf.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "18",
+      "text": "Müller hat rechts viel Platz für eine Flanke, findet in der Mitte aber nur den Kopf von Kabak, der per Kopf zur Ecke klärt.",
+      "home_score": 0,
+      "away_score": 0,
+      "goal_difference": 0,
+      "is_home_leading": false
+    },
+    {
+      "minute": "18",
+      "text": "Die Bayern führen die Ecke wieder kurz aus - und schlagen diesmal zu! Sané steckt vor dem rechten Strafraum-Eck in diesen hinein zu Musiala durch. Der Youngster schließt nach wenigen Schritten aus spitzem Winkel satt ins lange Eck ab. Der Ball fliegt an Baumanns Arm vorbei, klatscht gegen den linken Innenpfosten und von dort ins Tor.",
+      "score_at_event": [
+        1,
+        0
+      ],
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "21",
+      "text": "Sané dribbelt sich links am TSG-Strafraum fest.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "22",
+      "text": "Die Bayern lassen mit der Führung im Rücken den Ball laufen, die Kraichgauer haben sich etwas fallen lassen und warten nun ab der Mittellinie erst einmal ab.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "24",
+      "text": "Die Partie hängt gerade etwas durch, Hoffenheim ist gerade recht passiv, die Bayern suchen die Lücke.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "26",
+      "text": "Die Bayern prallen mehrfach am Strafraum ab, die TSG-Defensive steht gut - nach vorne geht bei den Gästen dafür aber nichts mehr.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "27",
+      "text": "Guerreiro spielt Kane zentral am Strafraum an, doch der Angreifer hat direkt mehrere Gegenspieler um sich und kommt nicht zum Abschluss.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "30",
+      "text": "Die Bayern sind weiter auf der Suche nach der Lücke im letzten Drittel. Müllers Halbfeldflanke flitscht Sané über die Stirn, Baumann nimmt den austrudelnden Ball locker auf.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "30",
+      "text": "Hoffenheim mal wieder! Kaderabeks Flanke von rechts köpft Upamecano vor Weghorst weg, aber nur zentral vor den Strafraum. Dort kommt Stach an, trifft die Kugel aber nicht voll und haut sie deshalb deutlich rechts neben das Tor.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "32",
+      "text": "Nach diesem seltenen Ausflug igeln sich die Hoffenheimer wieder ein. Die Bayern werfen die Passmaschinerie wieder an.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "34",
+      "text": "Während die Bayern weiter geduldig die TSG-Defensive bearbeiten lohnt sich ein erster Blick in die LIVE!-Daten. Die Münchner haben rund 70 Prozent Ballbesitz, aber nur zwei Torschüsse. Die Gäste haben deren vier.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "36",
+      "text": "Den Münchnern fehlt es aktuell etwas an Tempo, um im letzten Drittel Gefahr entfachen zu können. Weil die Gäste ihre Taktik nicht aufgeben, deutet sich ein Geduldspiel für das zweite Münchner Tor ab.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "36",
+      "text": "Bülter erobert sich links den Ball und startet einen vorsichtigen Vorstoß, der kurz nach der Mittellinie aber schon wieder beendet ist.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "37",
+      "text": "Guerreiro wird links im Strafraum bedient, ist aber schon aus spitzem Winkel nah an Baumann dran und bringt die Kugel nicht am Keeper vorbei. Dennoch keine schlechte Chance.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "38",
+      "text": "Kane versucht es aus der Distanz, aber genau flach auf Baumann.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "40",
+      "text": "Kabak passt bei einem Steckpass auf Guerreiro auf und ist mit der Fußspitze dazwischen. Mit Ausnahme des 0:1 lässt Hoffenheim eigentlich nichts zu.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "40",
+      "text": "Beiers Flankenversuch von rechts kommt weder bei Weghorst noch bei Kramaric an.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "41",
+      "text": "Nach einigen Pässen, bei denen die Bayern nicht in den Strafraum gekommen sind, nimmt Upamecano aus rund 25 Metern Anlauf und hält einfach mal drauf. Der Ball fliegt aber recht deutlich rechts neben das Tor.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "42",
+      "text": "Prömel stempelt Müller an der Mittellinie von oben auf den Fuß.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "43",
+      "text": "Müller geht rechts bis zur Grundlinie durch und flankt hoch in die Mitte, wo Kanes Kopfball zu wenig Druck hat. Prömel köpft ihn weg.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "45",
+      "text": "Nsoki köpft eine Sané-Flanke vor Kane erst einmal weg. Bei der zweiten bayerischen Welle versucht es Kimmich aus der Distanz, genau auf Baumann.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "45+1",
+      "text": "De Ligt köpft eine Kaderabek-Flanke ins Seitenaus.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "45",
+      "text": "Halbzeitpfiff",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "45",
+      "text": "Ein Treffer von Musiala macht bislang den Unterschied am ersten Spieltag im neuen Fußballjahr. Die Bayern sind spielbestimmend, die Gäste aus Hoffenheim lassen aber ganz wenig zu. Die TSG lauert auf Umschaltmomente, in Ansätzen waren diese teilweise auch nicht ungefährlich.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "45",
+      "text": "Eins ist jetzt schon klar, das Spiel ist jetzt schon ein Rekord für die Bayern: Im 65. Heimspiel in Folge haben die Münchner mindestens ein Tor erzielt - neuer Bundesliga-Rekord.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "",
+      "text": "Anpfiff 2. Hälfte",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "46",
+      "text": "Beide Teams starten unverändert in die zweite Hälfte.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "47",
+      "text": "Beier geht halblinks in der Bayern-Hälfte ins Laufduell gegen Upamecano, kommt dann aber aus dem Tritt und deshalb nicht weit.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "49",
+      "text": "Bülter flankt scharf von links in die Mitte, Neuer hat den Ball.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "49",
+      "text": "Ein langer Ball geht fast durch auf Musiala, Grillitsch hat etwas Probleme, ist dann im Strafraum aber doch noch dazwischen. Nsoki klärt am Ende per Grätsche - fair sagt Schiedsrichter Benjamin Brand und lässt weiterspielen.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "52",
+      "text": "Kramaric läuft am Strafraum von halbrechts etwas nach innen, der Linksschuss rutscht etwas ab und geht deshalb weit drüber.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "52",
+      "text": "Hoffenheim presst nun mal früh am Bayern-Strafraum, beinahe mit Erfolg, Guerreiro bleibt aber am Ball, den Neuer am Ende wegdrischt.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "53",
+      "text": "Müller hat rechts neben Strafraum etwas Platz und flankt scharf halbhoch in die Mitte, Baumann ist mit den Fäusten dazwischen. Im linken Teil des Strafraums trifft Sané den Ball nicht richtig.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "55",
+      "text": "Sanés wird zentral vor dem Strafraum angespielt und hat keinen Gegenspieler in der Nähe. So kann er Maß nehmen, schießt aber genau flach auf Baumann.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "56",
+      "text": "Kane ist rechts durch und passt in die Mitte, wo Sané ins linke Eck vollstreckt. Der Jubel verhallt aber sofort, weil Kane im Abseits stand - und die Fahne des Assistenten deshalb korrekterweise hochging.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "57",
+      "text": "Musiala steckt zentral am Sechzehner für Kane durch, Kabak ist sofort dran und fälscht den Schuss entscheidend zur Ecke ab.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "58",
+      "text": "Die folgende Ecke führen die Bayern kurz aus, Müllers Flanke kommt nicht an. Beim nächsten Angriff über links kommt der Routinier am langen Pfosten einen Schritt zu spät bei Kanes Hereingabe.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "58",
+      "text": "Pfosten! Die TSG verliert im Aufbau den Ball, Musiala fackelt rund 22 Meter vor dem Tor nicht lange und hält drauf. Der satte Schuss knallt gegen das rechte Torgestänge, beim Abpraller trifft Müller die Kugel mit links nicht richtig - Baumann hat den Ball.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "60",
+      "text": "Kimmich verlagert nach rechts zu Müller, der für den in den Strafraum eingelaufenen Laimer klatschen lässt. Baumann macht sich breit und wehrt zur Ecke ab.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "60",
+      "text": "Ecken werden bei den Münchnern heute kurz ausgeführt. Im weiteren Verlauf zieht Davies halblinks vor dem Strafraum ab, Baumann hat wieder die Hände dazwischen.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "61",
+      "text": "Der nächste Angriff der Münchner kommt sofort. Müller kann seinen Kopfball links im Strafraum aber nicht platzieren. Dennoch: Der Rekordmeister wird stärker.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "62",
+      "text": "In die starke Phase der Bayern mischt sich ein Hoffenheimer Vorstoß. Bülter holt auf der linken Seite immerhin einen Eckball heraus.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "62",
+      "text": "De Ligt befördert Kramarics Eckball erstmal per Kopf aus der Gefahrenzone, doch die TSG bleibt in Ballbesitz.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "63",
+      "text": "Kabak legt eine Flanke von links an den linken Pfosten quer, wo Beier vor Kane mit dem Kopf dran ist, Neuer wischt den Versuch stark zur nächsten Ecke.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "64",
+      "text": "Die nächste Ecke der Hoffenheimer bringt dann nichts ein.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "64",
+      "text": "Upamecano verlängert einen weiten Schlag von Baumann in den Lauf von Kramaric, der 20 Meter vor dem Tor alleine vor Neuer ist. Der FCB-Kapitän entschärft den Versuch des Angreifers stark.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "65",
+      "text": "Wieder dicke Chance für die TSG! Kramaric verlängert rechts im Strafraum für Beier, der total frei steht, die Kugel aber nicht voll trifft. Deshalb geht der Versuch nur an die Oberkante der Latte.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "67",
+      "text": "Eigentlich hatte man bis vor wenigen Minuten das Gefühl, dass das zweite Münchner Tor bald fallen würde, dann drehten die Gäste aber auch und hatten sehr gute Chancen auf den Ausgleich.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "69",
+      "text": "Davies läuft links an den Strafraum heran, legt dann ab für Musiala, der sich die Kugel einmal hochlegt und dann aber drüberschießt.",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
+      "minute": "70",
+      "text": "Die Bayern erhöhen! Upamecano passt zu Musiala vor den Strafraum. Der Torschütze des 1:0 verschafft sich mit einer Körpertäuschung etwas Platz und passt zu Sané weiter. Von diesem bekommt er die Kugel wieder zurück und drückt sie aus kurzer Distanz über die Linie.",
+      "score_at_event": [
+        2,
+        0
+      ],
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "71",
+      "text": "Bitter aus Hoffenheimer Sicht: Vor wenigen Minuten war man kurz vor dem Ausgleich, nun beträgt der Rückstand zwei Tore.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "72",
+      "text": "Kane wird links im Strafraum von Kaderabek nicht wirklich angegriffen, den Linksschuss verzieht er aber etwas - drüber.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "73",
+      "text": "Die Bayern wechseln doppelt - und das positionsgetreu.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "74",
+      "text": "Jetzt wird es ganz schwer für die TSG! Prömel kommt an der Mittellinie gegen Tel zu spät und rutscht mit seinem Fuß über den Knöchel des Bayernspielers.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "77",
+      "text": "Die TSG schaltet um, Beier schließt vor dem Strafraum etwas überhastet und genau in die Arme von Neuer ab. Auf der anderen Seite blockt Kabak wieder einmal einen Kane-Schuss.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "78",
+      "text": "Nun ist Kimmich für die Ecken zuständig und schlägt sie auf den zweiten Pfosten, wo de Ligt genau auf Baumann köpft.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "78",
+      "text": "Mit Laimers Auswechslung ergibt sich eine Systemumstellung: Kimmich geht rechts hinten in die Viererkette, Goretzka und Pavlovic sind auf der Sechs.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "81",
+      "text": "Coman geht rechts in Dribbling, muss aber abdrehen und verlagern. Die Kugel kommt nach links zu Tel, dessen Schuss zur nächsten Ecke abgefälscht wird.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "82",
+      "text": "Kimmichs Ecke findet keinen Abnehmer, der Abpraller landet bei Pavlovic, der von links im Strafraum draufhält. Abgefälscht gibt es die nächste Ecke. Diese bringt dann nichts ein.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "83",
+      "text": "Pavlovic unterbindet mit einem Halten gegen Tohumcu einen TSG-Konter.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "85",
+      "text": "Die Bayern kombinieren nochmal links im Strafraum, Tel kommt aber nicht zum Abschluss. Wenig später danach dafür aber Kane. Der Angreifer, der noch auf sein Tor wartet, setzt eine Kimmich-Flanke nur knapp rechts am Kasten vorbei.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "86",
+      "text": "Die TSG steht in Unterzahl nur noch tief, ein drittes Gegentor soll verhindert werden.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "89",
+      "text": "Kimmichs Flanke aus dem rechten Halbfeld fängt Baumann sicher runter.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90",
+      "text": "Davies kommt mit Tempo an den Strafraum heran, dort kommt aber nicht das Anspiel zu Tel zustande.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90",
+      "text": "Kane macht doch noch sein Tor! Goretzka passt aus dem Zentrum an die Strafraumkante zum Angreifer, der eiskalt mit links ins rechte Eck abschließt. Baumann ist noch dran, kann aber nicht entscheidend ablenken.",
+      "score_at_event": [
+        3,
+        0
+      ],
+      "home_score": 3,
+      "away_score": 0,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90+2",
+      "text": "Kanes Tor ist im Übrigen ein besonderes: Damit hat der Engländer 22-mal in der Hinrunde getroffen, das gelang bislang nur Lewandowski in der ersten Saisonhälfte 2020/21. Im Nachholspiel gegen Union kann sich Kane den alleinigen Rekord schnappen.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90+3",
+      "text": "Die Bayern treffen nochmal den Pfosten - oder vielmehr die Hoffenheimer, aber den eigenen. Nsoki fälscht Tels flache Hereingabe an den eigenen Pfosten ab. Nach der folgenden Ecke schießt Kimmich weit drüber.",
+      "home_score": 2,
+      "away_score": 0,
+      "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "",
+      "text": "Abpfiff",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    },
+    {
+      "minute": "",
+      "text": "Die Bayern starten perfekt ins Fußballjahr 2024! Doppelpacker Musiala brachte den Sieg erst auf den Weg und erzielte nach den besten Hoffenheimer Chancen auch das 2:0. Kane stellte mit dem Endstand zudem einen Bundesliga-Rekord ein.",
+      "home_score": null,
+      "away_score": null,
+      "goal_difference": null,
+      "is_home_leading": null
+    }
+  ]
+}

@@ -24,3 +24,5 @@ dependencies:
     - tokenizers
     - datasets
     - accelerate
+    - selenium
+    - undetected-chromedriver
