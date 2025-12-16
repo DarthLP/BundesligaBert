@@ -16,7 +16,7 @@
     "final_score": "4:1"
   },
   "targets": {
-    "announced_time_45": 2,
+    "announced_time_45": 1,
     "actual_played_45": 2,
     "announced_time_90": 6,
     "actual_played_90": 6
@@ -42,6 +42,20 @@
       4,
       1
     ]
+  },
+  "yellow_cards": {
+    "35": 1,
+    "37": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {},
+  "substitutes": {
+    "46": 1,
+    "66": 1,
+    "72": 1,
+    "77": 1,
+    "85": 1,
+    "90": 1
   },
   "match_info": {
     "info": {
@@ -136,14 +150,6 @@
     },
     {
       "minute": "",
-      "text": "Schiedsrichter der heutigen Partie ist Martin Petersen aus Stuttgart, der sein elftes Bundesligaspiel in dieser Saison pfeift. Seine Assistenten sind Robert Wessel und Arno Blos, als Vierter Offizieller ist Nicolas Winter im Einsatz.",
-      "home_score": null,
-      "away_score": null,
-      "goal_difference": null,
-      "is_home_leading": null
-    },
-    {
-      "minute": "",
       "text": "Anpfiff",
       "home_score": null,
       "away_score": null,
@@ -208,7 +214,7 @@
     },
     {
       "minute": "6",
-      "text": "Die folgende Ecke führt zum Tor! Der Eckball springt im Zentrum einmal auf und dann an die Brust von Bernardo. Von dort aus fliegt der Ball unglücklich für die Gäste direkt vor die Füße von Friedl. Der Werder-Kapitän nimmt den Ball an und schweißt ihn mit dem zweiten Kontakt wuchtig in die Maschen. Für Riemann gibt es keine Abwehrchance.",
+      "text": "Tor für Bremen Die folgende Ecke führt zum Tor! Der Eckball springt im Zentrum einmal auf und dann an die Brust von Bernardo. Von dort aus fliegt der Ball unglücklich für die Gäste direkt vor die Füße von Friedl. Der Werder-Kapitän nimmt den Ball an und schweißt ihn mit dem zweiten Kontakt wuchtig in die Maschen. Für Riemann gibt es keine Abwehrchance.",
       "score_at_event": [
         1,
         0
@@ -421,6 +427,9 @@
     {
       "minute": "35",
       "text": "Klares taktisches Foul: Lynen unterbindet einen Bochumer Konter durch ein klares Halten am Trikot von Stöger.",
+      "card_type": "Yellow",
+      "player": null,
+      "team": "VfL Bochum",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -430,6 +439,8 @@
       "minute": "37",
       "text": "Agu will einen langen Ball erlaufen und wird an der Seitenlinie von Wittek umgeräumt. Dafür sieht der Bochumer Gelb.",
       "card_type": "Yellow",
+      "player": "Wittek",
+      "team": "VfL Bochum",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -546,6 +557,14 @@
       "away_score": null,
       "goal_difference": null,
       "is_home_leading": null
+    },
+    {
+      "minute": "46",
+      "text": "Spielerwechsel",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
     },
     {
       "minute": "46",
@@ -693,7 +712,7 @@
     },
     {
       "minute": "66",
-      "text": "Zweiter Wechsel bei den Gästen: Asano ersetzt Broschinski positionsgetreu.",
+      "text": "Spielerwechsel Zweiter Wechsel bei den Gästen: Asano ersetzt Broschinski positionsgetreu.",
       "home_score": 1,
       "away_score": 0,
       "goal_difference": 1,
@@ -732,6 +751,14 @@
       "is_home_leading": true
     },
     {
+      "minute": "72",
+      "text": "Spielerwechsel",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
       "minute": "73",
       "text": "Ein scheidender Bremer geht vom Feld, ein weiterer Bremer, der den Verein verlassen wird, kommt in die Partie. Woltemade wird vom Weserstadion gefeiert und auch Groß, der nach der Saison in die Scouting-Abteilung von Bayer Leverkusen wechseln wird, bekommt noch einmal Spielzeit. Zudem hat Friedl die Kapitänsbinde an Groß abgegeben.",
       "home_score": 1,
@@ -748,6 +775,14 @@
       "is_home_leading": true
     },
     {
+      "minute": "77",
+      "text": "Spielerwechsel",
+      "home_score": 1,
+      "away_score": 0,
+      "goal_difference": 1,
+      "is_home_leading": true
+    },
+    {
       "minute": "78",
       "text": "Während Bochum wechselt, gibt es mal wieder Freistoß für die Hausherren, nachdem Kownacki nahe des Strafraums zu Boden gerungen wird.",
       "home_score": 1,
@@ -757,7 +792,7 @@
     },
     {
       "minute": "78",
-      "text": "Der Freistoß bringt das 2:0! Ducksch bringt den Ball von der rechten Seite scharf an den ersten Pfosten, wo Jung sträflich frei steht. Mit Hilfe der Latte nickt der Verteidiger ein.",
+      "text": "Tor für Bremen Der Freistoß bringt das 2:0! Ducksch bringt den Ball von der rechten Seite scharf an den ersten Pfosten, wo Jung sträflich frei steht. Mit Hilfe der Latte nickt der Verteidiger ein.",
       "score_at_event": [
         2,
         0
@@ -769,7 +804,7 @@
     },
     {
       "minute": "80",
-      "text": "Jetzt belohnt sich Werder für die ganzen verpassten Chancen! Schmid darf nach Ablage von Kownacki völlig unbedrängt ins Zentrum flanken. Dort steigt der eingewechselte Stage hoch und drückt die Kugel sicher über die Linie.",
+      "text": "Tor für Bremen Jetzt belohnt sich Werder für die ganzen verpassten Chancen! Schmid darf nach Ablage von Kownacki völlig unbedrängt ins Zentrum flanken. Dort steigt der eingewechselte Stage hoch und drückt die Kugel sicher über die Linie.",
       "score_at_event": [
         3,
         0
@@ -805,7 +840,7 @@
     },
     {
       "minute": "85",
-      "text": "Bochum erzielt den Anschlusstreffer! Stöger behauptet den Ball am Strafraum stark und setzt dann den eingewechselten Antwi-Adjei in Szene. Der bleibt aus spitzem Winkel cool und trifft über Zetterer hinweg in die Maschen.",
+      "text": "Tor für Bochum Bochum erzielt den Anschlusstreffer! Stöger behauptet den Ball am Strafraum stark und setzt dann den eingewechselten Antwi-Adjei in Szene. Der bleibt aus spitzem Winkel cool und trifft über Zetterer hinweg in die Maschen.",
       "score_at_event": [
         3,
         1
@@ -813,6 +848,14 @@
       "home_score": 3,
       "away_score": 1,
       "goal_difference": 2,
+      "is_home_leading": true
+    },
+    {
+      "minute": "85",
+      "text": "Spielerwechsel",
+      "home_score": 3,
+      "away_score": 0,
+      "goal_difference": 3,
       "is_home_leading": true
     },
     {
@@ -833,7 +876,7 @@
     },
     {
       "minute": "88",
-      "text": ":1 für Werder! Nach einem schlimmen Fehler von Schlotterbeck bedient Ducksch den startenden Schmid. Der nimmt es mit Ordets auf und schiebt aus neun Metern durch die Beine von Ordets in die Maschen ein.",
+      "text": "Tor für Bremen 4:1 für Werder! Nach einem schlimmen Fehler von Schlotterbeck bedient Ducksch den startenden Schmid. Der nimmt es mit Ordets auf und schiebt aus neun Metern durch die Beine von Ordets in die Maschen ein.",
       "score_at_event": [
         4,
         1
@@ -854,6 +897,14 @@
     {
       "minute": "90",
       "text": "Asano ist bei einem Eckball am zweiten Pfosten postiert, setzt seinen Kopfball aber einen Meter am Tor vorbei.",
+      "home_score": 4,
+      "away_score": 1,
+      "goal_difference": 3,
+      "is_home_leading": true
+    },
+    {
+      "minute": "90",
+      "text": "Spielerwechsel",
       "home_score": 4,
       "away_score": 1,
       "goal_difference": 3,

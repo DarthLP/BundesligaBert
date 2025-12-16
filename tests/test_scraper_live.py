@@ -77,7 +77,7 @@ def test_known_matches(scraper: KickerScraper) -> bool:
     # 1. Test with the Bayern Match (Known to have HTML fallback)
     print(">>> TESTING KNOWN GOOD MATCH (Bayern vs Hoffenheim) <<<")
     bayern_url = "https://www.kicker.de/bayern-gegen-hoffenheim-2024-bundesliga-4862110/ticker"
-    result1 = scraper.scrape_full_match(bayern_url, season="2023-24", matchday=17)
+    result1 = scraper.scrape_full_match(bayern_url, season="2023-24", matchday=17, force_rescrape=True)
     
     if result1:
         events_count = len(result1.get('ticker_data', []))
@@ -97,7 +97,7 @@ def test_known_matches(scraper: KickerScraper) -> bool:
     # 2. Test with the Problematic Match (Bremen vs Bochum)
     print(">>> TESTING PROBLEMATIC MATCH (Bremen vs Bochum) <<<")
     bremen_url = "https://www.kicker.de/bremen-gegen-bochum-2024-bundesliga-4862269/ticker"
-    result2 = scraper.scrape_full_match(bremen_url, season="2023-24", matchday=34)
+    result2 = scraper.scrape_full_match(bremen_url, season="2023-24", matchday=34, force_rescrape=True)
     
     if result2:
         events_count = len(result2.get('ticker_data', []))
@@ -194,12 +194,13 @@ def run_smoke_test(scraper: KickerScraper = None, test_url: str = None, season: 
             print(f"Testing dynamically found URL: {test_url}")
         print()
         
-        # Execute scrape
+        # Execute scrape (force_rescrape=True for tests to ensure fresh data)
         print("Step 3: Scraping match data...")
         result = scraper.scrape_full_match(
             match_url=test_url,
             season=season,
-            matchday=test_matchday
+            matchday=test_matchday,
+            force_rescrape=True  # Force re-scraping for tests
         )
         
         if result is None:

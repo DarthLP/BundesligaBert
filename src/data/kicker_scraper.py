@@ -7,8 +7,18 @@ sequentially to extract match metadata and ticker text with precise score states
 It strictly separates input features from target labels by extracting announced and actual played
 time before removing leakage from text.
 
+The scraper includes anti-ban measures:
+- Runs Chrome in incognito mode and background (headless)
+- Clears cookies between requests
+- Uses random user agents
+- Implements longer delays between requests
+- Skips already downloaded matches to avoid re-scraping
+
 Usage:
-    # Option 1: Run as a script to scrape all seasons (2017-18 to 2024-25)
+    # Option 1: Run simultaneous season download (RECOMMENDED)
+    # Scrapes all seasons (2017-18 to 2024-25) in parallel using multiprocessing
+    # Each season runs in a separate process with its own Chrome instance
+    # This is the fastest and safest way to download all data
     python src/data/kicker_scraper.py
     
     # Option 2: Use as a module for individual matches
@@ -26,6 +36,32 @@ Usage:
     match_urls = scraper.get_match_urls(season="2023-24", matchday=1)
     for url in match_urls:
         scraper.scrape_full_match(url, season="2023-24", matchday=1)
+    
+    # Option 4: Force re-scraping even if match already downloaded (for testing)
+    result = scraper.scrape_full_match(
+        match_url="https://www.kicker.de/...",
+        season="2023-24",
+        matchday=1,
+        force_rescrape=True
+    )
+
+Multiprocessing Details:
+    When running as a script (Option 1), the scraper uses multiprocessing to run
+    2 seasons per process (4 processes total for 8 seasons). Each process:
+    - Has its own Chrome driver instance in incognito mode
+    - Runs in background (headless mode)
+    - Processes all matchdays (1-34) for its assigned seasons sequentially
+    - Automatically skips matches that are already downloaded
+    - Logs progress independently with process-specific prefixes
+    - Continues even if individual matches or seasons fail
+    
+    This approach:
+    - Reduces concurrent driver initializations (4 instead of 8)
+    - Significantly speeds up scraping while maintaining stability
+    - Reduces ban risk (each process has separate session/cookies)
+    - Allows resuming interrupted downloads (skips existing files)
+    - Provides per-process and per-season progress tracking
+    - Better error recovery (one failure doesn't stop everything)
 
 Output:
     Saves JSON files to data/raw/season_{season}/match_{match_id}.json with structure:
@@ -47,6 +83,8 @@ Author: BundesligaBERT Project
 
 import json
 import logging
+import multiprocessing
+import os
 import random
 import re
 import time
@@ -77,58 +115,167 @@ class KickerScraper:
         wait: WebDriverWait instance for explicit waits
     """
     
-    def __init__(self, save_dir: Union[str, Path], headless: bool = False) -> None:
+    def __init__(self, save_dir: Union[str, Path], headless: bool = True) -> None:
         """
         Initialize KickerScraper with Selenium WebDriver.
         
         Args:
             save_dir: Directory to save scraped match JSON files
-            headless: If True, run browser in headless mode (default: False for better detection avoidance)
+            headless: If True, run browser in headless mode (default: True for background operation)
         """
         self.save_dir = Path(save_dir)
         self.save_dir.mkdir(parents=True, exist_ok=True)
         
         # Initialize Selenium WebDriver (undetected Chrome)
+        # Use file lock to prevent race conditions when multiple processes initialize simultaneously
         logger.info("Initializing Selenium WebDriver...")
-        options = uc.ChromeOptions()
-        if headless:
-            options.add_argument('--headless')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--disable-blink-features=AutomationControlled')
-        options.add_argument('--window-size=1920,1080')  # Force Desktop view (Mobile often hides ticker data)
+        options = self._create_chrome_options(headless=headless)
         
-        # Initialize driver with retry logic for network timeouts
-        max_retries = 3
-        retry_delay = 2
-        for attempt in range(max_retries):
+        # File-based lock to prevent race conditions in multiprocessing
+        # This ensures only one process initializes Chrome driver at a time
+        # With 4 processes (2 seasons each), lock contention is reduced
+        lock_file = Path.home() / ".undetected_chromedriver_init.lock"
+        max_lock_wait = 180  # Maximum seconds to wait for lock (allows for slower driver downloads)
+        lock_wait_interval = 0.5  # Check lock every 0.5 seconds
+        stale_lock_threshold = 300  # Remove lock file if older than 5 minutes (stale)
+        
+        # Wait for lock to be released (if another process is initializing)
+        lock_acquired = False
+        start_time = time.time()
+        while not lock_acquired and (time.time() - start_time) < max_lock_wait:
             try:
-                # Try to initialize with version_main=None to use cached driver if available
-                # This avoids network calls if a driver is already cached
-                self.driver = uc.Chrome(options=options, version_main=None)
-                break
-            except Exception as e:
-                if attempt < max_retries - 1:
-                    error_msg = str(e)
-                    if "timeout" in error_msg.lower() or "URLError" in str(type(e)):
-                        logger.warning(f"Network timeout during driver initialization (attempt {attempt + 1}/{max_retries}). Retrying in {retry_delay}s...")
-                        time.sleep(retry_delay)
-                        retry_delay *= 2  # Exponential backoff
-                    else:
-                        # For other errors, re-raise immediately
-                        raise
+                # Check if lock file exists and is stale
+                if lock_file.exists():
+                    lock_age = time.time() - lock_file.stat().st_mtime
+                    if lock_age > stale_lock_threshold:
+                        # Lock is stale, remove it
+                        try:
+                            lock_file.unlink()
+                            logger.debug("Removed stale lock file")
+                        except Exception:
+                            pass
+                
+                # Try to create lock file (exclusive)
+                if not lock_file.exists():
+                    try:
+                        lock_file.touch(exist_ok=False)
+                        lock_acquired = True
+                        logger.debug("Acquired driver initialization lock")
+                    except (FileExistsError, OSError):
+                        # Another process created it just now, wait
+                        time.sleep(lock_wait_interval)
                 else:
-                    # Last attempt failed
-                    logger.error(f"Failed to initialize WebDriver after {max_retries} attempts: {e}")
-                    logger.error("This may be due to network connectivity issues. Please check your internet connection.")
-                    raise RuntimeError(f"Failed to initialize Chrome WebDriver: {e}") from e
+                    # Lock file exists, wait for it to be released
+                    time.sleep(lock_wait_interval)
+            except Exception as e:
+                logger.debug(f"Error checking lock: {e}")
+                time.sleep(lock_wait_interval)
+        
+        if not lock_acquired:
+            logger.error(f"Could not acquire driver initialization lock after {max_lock_wait}s")
+            logger.error("This may indicate too many processes trying to initialize simultaneously")
+            raise RuntimeError("Failed to acquire driver initialization lock - too many concurrent initializations")
+        
+        try:
+            # Add small random delay even with lock to further stagger initialization
+            time.sleep(random.uniform(0.1, 0.5))
+            
+            # Initialize driver with retry logic for network timeouts and conflicts
+            max_retries = 5  # Increased retries
+            retry_delay = 3  # Start with longer delay
+            for attempt in range(max_retries):
+                try:
+                    # Try to initialize with version_main=None to use cached driver if available
+                    # This avoids network calls if a driver is already cached
+                    self.driver = uc.Chrome(options=options, version_main=None, use_subprocess=True)
+                    break
+                except Exception as e:
+                    if attempt < max_retries - 1:
+                        error_msg = str(e)
+                        error_type = str(type(e))
+                        
+                        # Check for various error types
+                        if "timeout" in error_msg.lower() or "URLError" in error_type:
+                            logger.warning(f"Network timeout during driver initialization (attempt {attempt + 1}/{max_retries}). Retrying in {retry_delay}s...")
+                            time.sleep(retry_delay)
+                            retry_delay = min(retry_delay * 1.5, 10)  # Exponential backoff, max 10s
+                        elif "FileNotFoundError" in error_type and "chromedriver" in error_msg.lower():
+                            # Race condition with chromedriver download - wait and retry
+                            logger.warning(f"ChromeDriver file conflict (attempt {attempt + 1}/{max_retries}). Waiting {retry_delay}s...")
+                            time.sleep(retry_delay)
+                            retry_delay = min(retry_delay * 1.5, 10)
+                        elif "WebDriverException" in error_type and "Can not connect to the Service" in error_msg:
+                            # Driver service conflict - wait longer
+                            logger.warning(f"ChromeDriver service conflict (attempt {attempt + 1}/{max_retries}). Waiting {retry_delay}s...")
+                            time.sleep(retry_delay)
+                            retry_delay = min(retry_delay * 1.5, 10)
+                        else:
+                            # For other errors, wait a bit and retry
+                            logger.warning(f"Driver initialization error (attempt {attempt + 1}/{max_retries}): {error_type}. Waiting {retry_delay}s...")
+                            time.sleep(retry_delay)
+                            retry_delay = min(retry_delay * 1.5, 10)
+                    else:
+                        # Last attempt failed
+                        logger.error(f"Failed to initialize WebDriver after {max_retries} attempts: {e}")
+                        logger.error("This may be due to network connectivity issues or driver conflicts.")
+                        raise RuntimeError(f"Failed to initialize Chrome WebDriver: {e}") from e
+        finally:
+            # Release lock
+            if lock_acquired and lock_file.exists():
+                try:
+                    lock_file.unlink()
+                    logger.debug("Released driver initialization lock")
+                except Exception:
+                    pass  # Ignore errors when removing lock file
         
         self.wait = WebDriverWait(self.driver, timeout=10)
         
         # Track if we've handled cookie consent (optimization)
         self._cookie_consent_handled = False
         
-        logger.info("WebDriver initialized successfully")
+        # Clear cookies on initialization (incognito should handle this, but ensure it)
+        self._clear_cookies()
+        
+        logger.info("WebDriver initialized successfully (incognito mode, background)")
+    
+    def _create_chrome_options(self, headless: bool = True) -> uc.ChromeOptions:
+        """
+        Create Chrome options with anti-ban measures.
+        
+        Args:
+            headless: If True, run browser in headless mode
+            
+        Returns:
+            Configured ChromeOptions object
+        """
+        options = uc.ChromeOptions()
+        
+        # Anti-ban measures: Run in background (headless) and incognito mode
+        if headless:
+            options.add_argument('--headless=new')  # Use new headless mode
+        options.add_argument('--incognito')  # Incognito mode to avoid cookie tracking
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument('--window-size=1920,1080')  # Force Desktop view
+        
+        # Additional anti-detection measures
+        options.add_argument('--disable-gpu')
+        options.add_argument('--disable-software-rasterizer')
+        options.add_argument('--disable-extensions')
+        options.add_argument('--disable-plugins')
+        
+        # Random user agent for better anti-detection
+        user_agents = [
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+        ]
+        options.add_argument(f'--user-agent={random.choice(user_agents)}')
+        
+        return options
     
     def __del__(self) -> None:
         """Cleanup: Ensure driver is closed on destruction."""
@@ -137,6 +284,37 @@ class KickerScraper:
                 self.driver.quit()
             except Exception:
                 pass  # Ignore errors during cleanup
+    
+    def _clear_cookies(self) -> None:
+        """
+        Clear all cookies from the browser to avoid tracking.
+        
+        This is called on initialization and can be called between requests
+        to reset the session state.
+        """
+        try:
+            self.driver.delete_all_cookies()
+            logger.debug("Cookies cleared")
+        except Exception as e:
+            logger.warning(f"Failed to clear cookies: {e}")
+    
+    def _is_match_downloaded(self, match_id: str, season: Optional[str] = None) -> bool:
+        """
+        Check if a match has already been downloaded.
+        
+        Args:
+            match_id: Match ID to check
+            season: Optional season string (if provided, checks in season-specific directory)
+            
+        Returns:
+            True if match file exists, False otherwise
+        """
+        if season:
+            match_file = self.save_dir / f"season_{season}" / f"match_{match_id}.json"
+        else:
+            match_file = self.save_dir / f"match_{match_id}.json"
+        
+        return match_file.exists()
     
     def _random_delay(self, min_sec: float = 2, max_sec: float = 4) -> None:
         """
@@ -534,17 +712,37 @@ class KickerScraper:
                 if match.lastindex >= 1:
                     return match.group(1).strip()
         
-            return None
+        # For card events, also try to extract player name from patterns like "der Bochumer sieht gelb"
+        # where the team is mentioned before the player
+        if is_card:
+            # Pattern: "der [Team]er sieht gelb" -> extract player name that follows
+            team_player_pattern = r'(?:der|die|den)\s+[A-ZÄÖÜ][a-zäöüß]+(?:er|ern|em|es|e)?\s+(?:wird|sieht|bekommt)\s+(?:gelb|rot|gelb-rot|von\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*))'
+            team_player_match = re.search(team_player_pattern, text, re.IGNORECASE)
+            if team_player_match and team_player_match.lastindex >= 1:
+                return team_player_match.group(1).strip()
+            
+            # Pattern: "wird ... von [Player] umgeräumt" or "dafür sieht der [Team]er [Player]"
+            # Example: "wird ... von Wittek umgeräumt. Dafür sieht der Bochumer Gelb"
+            von_pattern = r'von\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+(?:umgeräumt|gefoult|getroffen)'
+            von_match = re.search(von_pattern, text, re.IGNORECASE)
+            if von_match:
+                return von_match.group(1).strip()
+        
+        return None
     
-    def _extract_team_from_text(self, text: str) -> Optional[str]:
+    def _extract_team_from_text(self, text: str, home_team: Optional[str] = None, away_team: Optional[str] = None) -> Optional[str]:
         """
         Extract team name from ticker text.
         
-        Looks for team names in parentheses or after player names.
-        Common pattern: "Müller (Bayern) sieht gelb"
+        Looks for team names in various patterns:
+        - "der Bochumer", "den Bremern" (adjective forms)
+        - "Player (Team)" or "Team: Player"
+        - Team names mentioned in context
         
         Args:
             text: Event text
+            home_team: Optional home team name for validation (e.g., "Werder Bremen")
+            away_team: Optional away team name for validation (e.g., "VfL Bochum")
             
         Returns:
             Team name string or None if not found
@@ -552,31 +750,122 @@ class KickerScraper:
         if not text:
             return None
         
-        # Pattern: "Player (Team)" or "Team: Player"
-        team_patterns = [
-            r'\(([^)]+)\)',  # Text in parentheses (often team name)
-            r'([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*):\s*[A-ZÄÖÜ]',  # "Team: Player"
+        text_lower = text.lower()
+        
+        # Common false positives to exclude
+        false_positives = {
+            'aus', 'ein', 'für', 'sieht', 'bekommt', 'erhält', 'foul', 'karte', 
+            'gelb', 'rot', 'gelb-rot', 'minute', 'minuten', 'spielerwechsel', 'wechsel',
+            'gästen', 'gast', 'gäste', 'heimern', 'heim', 'heime'  # "bei den Gästen" means away team, "bei den Heimern" means home team
+        }
+        
+        # Check for "bei den Gästen" (away team) or "bei den Heimern" (home team) first
+        if 'bei den gästen' in text_lower or 'bei den gast' in text_lower:
+            return away_team if away_team else None
+        if 'bei den heimern' in text_lower or 'bei den heim' in text_lower:
+            return home_team if home_team else None
+        
+        # Pattern 1: "der [Team]er", "den [Team]ern", "die [Team]er" (adjective forms)
+        # Examples: "der Bochumer" (the Bochum player), "den Bremern" (the Bremen players)
+        adjective_patterns = [
+            r'(?:der|die|den|dem|des)\s+([A-ZÄÖÜ][a-zäöüß]+(?:er|ern|em|es|e)?)',  # der Bochumer, den Bremern
+            r'([A-ZÄÖÜ][a-zäöüß]+(?:er|ern|em|es|e)?)\s+(?:Konter|Angriff|Spieler|Mannschaft)',  # Bochumer Konter
         ]
         
-        for pattern in team_patterns:
-            match = re.search(pattern, text)
-            if match:
-                team = match.group(1).strip()
-                # Filter out common false positives
-                if team.lower() not in ['aus', 'ein', 'für', 'sieht', 'bekommt']:
-                    return team
+        for pattern in adjective_patterns:
+            matches = re.finditer(pattern, text, re.IGNORECASE)
+            for match in matches:
+                candidate = match.group(1).strip()
+                candidate_lower = candidate.lower()
+                
+                # Skip if it's a false positive
+                if candidate_lower in false_positives:
+                    continue
+                
+                # Try to match against known team names if provided
+                # Remove adjective endings to get the base (e.g., "Bremern" -> "Brem", "Bochumer" -> "Bochum")
+                candidate_base = re.sub(r'(?:er|ern|em|es|e)$', '', candidate_lower)
+                
+                if home_team:
+                    home_lower = home_team.lower()
+                    # Check if candidate or its base matches home team
+                    # "Bremern" base "Brem" should match "Werder Bremen" or "Bremen"
+                    if (candidate_lower in home_lower or 
+                        candidate_base in home_lower or
+                        any(candidate_lower in part or candidate_base in part for part in home_lower.split()) or
+                        any(part in candidate_lower or part in candidate_base for part in home_lower.split())):
+                        return home_team
+                
+                if away_team:
+                    away_lower = away_team.lower()
+                    # Check if candidate or its base matches away team
+                    if (candidate_lower in away_lower or 
+                        candidate_base in away_lower or
+                        any(candidate_lower in part or candidate_base in part for part in away_lower.split()) or
+                        any(part in candidate_lower or part in candidate_base for part in away_lower.split())):
+                        return away_team
+                
+                # If no team names provided, try to reconstruct team name from adjective
+                # "Bochumer" -> "Bochum", "Bremer" -> "Bremen" (but this is less reliable)
+                # For now, return the full team name if we have it, otherwise the candidate
+                # But we need to be careful - let's prefer explicit mentions
+        
+        # Pattern 2: Team names in parentheses "Player (Team)"
+        paren_pattern = r'\(([^)]+)\)'
+        paren_matches = re.finditer(paren_pattern, text)
+        for match in paren_matches:
+            candidate = match.group(1).strip()
+            candidate_lower = candidate.lower()
+            
+            # Skip false positives
+            if candidate_lower in false_positives:
+                continue
+            
+            # Check against known teams
+            if home_team and candidate_lower in home_team.lower():
+                return home_team
+            if away_team and candidate_lower in away_team.lower():
+                return away_team
+            
+            # If it looks like a team name (capitalized, reasonable length), return it
+            if len(candidate) > 3 and candidate[0].isupper():
+                return candidate
+        
+        # Pattern 3: "Team: Player" format
+        colon_pattern = r'([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*):\s*[A-ZÄÖÜ]'
+        colon_match = re.search(colon_pattern, text)
+        if colon_match:
+            candidate = colon_match.group(1).strip()
+            candidate_lower = candidate.lower()
+            
+            if candidate_lower not in false_positives:
+                # Check against known teams
+                if home_team and candidate_lower in home_team.lower():
+                    return home_team
+                if away_team and candidate_lower in away_team.lower():
+                    return away_team
+                
+                if len(candidate) > 3:
+                    return candidate
+        
+        # Pattern 4: Look for explicit team name mentions in text
+        # This is a fallback that looks for capitalized words that might be team names
+        # But we're more conservative here to avoid false positives
         
         return None
     
-    def _extract_substitution_from_text(self, text: str) -> Optional[List[Dict[str, Any]]]:
+    def _extract_substitution_from_text(self, text: str, home_team: Optional[str] = None, away_team: Optional[str] = None) -> Optional[List[Dict[str, Any]]]:
         """
         Extract substitution information from ticker text.
         
         Looks for patterns like "Spielerwechsel: Müller für Müller" or "Wechsel: Player für Player".
         Handles multiple substitutions at the same time (e.g., "Wechsel: Player1 für Player2, Player3 für Player4").
+        Handles special patterns like "ist [Player] für [Player] dabei" and "bei [Team] ersetzt [Player] [Player]".
         
         Args:
             text: Event text containing substitution information
+            home_team: Optional home team name for validation
+            away_team: Optional away team name for validation
             
         Returns:
             List of dictionaries with 'player_in', 'player_out', 'team' or None if not found
@@ -587,47 +876,238 @@ class KickerScraper:
         
         text_lower = text.lower()
         
-        # Check if text contains substitution keywords
-        if 'wechsel' not in text_lower and 'spielerwechsel' not in text_lower:
+        # Check if text contains substitution keywords or narrative substitution descriptions
+        has_substitution_keywords = (
+            'wechsel' in text_lower or 
+            'spielerwechsel' in text_lower or
+            'geht vom feld' in text_lower or
+            'kommt in die partie' in text_lower or
+            re.search(r'\bwechselt\b', text_lower) is not None
+        )
+        
+        if not has_substitution_keywords:
+            return None
+        
+        # Exclude if this looks like a goal (contains "Tor für" or similar goal patterns)
+        if any(phrase in text_lower for phrase in ['tor für', 'tor!', 'tore für']):
             return None
         
         substitutions = []
         
-        # Pattern 1: "Spielerwechsel: PlayerIn für PlayerOut" or "Wechsel: PlayerIn für PlayerOut"
-        # Pattern 2: "PlayerIn kommt für PlayerOut"
-        # Pattern 3: "PlayerIn (Team) für PlayerOut"
-        # Pattern 4: Multiple subs: "Wechsel: Player1 für Player2, Player3 für Player4"
+        # Track matched positions to avoid duplicate matches
+        matched_positions = set()
         
-        # First, try to find all "für" patterns (handles multiple subs)
-        # Look for pattern: "PlayerIn für PlayerOut" (can appear multiple times)
-        multi_sub_pattern = r'([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+(?:für|kommt für)\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)'
+        # Common team name prefixes that should be excluded from player matching
+        # These patterns indicate a team name, not a player name
+        team_prefixes = r'\b(?:bei|den|der|die|dem|des)\s+'
         
-        all_matches = re.finditer(multi_sub_pattern, text)
-        for match in all_matches:
+        # Pattern 1: "ist [Player] für [Player] dabei" (e.g., "ist Stage für Lynen dabei")
+        # This pattern handles: "Bei den Bremern ist Stage für den bereits verwarnten Lynen dabei"
+        ist_fuer_pattern = r'ist\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+für\s+(?:den\s+)?(?:bereits\s+verwarnten\s+)?([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+dabei'
+        ist_fuer_matches = re.finditer(ist_fuer_pattern, text)
+        for match in ist_fuer_matches:
             if match.lastindex >= 2:
                 player_in = match.group(1).strip()
                 player_out = match.group(2).strip()
                 
-                # Extract team if present (check context around this match)
-                # Look for team in parentheses near this substitution
-                start_pos = max(0, match.start() - 50)
-                end_pos = min(len(text), match.end() + 50)
-                context = text[start_pos:end_pos]
-                team = self._extract_team_from_text(context)
+                # Extract team from context (look for "Bei den Bremern", "den Bremern", "bei den Gästen", etc.)
+                start_pos = max(0, match.start() - 200)
+                context = text[start_pos:match.start()].lower()
+                
+                # Check for "bei den Gästen" (away team) or "bei den Heimern" (home team)
+                if 'bei den gästen' in context or 'bei den gast' in context:
+                    team = away_team
+                elif 'bei den heimern' in context or 'bei den heim' in context:
+                    team = home_team
+                else:
+                    # Look for team pattern like "Bei den Bremern" or "den Bremern"
+                    # Use team extraction function with home/away team validation for better accuracy
+                    team = self._extract_team_from_text(text[start_pos:match.start()], home_team=home_team, away_team=away_team)
                 
                 substitutions.append({
                     'player_in': player_in,
                     'player_out': player_out,
                     'team': team
                 })
+                # Track this match position
+                matched_positions.add((match.start(), match.end()))
+        
+        # Pattern 2: "bei [Team] ersetzt [Player] [Player]" (e.g., "bei Bochum ersetzt Bero Osterhage")
+        # We need to skip the team name and extract "Bero ersetzt Osterhage"
+        # Capture the team name as well for validation
+        bei_ersetzt_pattern = r'bei\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+ersetzt\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)'
+        bei_ersetzt_matches = re.finditer(bei_ersetzt_pattern, text)
+        for match in bei_ersetzt_matches:
+            if match.lastindex >= 3:
+                team_candidate = match.group(1).strip()
+                player_in = match.group(2).strip()
+                player_out = match.group(3).strip()
+                
+                # Validate team name using team extraction function
+                context_for_team = text[max(0, match.start()-100):match.end()+50]
+                team = self._extract_team_from_text(context_for_team, home_team=home_team, away_team=away_team)
+                # If extraction didn't find a match but candidate looks valid, use it
+                # But prefer the validated team name
+                if not team and team_candidate and len(team_candidate) > 2:
+                    # Check if candidate matches home or away team
+                    if home_team and team_candidate.lower() in home_team.lower():
+                        team = home_team
+                    elif away_team and team_candidate.lower() in away_team.lower():
+                        team = away_team
+                    else:
+                        team = team_candidate
+                
+                substitutions.append({
+                    'player_in': player_in,
+                    'player_out': player_out,
+                    'team': team
+                })
+                # Track this match position
+                matched_positions.add((match.start(), match.end()))
+        
+        # Pattern 3: General "PlayerIn für PlayerOut" or "PlayerIn ersetzt PlayerOut"
+        # BUT exclude matches that come after team prefixes (like "bei Bochum", "den Bremern")
+        # AND exclude matches that overlap with Pattern 1 or Pattern 2 matches
+        multi_sub_pattern = r'([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+(?:für|kommt für|ersetzt)\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)'
+        
+        all_matches = re.finditer(multi_sub_pattern, text)
+        for match in all_matches:
+            # Check if this match overlaps with any already matched position
+            match_start, match_end = match.start(), match.end()
+            overlaps = any(
+                not (match_end <= prev_start or match_start >= prev_end)
+                for prev_start, prev_end in matched_positions
+            )
+            if overlaps:
+                continue
+            
+            # Check if this match comes after a team prefix (exclude it if so)
+            start_pos = max(0, match.start() - 30)  # Increased lookback
+            context_before = text[start_pos:match.start()]
+            
+            # Skip if preceded by team prefixes like "bei", "den", etc.
+            if re.search(team_prefixes + r'[A-ZÄÖÜ]', context_before, re.IGNORECASE):
+                continue
+            
+            # Additional check: skip if immediately after "bei [Team]" (Pattern 2 should have caught this)
+            if re.search(r'bei\s+[A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*\s+ersetzt\s*$', context_before, re.IGNORECASE):
+                continue
+            
+            # Also skip if the matched text itself looks like a team name pattern
+            # Common team patterns: single capitalized word before "ersetzt" or "für"
+            player_in_candidate = match.group(1).strip()
+            
+            # Skip if it's likely a team name (very short and appears in context with "bei", "den", etc.)
+            # But allow it if we've already skipped team prefixes above
+            if match.lastindex >= 2:
+                player_in = player_in_candidate
+                player_out = match.group(2).strip()
+                
+                # Additional validation: player names typically have 2+ words or are longer
+                # Team names sometimes are single words, but let's be more permissive
+                # The key is to check context - if we've made it here and skipped team prefixes, it's likely valid
+                
+                # Extract team if present (check context around this match)
+                # Use wider context to ensure we capture "bei den Gästen" patterns
+                start_pos = max(0, match.start() - 200)
+                end_pos = min(len(text), match.end() + 50)
+                context = text[start_pos:end_pos]
+                context_lower = context.lower()
+                
+                # Check for "bei den Gästen" (away team) or "bei den Heimern" (home team) FIRST
+                # This must come before team extraction to avoid extracting "Gästen" as a team name
+                if 'bei den gästen' in context_lower or 'bei den gast' in context_lower:
+                    team = away_team if away_team else None
+                elif 'bei den heimern' in context_lower or 'bei den heim' in context_lower:
+                    team = home_team if home_team else None
+                else:
+                    # Use team extraction function
+                    team = self._extract_team_from_text(context, home_team=home_team, away_team=away_team)
+                
+                substitutions.append({
+                    'player_in': player_in,
+                    'player_out': player_out,
+                    'team': team
+                })
+                # Track this match position
+                matched_positions.add((match.start(), match.end()))
+        
+        # Deduplicate substitutions: remove duplicates based on player_in and player_out
+        # Keep the first occurrence with the best team information
+        seen = {}
+        deduplicated = []
+        for sub in substitutions:
+            key = (sub.get('player_in', '').lower().strip(), sub.get('player_out', '').lower().strip())
+            if key not in seen:
+                seen[key] = sub
+                deduplicated.append(sub)
+            else:
+                # If we have a better team match (not None, validated against home/away), prefer it
+                existing = seen[key]
+                existing_team = existing.get('team')
+                new_team = sub.get('team')
+                # Prefer new team if it's validated (matches home or away team) and existing isn't
+                replace_existing = False
+                if new_team and existing_team:
+                    if home_team and new_team == home_team and existing_team != home_team:
+                        replace_existing = True
+                    elif away_team and new_team == away_team and existing_team != away_team:
+                        replace_existing = True
+                elif new_team and not existing_team:
+                    replace_existing = True
+                
+                if replace_existing:
+                    seen[key] = sub
+                    # Replace in deduplicated list
+                    idx = next((i for i, s in enumerate(deduplicated) if s == existing), None)
+                    if idx is not None:
+                        deduplicated[idx] = sub
+        
+        # Pattern 4: Narrative substitution descriptions (only if no substitutions found yet)
+        # "Ein scheidender Bremer geht vom Feld, ein weiterer Bremer...kommt in die Partie"
+        # "Während Bochum wechselt"
+        if not deduplicated:
+            # Try to extract team from narrative substitution text
+            narrative_team = None
+            
+            # Pattern: "während [Team] wechselt" - direct team mention
+            während_match = re.search(r'während\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+wechselt', text, re.IGNORECASE)
+            if während_match:
+                team_candidate = während_match.group(1).strip()
+                # Validate against known teams
+                if home_team and team_candidate.lower() in home_team.lower():
+                    narrative_team = home_team
+                elif away_team and team_candidate.lower() in away_team.lower():
+                    narrative_team = away_team
+                else:
+                    narrative_team = team_candidate
+            
+            # Pattern: "Bremer geht vom Feld" or mentions of team players leaving/entering
+            # Also check for "bei den Gästen" pattern first
+            if not narrative_team:
+                text_lower_check = text.lower()
+                if 'bei den gästen' in text_lower_check or 'bei den gast' in text_lower_check:
+                    narrative_team = away_team if away_team else None
+                elif 'bei den heimern' in text_lower_check or 'bei den heim' in text_lower_check:
+                    narrative_team = home_team if home_team else None
+                else:
+                    narrative_team = self._extract_team_from_text(text, home_team=home_team, away_team=away_team)
+            
+            # If we found a narrative substitution with a team, add it
+            if narrative_team:
+                deduplicated.append({
+                    'player_in': None,
+                    'player_out': None,
+                    'team': narrative_team
+                })
         
         # If we found substitutions, return them
-        if substitutions:
-            return substitutions
+        if deduplicated:
+            return deduplicated
         
         # Fallback: Try single substitution patterns (for cases where finditer doesn't work)
         single_sub_patterns = [
-            r'(?:[Ss]pieler)?[Ww]echsel[:\s]+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+(?:für|kommt für)\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)',
+            r'(?:[Ss]pieler)?[Ww]echsel[:\s]+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+(?:für|kommt für|ersetzt)\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)',
             r'([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s+(?:kommt|tritt)\s+(?:für|an die Stelle von)\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)',
             r'([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\s*\([^)]+\)\s+(?:für|kommt für)\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)',
         ]
@@ -640,7 +1120,7 @@ class KickerScraper:
                     player_out = match.group(2).strip()
                     
                     # Extract team if present
-                    team = self._extract_team_from_text(text)
+                    team = self._extract_team_from_text(text, home_team=home_team, away_team=away_team)
                     
                     return [{
                         'player_in': player_in,
@@ -751,24 +1231,25 @@ class KickerScraper:
                 self.driver.current_window_handle
             except Exception:
                 logger.error("Browser window was closed. Reinitializing driver...")
-                # Reinitialize driver if window was closed
-                options = uc.ChromeOptions()
-                options.add_argument('--no-sandbox')
-                options.add_argument('--disable-dev-shm-usage')
-                options.add_argument('--disable-blink-features=AutomationControlled')
-                self.driver = uc.Chrome(options=options)
+                # Reinitialize driver if window was closed (use same options as init)
+                options = self._create_chrome_options(headless=True)
+                self.driver = uc.Chrome(options=options, version_main=None, use_subprocess=True)
                 self.wait = WebDriverWait(self.driver, timeout=10)
                 self._cookie_consent_handled = False  # Reset consent flag
+                self._clear_cookies()
             
+            # Clear cookies before request
+            self._clear_cookies()
             self.driver.get(url)
-            self._random_delay(2, 3)
+            # Longer delay for anti-ban (3-6 seconds)
+            self._random_delay(3, 6)
             self._handle_cookie_consent()
             
             # Scroll down to ensure all content is loaded (lazy loading)
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            self._random_delay(1, 2)
+            self._random_delay(2, 3)
             self.driver.execute_script("window.scrollTo(0, 0);")  # Scroll back to top
-            self._random_delay(1, 2)
+            self._random_delay(2, 3)
             
             html = self.driver.page_source
         except Exception as e:
@@ -948,7 +1429,7 @@ class KickerScraper:
         
         return metadata
     
-    def parse_ticker(self, html: str) -> Tuple[List[Dict[str, Any]], Dict[str, Optional[int]], Dict[int, Tuple[int, int]]]:
+    def parse_ticker(self, html: str) -> Tuple[List[Dict[str, Any]], Dict[str, Optional[int]], Dict[int, Tuple[int, int]], Dict[str, Dict[str, int]]]:
         """
         Parse ticker events from /ticker page using correct HTML selectors.
         
@@ -964,10 +1445,11 @@ class KickerScraper:
             html: HTML content of /ticker page
             
         Returns:
-            Tuple of (ticker_events, targets_dict, score_timeline)
+            Tuple of (ticker_events, targets_dict, score_timeline, counts)
             - ticker_events: List of event dictionaries with cleaned text
             - targets_dict: Dictionary with announced_time_45/90 and actual_played_45/90
             - score_timeline: Dictionary mapping minute -> (home_score, away_score)
+            - counts: Dictionary with yellow_cards, red_cards, yellow_red_cards, substitutes (minute -> count)
         """
         ticker_events = []
         targets = {
@@ -980,8 +1462,39 @@ class KickerScraper:
         current_home = 0  # Track score state as we process (like Gemini)
         current_away = 0
         
+        # Count cards and substitutions by minute
+        yellow_cards = {}  # minute -> count
+        red_cards = {}  # minute -> count
+        yellow_red_cards = {}  # minute -> count
+        substitutes = {}  # minute -> count
+        
+        # Extract team names early for better team extraction in events
+        home_team = None
+        away_team = None
+        
         try:
             soup = BeautifulSoup(html, 'html.parser')
+            
+            # Extract team names from HTML for use in team extraction
+            # Method 1: Extract from title tag
+            title_tag = soup.find('title')
+            if title_tag:
+                title_text = title_tag.get_text()
+                title_match = re.search(r'([^-|]+?)\s*[-|]\s*([^-|]+?)\s*\d+:\d+', title_text)
+                if title_match:
+                    home_team = title_match.group(1).strip()
+                    away_team = title_match.group(2).strip()
+                    home_team = BeautifulSoup(home_team, 'html.parser').get_text()
+                    away_team = BeautifulSoup(away_team, 'html.parser').get_text()
+            
+            # Method 2: Try scoreboard (fallback)
+            if not home_team or not away_team:
+                scoreboard = soup.select_one('.kick__scoreboard, .kick__v100-scoreBoard')
+                if scoreboard:
+                    team_links = scoreboard.find_all('a', href=re.compile(r'/info/bundesliga'))
+                    if len(team_links) >= 2:
+                        home_team = team_links[0].get_text(strip=True)
+                        away_team = team_links[1].get_text(strip=True)
             
             # Select ticker items directly from soup (no parent container requirement)
             ticker_items = soup.select('.kick__ticker-item')
@@ -1059,17 +1572,38 @@ class KickerScraper:
                     else:
                         minute = ""  # Unknown - will be skipped if no text
                 
-                # Extract text from ALL <p> tags - get complete text content
+                # Extract text from header elements (h1-h6) and <p> tags
+                # Header elements often contain card information (e.g., "Gelbe Karte", player name, team name)
+                # and substitution information (e.g., "Spielerwechsel")
+                # Also check for div/span elements with header-like classes that might contain structured event info
+                header_elems = item.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
+                # Also check for div/span elements that might contain header-like content
+                # (some ticker items structure headers differently)
+                header_like_elems = item.find_all(['div', 'span'], class_=re.compile(r'ticker.*header|header.*ticker|event.*header|header.*event', re.I))
                 text_elems = item.find_all('p')
                 text = ""
+                text_parts = []
+                header_text_lower = ""  # Store header text separately for explicit detection
+                
+                # First, extract text from header elements (for structured event detection)
+                all_header_elems = header_elems + header_like_elems
+                if all_header_elems:
+                    header_texts = []
+                    for h in all_header_elems:
+                        h_text = h.get_text(separator=' ', strip=False)
+                        if h_text and h_text.strip():  # Only add non-empty header text
+                            header_texts.append(h_text)
+                            text_parts.append(h_text)
+                    if header_texts:
+                        header_text_lower = ' '.join(header_texts).lower()
+                
+                # Then, extract text from paragraph elements (main content)
                 if text_elems:
-                    # Get full text from ALL paragraphs (preserve full sentences)
-                    # Use separator=' ' to preserve sentence structure
-                    text_parts = []
                     for p in text_elems:
-                        # Get all text including nested elements, preserving structure
                         p_text = p.get_text(separator=' ', strip=False)
                         text_parts.append(p_text)
+                
+                if text_parts:
                     text = ' '.join(text_parts)
                     # Clean up excessive whitespace but preserve sentence structure
                     text = re.sub(r'\s+', ' ', text).strip()
@@ -1168,49 +1702,150 @@ class KickerScraper:
                 text_lower = text.lower() if text else ""
                 
                 # Detect goal
-                is_goal = 'kick__ticker-item--highlight' in item_classes
+                # Detect goal - but only for in-game events (minute must not be empty)
+                # Pre-match, halftime, and post-match events should not have goals
+                is_goal = False
+                if minute and minute.strip():
+                    is_goal = 'kick__ticker-item--highlight' in item_classes
                 
-                # Detect card
-                is_card = (
-                    'kick__ticker-item--card' in item_classes or
+                # Detect card - explicitly check headers for card types
+                # Check for card-related icon classes (various possible class names)
+                card_icon = (
                     item.select_one('.kick__icon-Gelb') or
                     item.select_one('.kick__icon-Rot') or
-                    any(phrase in text_lower for phrase in ['gelbe karte', 'gelb-rote karte', 'rote karte', 'gelb-rot', 'gelb rot'])
+                    item.select_one('[class*="icon-Gelb"]') or
+                    item.select_one('[class*="icon-Rot"]') or
+                    item.select_one('[class*="Gelb"]') or
+                    item.select_one('[class*="Rot"]')
                 )
                 
-                # Detect substitution
+                # Check for card-related text in headers and full text
+                card_text_in_header = any(phrase in header_text_lower for phrase in [
+                    'gelbe karte', 'gelb-rote karte', 'rote karte', 'gelb-rot', 'gelb rot'
+                ])
+                card_text_in_body = any(phrase in text_lower for phrase in [
+                    'gelbe karte', 'gelb-rote karte', 'rote karte', 'gelb-rot', 'gelb rot'
+                ])
+                
+                is_card = (
+                    'kick__ticker-item--card' in item_classes or
+                    card_icon is not None or
+                    card_text_in_header or
+                    card_text_in_body
+                )
+                
+                # Detect substitution - explicitly check headers for substitution keywords
+                # IMPORTANT: Don't treat goals as substitutions (goals often have "für" which could match)
                 is_substitution = (
-                    'kick__ticker-item--substitution' in item_classes or
-                    item.select_one('.kick__icon-Wechsel') or
-                    'wechsel' in text_lower or
-                    'spielerwechsel' in text_lower
+                    not is_goal and (  # Never treat goals as substitutions
+                        'kick__ticker-item--substitution' in item_classes or
+                        item.select_one('.kick__icon-Wechsel') or
+                        'spielerwechsel' in header_text_lower or
+                        ('wechsel' in header_text_lower and 'eingewechselt' not in text_lower) or  # "eingewechselt" is about a substitution that happened before
+                        'spielerwechsel' in text_lower or
+                        ('wechsel' in text_lower and 'eingewechselt' not in text_lower and 'tor' not in text_lower)
+                    )
                 )
                 
                 # Extract card type from text if it's a card event
+                # Check both header text and full text for card type indicators
                 card_type = None
                 card_player = None
                 card_team = None
                 if is_card:
-                    if 'gelb-rote karte' in text_lower or 'gelb-rot' in text_lower or 'gelb rot' in text_lower:
+                    # Check header text first (more structured), then full text as fallback
+                    # Combine header and text for card type detection
+                    combined_text_for_card = (header_text_lower + ' ' + text_lower).strip()
+                    # Check in order of specificity (most specific first)
+                    if 'gelb-rote karte' in combined_text_for_card or 'gelb-rot' in combined_text_for_card or 'gelb rot' in combined_text_for_card:
                         card_type = 'Yellow-Red'
-                    elif 'rote karte' in text_lower or 'rot' in text_lower:
+                    elif 'rote karte' in combined_text_for_card or ('rot' in combined_text_for_card and 'gelb-rot' not in combined_text_for_card):
                         card_type = 'Red'
-                    elif 'gelbe karte' in text_lower or 'gelb' in text_lower:
+                    elif 'gelbe karte' in combined_text_for_card or ('gelb' in combined_text_for_card and 'gelb-rot' not in combined_text_for_card):
                         card_type = 'Yellow'
+                    # Note: We check for single words ('gelb', 'rot') as fallback, but exclude if they're part of 'gelb-rot'
                     
-                    # Extract player name and team for card events
+                    # Extract player name and team for card events (keep for event dict)
                     card_player = self._extract_player_name_from_text(text, is_card=True)
-                    card_team = self._extract_team_from_text(text)
+                    card_team = self._extract_team_from_text(text, home_team=home_team, away_team=away_team)
+                    
+                    # Count cards by minute (only for in-game events)
+                    if minute and minute.strip() and card_type:
+                        minute_int = self._parse_minute_to_int(minute)
+                        if minute_int is not None:
+                            if card_type == 'Yellow':
+                                yellow_cards[minute_int] = yellow_cards.get(minute_int, 0) + 1
+                            elif card_type == 'Red':
+                                red_cards[minute_int] = red_cards.get(minute_int, 0) + 1
+                            elif card_type == 'Yellow-Red':
+                                yellow_red_cards[minute_int] = yellow_red_cards.get(minute_int, 0) + 1
                 
-                # Extract substitution information from text
-                substitution_info_list = None
-                if is_substitution:
-                    substitution_info_list = self._extract_substitution_from_text(text)
+                # Count substitutions by minute (only for in-game events, not goals)
+                # IMPORTANT: Only count when "Spielerwechsel" is explicitly in the text/header
+                # Don't count events that just describe substitutions (like minute 73 describing minute 72's substitution)
+                has_spielerwechsel = (
+                    'spielerwechsel' in header_text_lower or
+                    'spielerwechsel' in text_lower
+                )
+                if has_spielerwechsel and not is_goal and minute and minute.strip():
+                    minute_int = self._parse_minute_to_int(minute)
+                    if minute_int is not None:
+                        # Count 1 substitution per "Spielerwechsel" event
+                        substitutes[minute_int] = substitutes.get(minute_int, 0) + 1
                 
                 # Process event to extract targets and clean text
                 clean_text, announced_time, actual_played_time, text_extracted_score = self._process_ticker_event(
                     text, minute, is_goal_event=is_goal
                 )
+                
+                # Additional text cleaning: Remove redundant minute and event type information
+                # This prevents patterns like "Gelbe Karte 35' Gelbe Karte" or "Tor für Bremen 80' Tor"
+                if is_card and minute:
+                    # Extract numeric part of minute and make apostrophe optional
+                    minute_num = re.sub(r"[^\d]", "", minute)  # Extract just the number
+                    if minute_num:
+                        minute_pattern = re.escape(minute_num) + r"\'?"
+                        # Remove patterns like "Gelbe Karte 35'" or "35' Gelbe Karte" or "Gelbe Karte 35' Gelbe Karte"
+                        # Pattern: (card type) + minute + (optional card type)
+                        clean_text = re.sub(
+                            r'(?:Gelbe Karte|Rote Karte|Gelb-Rote Karte|Gelbe|Rote|Gelb-Rote)\s*' + minute_pattern + r'\s*(?:Gelbe Karte|Rote Karte|Gelb-Rote Karte|Gelbe|Rote|Gelb-Rote)?',
+                            '', clean_text, flags=re.IGNORECASE
+                        ).strip()
+                        # Remove minute at start if it remains
+                        clean_text = re.sub(r'^' + minute_pattern + r'\s*', '', clean_text).strip()
+                    # Remove redundant card type mentions
+                    clean_text = re.sub(r'\b(Gelbe Karte|Rote Karte|Gelb-Rote Karte)\s+\1\b', r'\1', clean_text, flags=re.IGNORECASE).strip()
+                
+                if is_goal and minute:
+                    # Extract numeric part of minute and make apostrophe optional
+                    minute_num = re.sub(r"[^\d]", "", minute)
+                    if minute_num:
+                        minute_pattern = re.escape(minute_num) + r"\'?"
+                        # Remove patterns like "Tor für [Team] 80'" or "80' Tor für [Team]"
+                        # Match "Tor für [anything] 80'" or "80' Tor für [anything]"
+                        clean_text = re.sub(
+                            r'(?:Tor\s+für\s+[^\s]+(?:\s+[^\s]+)*\s*' + minute_pattern + r')|(?:' + minute_pattern + r'\s*Tor\s+für)',
+                            '', clean_text, flags=re.IGNORECASE
+                        ).strip()
+                        # Remove minute at start if it remains
+                        clean_text = re.sub(r'^' + minute_pattern + r'\s*', '', clean_text).strip()
+                
+                if is_substitution and minute:
+                    # Extract numeric part of minute and make apostrophe optional
+                    minute_num = re.sub(r"[^\d]", "", minute)
+                    if minute_num:
+                        minute_pattern = re.escape(minute_num) + r"\'?"
+                        # Remove patterns like "Spielerwechsel 77'" or "77' Spielerwechsel"
+                        # Match "Spielerwechsel 77'" or "77' Spielerwechsel" or "Wechsel 77'"
+                        clean_text = re.sub(
+                            r'(?:Spielerwechsel|Wechsel)\s*' + minute_pattern + r'|' + minute_pattern + r'\s*(?:Spielerwechsel|Wechsel)',
+                            '', clean_text, flags=re.IGNORECASE
+                        ).strip()
+                        # Remove minute at start if it remains
+                        clean_text = re.sub(r'^' + minute_pattern + r'\s*', '', clean_text).strip()
+                
+                # Clean up any remaining excessive whitespace
+                clean_text = re.sub(r'\s+', ' ', clean_text).strip()
                 
                 # Use text-extracted score ONLY if:
                 # 1. We didn't get one from scoreboard container
@@ -1240,40 +1875,20 @@ class KickerScraper:
                 }
                 
                 # Add card information if it's a card event
+                # Always include player and team fields for card events (even if None for consistency)
                 if is_card and card_type:
                     event_dict['card_type'] = card_type
-                    if card_player:
-                        event_dict['player'] = card_player
-                    if card_team:
-                        event_dict['team'] = card_team
-                
-                # Add substitution information if it's a substitution event
-                # Handle multiple substitutions at the same minute by creating separate events
-                if is_substitution and substitution_info_list:
-                    # If multiple substitutions, create separate events for each
-                    if len(substitution_info_list) > 1:
-                        # Create additional events for each substitution after the first
-                        for sub_info in substitution_info_list[1:]:
-                            sub_event = event_dict.copy()
-                            sub_event['player_in'] = sub_info.get('player_in')
-                            sub_event['player_out'] = sub_info.get('player_out')
-                            if sub_info.get('team'):
-                                sub_event['team'] = sub_info.get('team')
-                            ticker_events.append(sub_event)
-                    
-                    # Add first substitution to main event
-                    first_sub = substitution_info_list[0]
-                    event_dict['player_in'] = first_sub.get('player_in')
-                    event_dict['player_out'] = first_sub.get('player_out')
-                    if first_sub.get('team'):
-                        event_dict['team'] = first_sub.get('team')
+                    event_dict['player'] = card_player  # Include even if None
+                    event_dict['team'] = card_team  # Include even if None
                 
                 # Add extracted score if available (for timeline building)
-                if extracted_score:
+                # IMPORTANT: Only add goals for in-game events (minute must not be empty)
+                if extracted_score and minute and minute.strip():
                     event_dict['extracted_score'] = extracted_score
                 
                 # Add current score state for goals (like Gemini's score_at_event)
-                if is_goal and (current_home > 0 or current_away > 0):
+                # IMPORTANT: Only add goals for in-game events (minute must not be empty)
+                if is_goal and minute and minute.strip() and (current_home > 0 or current_away > 0):
                     event_dict['score_at_event'] = (current_home, current_away)
                 
                 ticker_events.append(event_dict)
@@ -1309,16 +1924,28 @@ class KickerScraper:
             
             # Second pass: set minute to empty for pre/post match events
             # No event_type field - we just need to clean up the minute field
+            # Also remove goal information from pre/post match events (substitutions/cards are counted separately)
             for idx, event in enumerate(ticker_events):
                 # Pre-match: everything until and including "Anpfiff" (exact match)
                 if anpfiff_index is not None and idx <= anpfiff_index:
                     # Set minute to empty for pre-match events
                     event['minute'] = ""
+                    # Remove goal information from pre-match events
+                    event.pop('extracted_score', None)
+                    event.pop('score_at_event', None)
                 
                 # Post-match: after "Abpfiff" (exact match)
                 elif abpfiff_index is not None and idx > abpfiff_index:
                     # Set minute to empty for post-match events
                     event['minute'] = ""
+                    # Remove goal information from post-match events
+                    event.pop('extracted_score', None)
+                    event.pop('score_at_event', None)
+                
+                # Also clean up any events that already have empty minute (shouldn't have goals)
+                elif not event.get('minute') or not event.get('minute', '').strip():
+                    event.pop('extracted_score', None)
+                    event.pop('score_at_event', None)
         
         except Exception as e:
             logger.error(f"Error parsing ticker from HTML: {e}")
@@ -1339,7 +1966,14 @@ class KickerScraper:
                 logger.error(f"Failed to save debug HTML: {e}")
         
         logger.info(f"Parsed {len(ticker_events)} ticker events with {len(score_timeline)} score entries")
-        return (ticker_events, targets, score_timeline)
+        # Convert counts to string keys for JSON serialization (same format as score_timeline)
+        counts = {
+            'yellow_cards': {str(k): v for k, v in yellow_cards.items()},
+            'red_cards': {str(k): v for k, v in red_cards.items()},
+            'yellow_red_cards': {str(k): v for k, v in yellow_red_cards.items()},
+            'substitutes': {str(k): v for k, v in substitutes.items()}
+        }
+        return (ticker_events, targets, score_timeline, counts)
     
     def parse_spielinfo(self, html: str) -> Dict[str, Dict[str, Any]]:
         """
@@ -1632,7 +2266,8 @@ class KickerScraper:
         match_url: str, 
         match_id: Optional[str] = None,
         season: Optional[str] = None,
-        matchday: Optional[int] = None
+        matchday: Optional[int] = None,
+        force_rescrape: bool = False
     ) -> Optional[Dict[str, Any]]:
         """
         Scrape a full match by visiting Spielinfo and Ticker tabs sequentially using Selenium.
@@ -1644,9 +2279,10 @@ class KickerScraper:
             match_id: Optional match ID (extracted from URL if not provided)
             season: Optional season string
             matchday: Optional matchday number
+            force_rescrape: If True, re-scrape even if match is already downloaded (default: False)
             
         Returns:
-            Dictionary with match data or None if scraping fails
+            Dictionary with match data or None if scraping fails or match already downloaded
         """
         # Extract match_id from URL if not provided
         if not match_id:
@@ -1658,7 +2294,15 @@ class KickerScraper:
             else:
                 match_id = "unknown"
         
+        # Check if match is already downloaded - skip if it exists (unless force_rescrape)
+        if not force_rescrape and self._is_match_downloaded(match_id, season):
+            logger.info(f"Match {match_id} already downloaded, skipping...")
+            return None
+        
         logger.info(f"Scraping match {match_id} from {match_url}")
+        
+        # Clear cookies before each match to avoid tracking
+        self._clear_cookies()
         
         # Get base URL
         base_url = match_url.split('/ticker')[0].split('/liveticker')[0].split('/spielinfo')[0]
@@ -1680,23 +2324,23 @@ class KickerScraper:
                         self.driver.quit()
                 except Exception as quit_error:
                     logger.debug(f"Error quitting old driver: {quit_error}")
-                # Reinitialize driver
+                # Reinitialize driver (use same options as init)
                 try:
-                    options = uc.ChromeOptions()
-                    options.add_argument('--no-sandbox')
-                    options.add_argument('--disable-dev-shm-usage')
-                    options.add_argument('--disable-blink-features=AutomationControlled')
-                    options.add_argument('--window-size=1920,1080')
-                    self.driver = uc.Chrome(options=options)
+                    options = self._create_chrome_options(headless=True)
+                    self.driver = uc.Chrome(options=options, version_main=None, use_subprocess=True)
                     self.wait = WebDriverWait(self.driver, timeout=10)
                     self._cookie_consent_handled = False  # Reset consent flag
+                    self._clear_cookies()
                     logger.info("Driver reinitialized successfully")
                 except Exception as init_error:
                     logger.error(f"Failed to reinitialize driver: {init_error}")
                     return None
             
+            # Clear cookies before each request
+            self._clear_cookies()
             self.driver.get(info_url)
-            self._random_delay(2, 3)
+            # Longer delay for anti-ban (3-6 seconds)
+            self._random_delay(3, 6)
             self._handle_cookie_consent()
             
             # Scroll to ensure stats bars load (they often animate/load on scroll)
@@ -1739,23 +2383,23 @@ class KickerScraper:
                         self.driver.quit()
                 except Exception as quit_error:
                     logger.debug(f"Error quitting old driver: {quit_error}")
-                # Reinitialize driver
+                # Reinitialize driver (use same options as init)
                 try:
-                    options = uc.ChromeOptions()
-                    options.add_argument('--no-sandbox')
-                    options.add_argument('--disable-dev-shm-usage')
-                    options.add_argument('--disable-blink-features=AutomationControlled')
-                    options.add_argument('--window-size=1920,1080')
-                    self.driver = uc.Chrome(options=options)
+                    options = self._create_chrome_options(headless=True)
+                    self.driver = uc.Chrome(options=options, version_main=None, use_subprocess=True)
                     self.wait = WebDriverWait(self.driver, timeout=10)
                     self._cookie_consent_handled = False  # Reset consent flag
+                    self._clear_cookies()
                     logger.info("Driver reinitialized successfully")
                 except Exception as init_error:
                     logger.error(f"Failed to reinitialize driver: {init_error}")
                     return None
             
+            # Clear cookies before each request
+            self._clear_cookies()
             self.driver.get(ticker_url)
-            self._random_delay(2, 3)
+            # Longer delay for anti-ban (3-6 seconds)
+            self._random_delay(3, 6)
             self._handle_cookie_consent()
             
             # Wait for any ticker item to load (using CLASS_NAME like Gemini - more reliable)
@@ -1780,7 +2424,7 @@ class KickerScraper:
             return None
         
         # Parse ticker from HTML (server-side rendered, no API needed)
-        ticker_events, targets, ticker_score_timeline = self.parse_ticker(ticker_html)
+        ticker_events, targets, ticker_score_timeline, counts = self.parse_ticker(ticker_html)
         
         # If ticker parsing fails, return None (no fallback)
         if not ticker_events:
@@ -1832,7 +2476,7 @@ class KickerScraper:
                     else:
                         # Fallback: look for team name classes
                         team_elems = scoreboard.find_all(class_=re.compile(r'kick__.*team.*name|kick__team', re.I))
-            if len(team_elems) >= 2:
+                        if len(team_elems) >= 2:
                             home_team = team_elems[0].get_text(strip=True).split('\n')[0].strip()
                             away_team = team_elems[1].get_text(strip=True).split('\n')[0].strip()
                 
@@ -1881,6 +2525,10 @@ class KickerScraper:
             'metadata': metadata,
             'targets': targets,
             'score_timeline': score_timeline_output,  # Excludes minute 0
+            'yellow_cards': counts['yellow_cards'],
+            'red_cards': counts['red_cards'],
+            'yellow_red_cards': counts['yellow_red_cards'],
+            'substitutes': counts['substitutes'],
             'match_info': match_info,  # Spielinfo: metadata + stats
             'ticker_data': ticker_data  # Ticker events (commentary)
         }
@@ -1904,11 +2552,267 @@ class KickerScraper:
         return output
 
 
+def scrape_seasons(seasons: List[str], save_dir: Path, process_id: int, max_retries: int = 2) -> List[Dict[str, int]]:
+    """
+    Scrape all matches for multiple seasons (runs in separate process).
+    
+    This function is designed to run in a multiprocessing pool, with 2 seasons
+    per process. Each process has its own Chrome driver instance running in
+    incognito mode and background.
+    
+    Args:
+        seasons: List of season strings (e.g., ["2023-24", "2024-25"])
+        save_dir: Directory to save scraped match JSON files
+        process_id: Unique identifier for this process (for logging)
+        max_retries: Maximum number of retries for failed matches (default: 2)
+        
+    Returns:
+        List of dictionaries with statistics per season: [{'season': str, 'total': int, 'successful': int, 'failed': int, 'failed_urls': List[str]}, ...]
+    """
+    # Configure logging for this process
+    season_str = ", ".join(seasons)
+    logging.basicConfig(
+        level=logging.INFO,
+        format=f'[PROCESS {process_id}: {season_str}] %(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+    
+    # Add random delay to stagger process initialization and reduce race conditions
+    # Each process waits 0-5 seconds before starting
+    initial_delay = random.uniform(0, 5)
+    time.sleep(initial_delay)
+    
+    # Initialize scraper for these seasons (each process gets its own driver)
+    scraper = None
+    results = []
+    
+    try:
+        scraper = KickerScraper(save_dir=save_dir, headless=True)
+        
+        # Process each season sequentially in this process
+        for season in seasons:
+            # Statistics for this season
+            total_matches = 0
+            successful_matches = 0
+            failed_matches = 0
+            failed_urls = []  # Track failed match URLs for retry
+            
+            try:
+                logger.info(f"\n{'='*60}")
+                logger.info(f"Processing season: {season}")
+                logger.info(f"{'='*60}")
+                
+                # Iterate through matchdays (1-34 for Bundesliga)
+                for matchday in range(1, 35):
+                    logger.info(f"\nSeason {season}, Matchday {matchday}")
+                    
+                    try:
+                        # Get match URLs with retry logic for network failures
+                        match_urls = []
+                        matchday_retries = 2  # Retry matchday page fetch up to 2 times
+                        for matchday_attempt in range(matchday_retries + 1):
+                            try:
+                                match_urls = scraper.get_match_urls(season, matchday)
+                                if match_urls:
+                                    break  # Success, exit retry loop
+                                elif matchday_attempt < matchday_retries:
+                                    logger.warning(f"No matches found for {season}, matchday {matchday} (attempt {matchday_attempt + 1}/{matchday_retries + 1}), retrying...")
+                                    scraper._random_delay(5, 10)
+                                else:
+                                    logger.warning(f"No matches found for {season}, matchday {matchday} after {matchday_retries + 1} attempts")
+                            except Exception as matchday_error:
+                                if matchday_attempt < matchday_retries:
+                                    error_msg = str(matchday_error)
+                                    if "ERR_INTERNET_DISCONNECTED" in error_msg or "timeout" in error_msg.lower():
+                                        logger.warning(f"Network error fetching matchday page (attempt {matchday_attempt + 1}/{matchday_retries + 1}): {matchday_error}")
+                                        logger.info(f"Retrying in 10-15 seconds...")
+                                        scraper._random_delay(10, 15)
+                                    else:
+                                        # Non-network error, don't retry
+                                        logger.error(f"Error fetching matchday page: {matchday_error}")
+                                        break
+                                else:
+                                    logger.error(f"Failed to fetch matchday page after {matchday_retries + 1} attempts: {matchday_error}")
+                        
+                        if not match_urls:
+                            logger.warning(f"No matches found for {season}, matchday {matchday} - skipping this matchday")
+                            # Track failed matchdays for potential retry
+                            failed_urls.append({
+                                'url': f"matchday_{season}_{matchday}",
+                                'season': season,
+                                'matchday': matchday,
+                                'error': f"No matches found after {matchday_retries + 1} attempts",
+                                'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+                                'type': 'matchday_fetch_failed'
+                            })
+                            continue
+                        
+                        # Scrape each match with retry logic
+                        for match_url in match_urls:
+                            total_matches += 1
+                            success = False
+                            last_error = None
+                            
+                            # Retry loop
+                            for attempt in range(max_retries + 1):  # 0 to max_retries (inclusive)
+                                try:
+                                    result = scraper.scrape_full_match(
+                                        match_url, 
+                                        season=season, 
+                                        matchday=matchday
+                                    )
+                                    
+                                    if result:
+                                        successful_matches += 1
+                                        logger.info(f"✓ Successfully scraped match {result['match_id']}")
+                                        success = True
+                                        break  # Success, exit retry loop
+                                    else:
+                                        # Result is None - could be skipped (already downloaded) or failed
+                                        # Check if file exists to distinguish
+                                        match_id = match_url.split('/')[-1].split('?')[0]
+                                        if scraper._is_match_downloaded(match_id, season):
+                                            # Already downloaded, not a failure
+                                            success = True
+                                            logger.debug(f"Match {match_id} already downloaded, skipping...")
+                                            break
+                                        else:
+                                            # Failed but no exception - treat as failure
+                                            if attempt < max_retries:
+                                                logger.warning(f"Match {match_id} returned None (attempt {attempt + 1}/{max_retries + 1}), retrying...")
+                                                scraper._random_delay(5, 10)  # Longer delay before retry
+                                            else:
+                                                last_error = "scrape_full_match returned None"
+                                
+                                except Exception as e:
+                                    last_error = str(e)
+                                    if attempt < max_retries:
+                                        logger.warning(f"✗ Error scraping match from {match_url} (attempt {attempt + 1}/{max_retries + 1}): {e}")
+                                        logger.info(f"Retrying in 5-10 seconds...")
+                                        scraper._random_delay(5, 10)  # Longer delay before retry
+                                    else:
+                                        logger.error(f"✗ Error scraping match from {match_url} after {max_retries + 1} attempts: {e}")
+                            
+                            # If all retries failed, record it
+                            if not success:
+                                failed_matches += 1
+                                failed_match_info = {
+                                    'url': match_url,
+                                    'season': season,
+                                    'matchday': matchday,
+                                    'error': last_error,
+                                    'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+                                }
+                                failed_urls.append(failed_match_info)
+                                logger.error(f"✗ FAILED to scrape {match_url} after {max_retries + 1} attempts")
+                                logger.error(f"  Error: {last_error}")
+                                logger.error(f"  This match will be saved to failed_matches.json for retry")
+                            
+                            # Longer delay between matches for anti-ban (4-8 seconds)
+                            scraper._random_delay(4, 8)
+                    
+                    except Exception as e:
+                        logger.error(f"Error processing matchday {matchday} for season {season}: {e}")
+                        # Continue with next matchday even if one fails
+                        continue
+                
+                # Print summary for this season
+                logger.info(f"\n{'='*60}")
+                logger.info(f"SEASON {season} SUMMARY")
+                logger.info(f"{'='*60}")
+                logger.info(f"Total matches attempted: {total_matches}")
+                logger.info(f"Successful: {successful_matches}")
+                logger.info(f"Failed: {failed_matches}")
+                logger.info(f"Success rate: {successful_matches/total_matches*100:.1f}%" if total_matches > 0 else "N/A")
+                
+                results.append({
+                    'season': season,
+                    'total': total_matches,
+                    'successful': successful_matches,
+                    'failed': failed_matches,
+                    'failed_urls': failed_urls
+                })
+            
+            except Exception as e:
+                logger.error(f"Error in scraping loop for season {season}: {e}")
+                # Add failed season result
+                results.append({
+                    'season': season,
+                    'total': total_matches,
+                    'successful': successful_matches,
+                    'failed': failed_matches,
+                    'failed_urls': failed_urls
+                })
+                # Continue with next season even if one fails
+    
+    except Exception as e:
+        logger.error(f"Fatal error in process {process_id}: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
+    finally:
+        # Ensure driver is closed
+        if scraper and hasattr(scraper, 'driver') and scraper.driver:
+            try:
+                scraper.driver.quit()
+            except Exception:
+                pass
+    
+    return results
+
+
 if __name__ == "__main__":
     """
-    Main execution block: Scrape all Bundesliga matches from 2017-18 to 2024-25.
+    Main execution block: Simultaneous season download using multiprocessing.
     
-    For testing, use tests/test_scraper_live.py instead:
+    Scrapes all Bundesliga matches from 2017-18 to 2024-25 in parallel.
+    Uses multiprocessing to run 2 seasons per process (4 processes total), each with
+    its own Chrome driver instance in incognito mode and background. This reduces
+    concurrent driver initializations and improves stability.
+    
+    By default, runs in single-process mode for testing. Set USE_MULTIPROCESSING = True
+    in the main block to enable parallel processing.
+    
+    How to run:
+        # From project root:
+        python src/data/kicker_scraper.py
+        
+        # Or from the src/data directory:
+        python kicker_scraper.py
+    
+    Modes:
+        - Single-process mode (default): All seasons run sequentially in one process
+          - Good for testing and debugging
+          - Easier to see what's happening
+          - No lock contention issues
+        
+        - Multiprocessing mode: 4 processes (2 seasons per process)
+          - Set USE_MULTIPROCESSING = True in the code
+          - Faster execution
+          - Each process runs Chrome in incognito mode and background
+          - Processes continue even if individual matches or seasons fail
+    
+    What happens:
+        1. Scrapes all matchdays (1-34) for each season sequentially
+        2. Runs Chrome in incognito mode and background
+        3. Already downloaded matches are automatically skipped
+        4. Progress is logged with season-specific prefixes
+        5. Continues even if individual matches fail
+        6. Final summary shows statistics for all seasons
+    
+    Performance:
+        - Single-process: ~2,448 matches sequentially (slower but stable)
+        - Multiprocessing: 4 processes, 2 seasons each (faster)
+        - Each season processes ~306 matches (9 matches/matchday × 34 matchdays)
+        - Total: ~2,448 matches across all seasons
+        - Estimated time: Several hours (depends on network and delays)
+    
+    Safety features:
+        - Incognito mode prevents cookie tracking
+        - Cookies cleared between requests
+        - Random user agents
+        - Longer delays (4-8 seconds) between matches
+        - Automatic skip of already downloaded matches
+    
+    For testing individual matches, use tests/test_scraper_live.py instead:
         python -m tests.test_scraper_live --test-known
         python -m tests.test_scraper_live --test-bayern
         python -m tests.test_scraper_live --test-bremen
@@ -1919,78 +2823,141 @@ if __name__ == "__main__":
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
     
-    # Initialize scraper
-    save_dir = Path(__file__).parent.parent.parent / "data" / "raw"
-    scraper = KickerScraper(save_dir=save_dir, headless=False)
-    
     # Target seasons (VAR floor: 2017-18 onwards)
-    seasons = [
+    all_seasons = [
         "2017-18", "2018-19",  # Pre-Corona, Clean
         "2019-20", "2020-21", "2021-22",  # Corona/Ghost Games (flagged but kept)
         "2022-23", "2023-24",  # Post-Corona, Clean
         "2024-25"  # Placebo Test Season
     ]
     
-    # Statistics
-    total_matches = 0
-    successful_matches = 0
-    failed_matches = 0
+    save_dir = Path(__file__).parent.parent.parent / "data" / "raw"
     
-    try:
-        # Iterate through seasons
-        for season in seasons:
-            logger.info(f"\n{'='*60}")
-            logger.info(f"Processing season: {season}")
-            logger.info(f"{'='*60}")
+    # Configuration: Set to False for single-process mode (testing), True for multiprocessing
+    USE_MULTIPROCESSING = True  # Set to True when ready for parallel processing
+    
+    if USE_MULTIPROCESSING:
+        # Group seasons into pairs (2 seasons per process)
+        # This reduces concurrent driver initializations from 8 to 4
+        seasons_per_process = 2
+        season_groups = []
+        for i in range(0, len(all_seasons), seasons_per_process):
+            group = all_seasons[i:i + seasons_per_process]
+            season_groups.append(group)
+        
+        num_processes = len(season_groups)
+        logger.info(f"Starting multiprocessing scrape: {len(all_seasons)} seasons, {num_processes} processes")
+        logger.info(f"Configuration: {seasons_per_process} seasons per process")
+        logger.info("Each process runs Chrome in incognito mode and background")
+        logger.info("Processes will continue even if individual matches or seasons fail")
+        
+        # Collect all results
+        all_results = []
+        
+        with multiprocessing.Pool(processes=num_processes) as pool:
+            # Create tasks: one per season group
+            tasks = [
+                pool.apply_async(scrape_seasons, (group, save_dir, i+1)) 
+                for i, group in enumerate(season_groups)
+            ]
             
-            # Iterate through matchdays (1-34 for Bundesliga)
-            for matchday in range(1, 35):
-                logger.info(f"\nSeason {season}, Matchday {matchday}")
-                
-                # Get match URLs
-                match_urls = scraper.get_match_urls(season, matchday)
-                
-                if not match_urls:
-                    logger.warning(f"No matches found for {season}, matchday {matchday}")
-                    continue
-                
-                # Scrape each match
-                for match_url in match_urls:
-                    total_matches += 1
-                    try:
-                        result = scraper.scrape_full_match(
-                            match_url, 
-                            season=season, 
-                            matchday=matchday
-                        )
-                        
-                        if result:
-                            successful_matches += 1
-                            logger.info(f"✓ Successfully scraped match {result['match_id']}")
-                        else:
-                            failed_matches += 1
-                            logger.warning(f"✗ Failed to scrape match from {match_url}")
-                        
-                        # Delay between matches
-                        scraper._random_delay(2, 4)
-                        
-                    except Exception as e:
-                        failed_matches += 1
-                        logger.error(f"✗ Error scraping match from {match_url}: {e}")
-                        continue
+            # Wait for all processes to complete and collect results
+            # Use timeout and error handling to prevent one failure from stopping everything
+            for i, task in enumerate(tasks):
+                try:
+                    process_results = task.get(timeout=None)  # Wait indefinitely for each process
+                    all_results.extend(process_results)
+                except Exception as e:
+                    logger.error(f"Process {i+1} failed with error: {e}")
+                    # Add placeholder results for failed seasons in this group
+                    for season in season_groups[i]:
+                        all_results.append({
+                            'season': season,
+                            'total': 0,
+                            'successful': 0,
+                            'failed': 0,
+                            'failed_urls': [],
+                            'error': str(e)
+                        })
+    else:
+        # Single-process mode for testing
+        logger.info(f"Starting single-process scrape: {len(all_seasons)} seasons")
+        logger.info("Running in single-process mode (testing/debugging)")
+        logger.info("Set USE_MULTIPROCESSING = True to enable parallel processing")
+        
+        # Run all seasons sequentially in a single process
+        all_results = scrape_seasons(all_seasons, save_dir, process_id=1)
     
-    except Exception as e:
-        logger.error(f"Error in scraping loop: {e}")
-    finally:
-        # Ensure driver is closed
-        if scraper and scraper.driver:
-            scraper.driver.quit()
-    
-    # Print summary
+    # Print overall summary
     logger.info(f"\n{'='*60}")
-    logger.info("SCRAPING SUMMARY")
+    logger.info("OVERALL SCRAPING SUMMARY")
     logger.info(f"{'='*60}")
-    logger.info(f"Total matches attempted: {total_matches}")
-    logger.info(f"Successful: {successful_matches}")
-    logger.info(f"Failed: {failed_matches}")
-    logger.info(f"Success rate: {successful_matches/total_matches*100:.1f}%" if total_matches > 0 else "N/A")
+    
+    total_all = sum(r.get('total', 0) for r in all_results)
+    successful_all = sum(r.get('successful', 0) for r in all_results)
+    failed_all = sum(r.get('failed', 0) for r in all_results)
+    
+    logger.info(f"Total matches attempted: {total_all}")
+    logger.info(f"Successful: {successful_all}")
+    logger.info(f"Failed: {failed_all}")
+    logger.info(f"Success rate: {successful_all/total_all*100:.1f}%" if total_all > 0 else "N/A")
+    
+    # Collect all failed URLs
+    all_failed_urls = []
+    for result in all_results:
+        failed_urls = result.get('failed_urls', [])
+        all_failed_urls.extend(failed_urls)
+    
+    # Save failed URLs to a file for later retry
+    if all_failed_urls:
+        failed_file = save_dir.parent / "failed_matches.json"
+        try:
+            # Load existing failed matches if file exists (to append, not overwrite)
+            existing_failed = []
+            if failed_file.exists():
+                try:
+                    with open(failed_file, 'r', encoding='utf-8') as f:
+                        existing_failed = json.load(f)
+                    logger.info(f"Found {len(existing_failed)} existing failed matches in {failed_file}")
+                except Exception as e:
+                    logger.warning(f"Could not read existing failed_matches.json: {e}")
+            
+            # Merge with new failures (avoid duplicates by URL)
+            existing_urls = {item['url'] for item in existing_failed}
+            new_failed = [item for item in all_failed_urls if item['url'] not in existing_urls]
+            all_failed_merged = existing_failed + new_failed
+            
+            with open(failed_file, 'w', encoding='utf-8') as f:
+                json.dump(all_failed_merged, f, ensure_ascii=False, indent=2)
+            
+            logger.info(f"\n{'='*60}")
+            logger.info(f"⚠️  FAILED MATCHES SUMMARY")
+            logger.info(f"{'='*60}")
+            logger.info(f"Total failed matches: {len(all_failed_merged)}")
+            logger.info(f"  - New failures this run: {len(new_failed)}")
+            logger.info(f"  - Previously failed: {len(existing_failed)}")
+            logger.info(f"\nFailed matches saved to: {failed_file.absolute()}")
+            logger.info(f"\nTo retry failed matches, run:")
+            logger.info(f"  python src/data/retry_failed_matches.py")
+            logger.info(f"\nOr simply re-run the scraper - it will automatically retry")
+            logger.info(f"matches that don't have files yet.")
+            logger.info(f"{'='*60}")
+        except Exception as e:
+            logger.error(f"Failed to save failed matches list: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
+    
+    # Per-season breakdown
+    logger.info(f"\nPer-season breakdown:")
+    for result in all_results:
+        season = result.get('season', 'Unknown')
+        successful = result.get('successful', 0)
+        total = result.get('total', 0)
+        failed = result.get('failed', 0)
+        failed_urls_count = len(result.get('failed_urls', []))
+        if 'error' in result:
+            logger.info(f"  {season}: ERROR - {result['error']}")
+        else:
+            logger.info(f"  {season}: {successful}/{total} successful, {failed} failed")
+            if failed_urls_count > 0:
+                logger.info(f"    → {failed_urls_count} failed matches will be retried on next run")
