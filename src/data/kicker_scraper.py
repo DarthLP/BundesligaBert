@@ -16,7 +16,7 @@ The scraper includes anti-ban measures:
 
 Usage:
     # Option 1: Run simultaneous season download (RECOMMENDED)
-    # Scrapes all seasons (2017-18 to 2024-25) in parallel using multiprocessing
+    # Scrapes all seasons (2024-25 to 2017-18, latest first) in parallel using multiprocessing
     # Each season runs in a separate process with its own Chrome instance
     # This is the fastest and safest way to download all data
     python src/data/kicker_scraper.py
@@ -316,6 +316,109 @@ class KickerScraper:
         
         return match_file.exists()
     
+    def _extract_match_id_from_url(self, match_url: str) -> str:
+        """
+        Extract match ID from a match URL.
+        
+        Args:
+            match_url: Match URL (e.g., "https://www.kicker.de/bayern-gegen-hoffenheim-2024-bundesliga-4862110/ticker")
+            
+        Returns:
+            Match ID (e.g., "bayern-gegen-hoffenheim-2024-bundesliga-4862110")
+        """
+        clean_url = match_url.rstrip('/')
+        clean_url = re.sub(r'/(ticker|liveticker|spielinfo|analyse|spielbericht)/?$', '', clean_url)
+        match = re.search(r'/([^/]+)/?$', clean_url)
+        if match:
+            return match.group(1)
+        # Fallback: try splitting
+        parts = clean_url.split('/')
+        if parts:
+            return parts[-1].split('?')[0]
+        return "unknown"
+    
+    def _get_matchday_metadata_path(self, season: str, matchday: int) -> Path:
+        """
+        Get path to matchday metadata file.
+        
+        Args:
+            season: Season string (e.g., "2023-24")
+            matchday: Matchday number (1-34)
+            
+        Returns:
+            Path to metadata file
+        """
+        season_dir = self.save_dir / f"season_{season}"
+        return season_dir / f"matchday_{matchday}_metadata.json"
+    
+    def _is_matchday_complete(self, season: str, matchday: int) -> bool:
+        """
+        Check if a matchday is already completely scraped.
+        
+        Checks if metadata file exists and all match IDs in it have corresponding JSON files.
+        
+        Args:
+            season: Season string (e.g., "2023-24")
+            matchday: Matchday number (1-34)
+            
+        Returns:
+            True if matchday is complete, False otherwise
+        """
+        metadata_path = self._get_matchday_metadata_path(season, matchday)
+        
+        if not metadata_path.exists():
+            return False
+        
+        try:
+            with open(metadata_path, 'r', encoding='utf-8') as f:
+                metadata = json.load(f)
+            
+            match_ids = metadata.get('match_ids', [])
+            if not match_ids:
+                return False
+            
+            # Check if all matches exist
+            for match_id in match_ids:
+                if not self._is_match_downloaded(match_id, season):
+                    return False
+            
+            return True
+        except (json.JSONDecodeError, KeyError, IOError) as e:
+            logger.debug(f"Error reading matchday metadata for {season}, matchday {matchday}: {e}")
+            return False
+    
+    def _save_matchday_metadata(self, season: str, matchday: int, match_urls: List[str]) -> None:
+        """
+        Save metadata for a matchday after successful scraping.
+        
+        Args:
+            season: Season string (e.g., "2023-24")
+            matchday: Matchday number (1-34)
+            match_urls: List of match URLs that were scraped
+        """
+        metadata_path = self._get_matchday_metadata_path(season, matchday)
+        season_dir = metadata_path.parent
+        season_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Extract match IDs from URLs
+        match_ids = [self._extract_match_id_from_url(url) for url in match_urls]
+        
+        metadata = {
+            'season': season,
+            'matchday': matchday,
+            'match_ids': match_ids,
+            'match_urls': match_urls,
+            'total_matches': len(match_ids),
+            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        
+        try:
+            with open(metadata_path, 'w', encoding='utf-8') as f:
+                json.dump(metadata, f, indent=2, ensure_ascii=False)
+            logger.debug(f"Saved matchday metadata for {season}, matchday {matchday}")
+        except IOError as e:
+            logger.warning(f"Failed to save matchday metadata for {season}, matchday {matchday}: {e}")
+    
     def _random_delay(self, min_sec: float = 2, max_sec: float = 4) -> None:
         """
         Sleep for a random duration between min_sec and max_sec.
@@ -458,8 +561,8 @@ class KickerScraper:
         """
         Extract announced added time from text.
         
-        Searches for patterns like "4 Minuten Nachspielzeit", "Eine Minute", "Drei Minuten".
-        Handles German number words (Eine, Zwei, Drei, etc.) and numeric patterns.
+        Simply extracts the number (digit or German word) that appears directly before "Minuten"
+        when followed by context phrases indicating stoppage time.
         
         Args:
             text: Event text that may contain time announcements
@@ -486,37 +589,41 @@ class KickerScraper:
         
         text_lower = text.lower()
         
-        # Pattern 1: German number words (e.g., "Eine Minute wird nachgespielt", "Drei Minuten gibt es oben drauf")
-        # Check for full phrases first to avoid partial matches
-        # Sort by length (longest first) to avoid matching "zwei" in "zwölf" or "eine" in "seine"
-        sorted_numbers = sorted(german_numbers.items(), key=lambda x: len(x[0]), reverse=True)
-        for word, num in sorted_numbers:
-            if word in text_lower and ('minute' in text_lower or 'minuten' in text_lower):
-                # Check context: should be about added time
-                # Look for phrases like "Drei Minuten gibt es oben drauf" or "Eine Minute wird nachgespielt"
-                if any(phrase in text_lower for phrase in ['nachgespielt', 'obendrauf', 'oben drauf', 'nachspielzeit', 'gibt es oben drauf', 'wird noch nachgespielt', 'werden noch nachgespielt']):
-                    # Check if it's a complete phrase - must have the number word followed by "minute" or "minuten"
-                    # Use word boundaries to ensure we match the full word
-                    pattern = rf'\b{word}\s+(?:minute|minuten)\b'
-                    if re.search(pattern, text_lower, re.IGNORECASE):
-                        return num
+        # Context phrases that indicate stoppage time announcements
+        context_pattern = r'(?:nachgespielt|obendrauf|oben drauf|nachspielzeit|nachschlag|gibt es oben drauf|gibt es|wird noch nachgespielt|werden noch nachgespielt)'
         
-        # Pattern 2: Numeric patterns (e.g., "+4", "+ 4", "4 Minuten Nachspielzeit")
+        # Pattern 1: Extract number (digit or German word) directly before "Minuten" followed by context
+        # Examples: "5 Minuten Nachschlag", "Fünf Minuten gibt es", "4 Minuten Nachspielzeit"
         patterns = [
-            r'(\d+)\s*Minuten?\s*(?:wird|werden|gibt|gibt es|obendrauf|oben drauf|nachgespielt|Nachspielzeit)',  # "4 Minuten wird nachgespielt"
-            r'(\d+)\s*Min\.?\s*(?:Nachspielzeit|obendrauf)',  # "4 Min. Nachspielzeit"
-            r'Nachspielzeit[:\s]+(\d+)',  # "Nachspielzeit: 4"
-            r'(\+ ?\d+)',  # "+4" or "+ 4" (fallback, less reliable)
+            # German number words: "Fünf Minuten Nachschlag", "Drei Minuten gibt es"
+            rf'\b({"|".join(german_numbers.keys())})\s+minuten?\s+{context_pattern}',
+            # Digits: "5 Minuten Nachschlag", "4 Minuten Nachspielzeit"
+            rf'(\d+)\s+minuten?\s+{context_pattern}',
+            # With "Min." abbreviation: "5 Min. Nachschlag"
+            rf'(\d+)\s+min\.?\s+{context_pattern}',
+            # Pattern 2: Number appears AFTER context phrase (e.g., "mehrere Minuten Nachspielzeit geben, nämlich 5")
+            # "mehrere Minuten Nachspielzeit ... nämlich 5" or "Nachspielzeit geben, nämlich 5"
+            rf'(?:mehrere|einige)\s+minuten?\s+{context_pattern}.*?(?:nämlich|genau|und zwar|konkret)\s+(\d+)',
+            rf'{context_pattern}.*?(?:nämlich|genau|und zwar|konkret)\s+(\d+)',
+            # Alternative: "Nachspielzeit: 4" or "Nachspielzeit 5"
+            r'nachspielzeit[:\s]+(\d+)',
+            # Fallback: "+4" or "+ 4" (less reliable)
+            r'\+ ?(\d+)',
         ]
         
         for pattern in patterns:
-            match = re.search(pattern, text_lower)
+            match = re.search(pattern, text_lower, re.IGNORECASE)
             if match:
                 try:
-                    # Extract the number (could be from different groups)
-                    num_str = match.group(1) if match.lastindex >= 1 else match.group(0)
-                    # Remove + sign if present
-                    num_str = num_str.replace('+', '').strip()
+                    # Get the matched group (could be German word or digit)
+                    matched_text = match.group(1) if match.lastindex >= 1 else match.group(0)
+                    
+                    # If it's a German number word, convert it
+                    if matched_text.lower() in german_numbers:
+                        return german_numbers[matched_text.lower()]
+                    
+                    # Otherwise, it's a digit
+                    num_str = matched_text.replace('+', '').strip()
                     return int(num_str)
                 except (ValueError, IndexError):
                     continue
@@ -1182,11 +1289,11 @@ class KickerScraper:
             attendance: Number of attendees
             
         Returns:
-            True if attendance < 1000 (ghost game), False otherwise
+            True if attendance < 1500 (ghost game), False otherwise
         """
         if attendance is None:
             return False
-        return attendance < 1000
+        return attendance < 1500
     
     def _parse_minute_to_int(self, minute_str: str) -> Optional[int]:
         """
@@ -1230,13 +1337,18 @@ class KickerScraper:
             try:
                 self.driver.current_window_handle
             except Exception:
-                logger.error("Browser window was closed. Reinitializing driver...")
+                logger.warning("Browser window was closed. Reinitializing driver...")
                 # Reinitialize driver if window was closed (use same options as init)
-                options = self._create_chrome_options(headless=True)
-                self.driver = uc.Chrome(options=options, version_main=None, use_subprocess=True)
-                self.wait = WebDriverWait(self.driver, timeout=10)
-                self._cookie_consent_handled = False  # Reset consent flag
-                self._clear_cookies()
+                try:
+                    options = self._create_chrome_options(headless=True)
+                    self.driver = uc.Chrome(options=options, version_main=None, use_subprocess=True)
+                    self.wait = WebDriverWait(self.driver, timeout=10)
+                    self._cookie_consent_handled = False  # Reset consent flag
+                    self._clear_cookies()
+                    logger.info("Driver reinitialized successfully")
+                except Exception as init_error:
+                    logger.error(f"Failed to reinitialize driver: {init_error}")
+                    raise  # Re-raise to be caught by outer exception handler
             
             # Clear cookies before request
             self._clear_cookies()
@@ -1253,8 +1365,15 @@ class KickerScraper:
             
             html = self.driver.page_source
         except Exception as e:
-            logger.error(f"Failed to fetch matchday page: {url} - {e}")
-            return []
+            error_msg = str(e)
+            # Check if it's a network disconnection error
+            if "ERR_INTERNET_DISCONNECTED" in error_msg:
+                logger.error(f"Network disconnection error fetching matchday page: {url}")
+                logger.error("This is a network connectivity issue. The scraper will retry this matchday.")
+            else:
+                logger.error(f"Failed to fetch matchday page: {url} - {e}")
+            # Re-raise so caller can handle retry logic
+            raise
         
         if not html or len(html) < 5000:
             logger.warning(f"Page seems short ({len(html)} chars)")
@@ -2267,7 +2386,8 @@ class KickerScraper:
         match_id: Optional[str] = None,
         season: Optional[str] = None,
         matchday: Optional[int] = None,
-        force_rescrape: bool = False
+        force_rescrape: bool = False,
+        is_retry: bool = False
     ) -> Optional[Dict[str, Any]]:
         """
         Scrape a full match by visiting Spielinfo and Ticker tabs sequentially using Selenium.
@@ -2280,6 +2400,7 @@ class KickerScraper:
             season: Optional season string
             matchday: Optional matchday number
             force_rescrape: If True, re-scrape even if match is already downloaded (default: False)
+            is_retry: If True, uses longer timeout (30s) for slow pages; if False, uses shorter timeout (15s) for speed (default: False)
             
         Returns:
             Dictionary with match data or None if scraping fails or match already downloaded
@@ -2403,13 +2524,20 @@ class KickerScraper:
             self._handle_cookie_consent()
             
             # Wait for any ticker item to load (using CLASS_NAME like Gemini - more reliable)
+            # Use adaptive timeout: shorter for first attempt (faster), longer for retries (more patient)
+            ticker_timeout = 30 if is_retry else 15  # 15s first attempt, 30s on retry
             try:
-                self.wait.until(
+                ticker_wait = WebDriverWait(self.driver, timeout=ticker_timeout)
+                ticker_wait.until(
                     EC.presence_of_element_located((By.CLASS_NAME, "kick__ticker-item"))
                 )
                 logger.debug("Ticker items found")
             except Exception as e:
-                logger.warning(f"Timeout waiting for ticker items: {e}. Continuing anyway...")
+                logger.warning(f"Timeout waiting for ticker items ({ticker_timeout}s timeout): {e}")
+                if not is_retry:
+                    logger.warning("This might indicate a slow page. Will use longer timeout on retry.")
+                else:
+                    logger.warning("This might indicate a slow page or network issue. Continuing anyway...")
             
             # Scroll page to trigger lazy-loading (using dedicated method)
             self._scroll_page()
@@ -2421,6 +2549,11 @@ class KickerScraper:
         
         if not self._validate_match_page(ticker_html, "ticker"):
             logger.error(f"Ticker page validation failed for {match_id}")
+            logger.error("This could indicate:")
+            logger.error("  - The match page doesn't exist (404)")
+            logger.error("  - The page format has changed")
+            logger.error("  - Network issues prevented proper page load")
+            logger.error("This match will be retried automatically on next run")
             return None
         
         # Parse ticker from HTML (server-side rendered, no API needed)
@@ -2606,6 +2739,22 @@ def scrape_seasons(seasons: List[str], save_dir: Path, process_id: int, max_retr
                     logger.info(f"\nSeason {season}, Matchday {matchday}")
                     
                     try:
+                        # Check if matchday is already complete (skip visiting page if all matches exist)
+                        if scraper._is_matchday_complete(season, matchday):
+                            logger.info(f"✓ Matchday {matchday} already complete, skipping...")
+                            # Load metadata to get match count for statistics
+                            metadata_path = scraper._get_matchday_metadata_path(season, matchday)
+                            try:
+                                with open(metadata_path, 'r', encoding='utf-8') as f:
+                                    metadata = json.load(f)
+                                    match_count = metadata.get('total_matches', 0)
+                                    total_matches += match_count
+                                    successful_matches += match_count
+                                    logger.info(f"  → {match_count} matches already downloaded")
+                            except (json.JSONDecodeError, IOError):
+                                pass
+                            continue
+                        
                         # Get match URLs with retry logic for network failures
                         match_urls = []
                         matchday_retries = 2  # Retry matchday page fetch up to 2 times
@@ -2646,6 +2795,23 @@ def scrape_seasons(seasons: List[str], save_dir: Path, process_id: int, max_retr
                             })
                             continue
                         
+                        # Check if all matches are already downloaded (handles case where matches exist but metadata doesn't)
+                        all_matches_downloaded = True
+                        for match_url in match_urls:
+                            match_id = scraper._extract_match_id_from_url(match_url)
+                            if not scraper._is_match_downloaded(match_id, season):
+                                all_matches_downloaded = False
+                                break
+                        
+                        if all_matches_downloaded:
+                            # All matches already exist, save metadata and skip scraping
+                            logger.info(f"✓ All {len(match_urls)} matches for matchday {matchday} already downloaded")
+                            scraper._save_matchday_metadata(season, matchday, match_urls)
+                            total_matches += len(match_urls)
+                            successful_matches += len(match_urls)
+                            logger.info(f"  → Saved metadata, skipping individual match scraping")
+                            continue
+                        
                         # Scrape each match with retry logic
                         for match_url in match_urls:
                             total_matches += 1
@@ -2655,10 +2821,12 @@ def scrape_seasons(seasons: List[str], save_dir: Path, process_id: int, max_retr
                             # Retry loop
                             for attempt in range(max_retries + 1):  # 0 to max_retries (inclusive)
                                 try:
+                                    is_retry_attempt = attempt > 0  # True if this is a retry (not first attempt)
                                     result = scraper.scrape_full_match(
                                         match_url, 
                                         season=season, 
-                                        matchday=matchday
+                                        matchday=matchday,
+                                        is_retry=is_retry_attempt
                                     )
                                     
                                     if result:
@@ -2669,7 +2837,7 @@ def scrape_seasons(seasons: List[str], save_dir: Path, process_id: int, max_retr
                                     else:
                                         # Result is None - could be skipped (already downloaded) or failed
                                         # Check if file exists to distinguish
-                                        match_id = match_url.split('/')[-1].split('?')[0]
+                                        match_id = scraper._extract_match_id_from_url(match_url)
                                         if scraper._is_match_downloaded(match_id, season):
                                             # Already downloaded, not a failure
                                             success = True
@@ -2709,6 +2877,12 @@ def scrape_seasons(seasons: List[str], save_dir: Path, process_id: int, max_retr
                             
                             # Longer delay between matches for anti-ban (4-8 seconds)
                             scraper._random_delay(4, 8)
+                        
+                        # Save matchday metadata if we successfully got match URLs
+                        # This allows us to skip the matchday page on future runs
+                        if match_urls:
+                            scraper._save_matchday_metadata(season, matchday, match_urls)
+                            logger.debug(f"Saved matchday metadata for {season}, matchday {matchday}")
                     
                     except Exception as e:
                         logger.error(f"Error processing matchday {matchday} for season {season}: {e}")
@@ -2763,8 +2937,8 @@ if __name__ == "__main__":
     """
     Main execution block: Simultaneous season download using multiprocessing.
     
-    Scrapes all Bundesliga matches from 2017-18 to 2024-25 in parallel.
-    Uses multiprocessing to run 2 seasons per process (4 processes total), each with
+    Scrapes all Bundesliga matches from 2024-25 to 2017-18 (latest first) in parallel.
+    Uses multiprocessing to run 2 seasons per process (5 processes total), each with
     its own Chrome driver instance in incognito mode and background. This reduces
     concurrent driver initializations and improves stability.
     
@@ -2784,7 +2958,7 @@ if __name__ == "__main__":
           - Easier to see what's happening
           - No lock contention issues
         
-        - Multiprocessing mode: 4 processes (2 seasons per process)
+        - Multiprocessing mode: 5 processes (2 seasons per process, last with 1)
           - Set USE_MULTIPROCESSING = True in the code
           - Faster execution
           - Each process runs Chrome in incognito mode and background
@@ -2800,7 +2974,7 @@ if __name__ == "__main__":
     
     Performance:
         - Single-process: ~2,448 matches sequentially (slower but stable)
-        - Multiprocessing: 4 processes, 2 seasons each (faster)
+        - Multiprocessing: 4 processes, 2 seasons each
         - Each season processes ~306 matches (9 matches/matchday × 34 matchdays)
         - Total: ~2,448 matches across all seasons
         - Estimated time: Several hours (depends on network and delays)
@@ -2824,17 +2998,18 @@ if __name__ == "__main__":
     )
     
     # Target seasons (VAR floor: 2017-18 onwards)
+    # Process from latest to earliest (2024-25 first, then backwards to 2017-18)
     all_seasons = [
-        "2017-18", "2018-19",  # Pre-Corona, Clean
-        "2019-20", "2020-21", "2021-22",  # Corona/Ghost Games (flagged but kept)
-        "2022-23", "2023-24",  # Post-Corona, Clean
-        "2024-25"  # Placebo Test Season
+        "2024-25",  # Placebo Test Season (latest - processed first)
+        "2023-24", "2022-23",  # Post-Corona, Clean
+        "2021-22", "2020-21", "2019-20",  # Corona/Ghost Games (flagged but kept)
+        "2018-19", "2017-18"  # Pre-Corona, Clean (earliest - processed last)
     ]
     
     save_dir = Path(__file__).parent.parent.parent / "data" / "raw"
     
     # Configuration: Set to False for single-process mode (testing), True for multiprocessing
-    USE_MULTIPROCESSING = True  # Set to True when ready for parallel processing
+    USE_MULTIPROCESSING = False  # Set to True when ready for parallel processing
     
     if USE_MULTIPROCESSING:
         # Group seasons into pairs (2 seasons per process)
@@ -2904,9 +3079,14 @@ if __name__ == "__main__":
     
     # Collect all failed URLs
     all_failed_urls = []
+    failed_matchdays = []
     for result in all_results:
         failed_urls = result.get('failed_urls', [])
         all_failed_urls.extend(failed_urls)
+        # Separate matchday fetch failures from match failures
+        for failed_item in failed_urls:
+            if failed_item.get('type') == 'matchday_fetch_failed':
+                failed_matchdays.append(failed_item)
     
     # Save failed URLs to a file for later retry
     if all_failed_urls:
@@ -2936,6 +3116,20 @@ if __name__ == "__main__":
             logger.info(f"Total failed matches: {len(all_failed_merged)}")
             logger.info(f"  - New failures this run: {len(new_failed)}")
             logger.info(f"  - Previously failed: {len(existing_failed)}")
+            
+            # Show breakdown by failure type
+            matchday_failures = [f for f in all_failed_merged if f.get('type') == 'matchday_fetch_failed']
+            match_failures = [f for f in all_failed_merged if f.get('type') != 'matchday_fetch_failed']
+            
+            if matchday_failures:
+                logger.info(f"\n  - Matchday fetch failures: {len(matchday_failures)}")
+                logger.info(f"    (These are network issues fetching matchday pages)")
+                logger.info(f"    (They will be retried automatically on next run)")
+            
+            if match_failures:
+                logger.info(f"\n  - Individual match failures: {len(match_failures)}")
+                logger.info(f"    (These are matches that failed to scrape)")
+            
             logger.info(f"\nFailed matches saved to: {failed_file.absolute()}")
             logger.info(f"\nTo retry failed matches, run:")
             logger.info(f"  python src/data/retry_failed_matches.py")

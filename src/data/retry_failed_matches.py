@@ -118,11 +118,13 @@ def retry_failed_matches(failed_file: Path, season_filter: str = None, max_retri
         # Retry loop
         for attempt in range(max_retries):
             try:
+                is_retry_attempt = attempt > 0  # True if this is a retry (not first attempt)
                 result = scraper.scrape_full_match(
                     match_url,
                     season=season,
                     matchday=matchday,
-                    force_rescrape=False  # Don't force - skip if already downloaded
+                    force_rescrape=False,  # Don't force - skip if already downloaded
+                    is_retry=is_retry_attempt
                 )
                 
                 if result:

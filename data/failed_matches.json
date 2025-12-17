@@ -1,0 +1,989 @@
+[
+  {
+    "url": "https://www.kicker.de/frankfurt-gegen-hoffenheim-2018-bundesliga-3827845",
+    "season": "2017-18",
+    "matchday": 29,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:50:00"
+  },
+  {
+    "url": "https://www.kicker.de/freiburg-gegen-wolfsburg-2018-bundesliga-3827843",
+    "season": "2017-18",
+    "matchday": 29,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:51:56"
+  },
+  {
+    "url": "https://www.kicker.de/hannover-gegen-bremen-2018-bundesliga-3827848",
+    "season": "2017-18",
+    "matchday": 29,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:52:37"
+  },
+  {
+    "url": "https://www.kicker.de/hsv-gegen-schalke-2018-bundesliga-3827847",
+    "season": "2017-18",
+    "matchday": 29,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:53:15"
+  },
+  {
+    "url": "https://www.kicker.de/koeln-gegen-mainz-2018-bundesliga-3827842",
+    "season": "2017-18",
+    "matchday": 29,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:53:55"
+  },
+  {
+    "url": "https://www.kicker.de/leipzig-gegen-leverkusen-2018-bundesliga-3827841",
+    "season": "2017-18",
+    "matchday": 29,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:54:34"
+  },
+  {
+    "url": "https://www.kicker.de/mgladbach-gegen-hertha-2018-bundesliga-3827844",
+    "season": "2017-18",
+    "matchday": 29,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:55:18"
+  },
+  {
+    "url": "matchday_2017-18_30",
+    "season": "2017-18",
+    "matchday": 30,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:55:27",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2017-18_31",
+    "season": "2017-18",
+    "matchday": 31,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:55:34",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2017-18_32",
+    "season": "2017-18",
+    "matchday": 32,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:55:40",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2017-18_33",
+    "season": "2017-18",
+    "matchday": 33,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:55:46",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2017-18_34",
+    "season": "2017-18",
+    "matchday": 34,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:55:53",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_1",
+    "season": "2018-19",
+    "matchday": 1,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:55:59",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_2",
+    "season": "2018-19",
+    "matchday": 2,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:02",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_3",
+    "season": "2018-19",
+    "matchday": 3,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:07",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_4",
+    "season": "2018-19",
+    "matchday": 4,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:11",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_5",
+    "season": "2018-19",
+    "matchday": 5,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:18",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_6",
+    "season": "2018-19",
+    "matchday": 6,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:26",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_7",
+    "season": "2018-19",
+    "matchday": 7,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:30",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_8",
+    "season": "2018-19",
+    "matchday": 8,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:34",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_9",
+    "season": "2018-19",
+    "matchday": 9,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:36",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_10",
+    "season": "2018-19",
+    "matchday": 10,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:39",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_11",
+    "season": "2018-19",
+    "matchday": 11,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:44",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_12",
+    "season": "2018-19",
+    "matchday": 12,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:49",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_13",
+    "season": "2018-19",
+    "matchday": 13,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:51",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_14",
+    "season": "2018-19",
+    "matchday": 14,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:55",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_15",
+    "season": "2018-19",
+    "matchday": 15,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:56:59",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_16",
+    "season": "2018-19",
+    "matchday": 16,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:05",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_17",
+    "season": "2018-19",
+    "matchday": 17,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:08",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_18",
+    "season": "2018-19",
+    "matchday": 18,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:14",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_19",
+    "season": "2018-19",
+    "matchday": 19,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:19",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_20",
+    "season": "2018-19",
+    "matchday": 20,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:23",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_21",
+    "season": "2018-19",
+    "matchday": 21,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:29",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_22",
+    "season": "2018-19",
+    "matchday": 22,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:32",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_23",
+    "season": "2018-19",
+    "matchday": 23,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:36",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_24",
+    "season": "2018-19",
+    "matchday": 24,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:39",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_25",
+    "season": "2018-19",
+    "matchday": 25,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:42",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_26",
+    "season": "2018-19",
+    "matchday": 26,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:45",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_27",
+    "season": "2018-19",
+    "matchday": 27,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:57:49",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_28",
+    "season": "2018-19",
+    "matchday": 28,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:58:36",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_29",
+    "season": "2018-19",
+    "matchday": 29,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:58:43",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_30",
+    "season": "2018-19",
+    "matchday": 30,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:58:48",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_31",
+    "season": "2018-19",
+    "matchday": 31,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:58:52",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_32",
+    "season": "2018-19",
+    "matchday": 32,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:58:58",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_33",
+    "season": "2018-19",
+    "matchday": 33,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:59:03",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2018-19_34",
+    "season": "2018-19",
+    "matchday": 34,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:59:08",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "https://www.kicker.de/mainz-gegen-hertha-2019-bundesliga-4588689",
+    "season": "2019-20",
+    "matchday": 4,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-16 23:27:18"
+  },
+  {
+    "url": "https://www.kicker.de/leverkusen-gegen-dortmund-2021-bundesliga-4721524",
+    "season": "2021-22",
+    "matchday": 4,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-16 23:27:55"
+  },
+  {
+    "url": "matchday_2021-22_18",
+    "season": "2021-22",
+    "matchday": 18,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:37:34",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_19",
+    "season": "2021-22",
+    "matchday": 19,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:38:23",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_20",
+    "season": "2021-22",
+    "matchday": 20,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:39:06",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_21",
+    "season": "2021-22",
+    "matchday": 21,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:39:53",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_22",
+    "season": "2021-22",
+    "matchday": 22,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:40:42",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_23",
+    "season": "2021-22",
+    "matchday": 23,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:41:25",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_24",
+    "season": "2021-22",
+    "matchday": 24,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:42:13",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_25",
+    "season": "2021-22",
+    "matchday": 25,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:42:57",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_26",
+    "season": "2021-22",
+    "matchday": 26,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:43:40",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_27",
+    "season": "2021-22",
+    "matchday": 27,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:44:27",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_28",
+    "season": "2021-22",
+    "matchday": 28,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:45:11",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_29",
+    "season": "2021-22",
+    "matchday": 29,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:45:58",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_30",
+    "season": "2021-22",
+    "matchday": 30,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:46:48",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_31",
+    "season": "2021-22",
+    "matchday": 31,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:47:34",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_32",
+    "season": "2021-22",
+    "matchday": 32,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:48:14",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_33",
+    "season": "2021-22",
+    "matchday": 33,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:49:03",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2021-22_34",
+    "season": "2021-22",
+    "matchday": 34,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:49:47",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_1",
+    "season": "2022-23",
+    "matchday": 1,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:50:36",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_2",
+    "season": "2022-23",
+    "matchday": 2,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:51:18",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_3",
+    "season": "2022-23",
+    "matchday": 3,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:52:08",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_4",
+    "season": "2022-23",
+    "matchday": 4,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:52:54",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_5",
+    "season": "2022-23",
+    "matchday": 5,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:53:38",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_6",
+    "season": "2022-23",
+    "matchday": 6,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:54:17",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_7",
+    "season": "2022-23",
+    "matchday": 7,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:55:03",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_8",
+    "season": "2022-23",
+    "matchday": 8,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:55:45",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_9",
+    "season": "2022-23",
+    "matchday": 9,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:56:32",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_10",
+    "season": "2022-23",
+    "matchday": 10,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:57:20",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_11",
+    "season": "2022-23",
+    "matchday": 11,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:58:03",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_12",
+    "season": "2022-23",
+    "matchday": 12,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:58:46",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_13",
+    "season": "2022-23",
+    "matchday": 13,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 00:59:31",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_14",
+    "season": "2022-23",
+    "matchday": 14,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 01:00:17",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2022-23_15",
+    "season": "2022-23",
+    "matchday": 15,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 01:01:04",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "https://www.kicker.de/leipzig-gegen-mainz-2024-bundesliga-4862201",
+    "season": "2023-24",
+    "matchday": 27,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:45:11"
+  },
+  {
+    "url": "https://www.kicker.de/leverkusen-gegen-hoffenheim-2024-bundesliga-4862202",
+    "season": "2023-24",
+    "matchday": 27,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:45:51"
+  },
+  {
+    "url": "https://www.kicker.de/mgladbach-gegen-freiburg-2024-bundesliga-4862204",
+    "season": "2023-24",
+    "matchday": 27,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:47:19"
+  },
+  {
+    "url": "https://www.kicker.de/stuttgart-gegen-heidenheim-2024-bundesliga-4862208",
+    "season": "2023-24",
+    "matchday": 27,
+    "error": "scrape_full_match returned None",
+    "timestamp": "2025-12-17 06:48:10"
+  },
+  {
+    "url": "matchday_2023-24_28",
+    "season": "2023-24",
+    "matchday": 28,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:48:22",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2023-24_29",
+    "season": "2023-24",
+    "matchday": 29,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:49:22",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2023-24_30",
+    "season": "2023-24",
+    "matchday": 30,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:50:33",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2023-24_31",
+    "season": "2023-24",
+    "matchday": 31,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:51:41",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2023-24_32",
+    "season": "2023-24",
+    "matchday": 32,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:51:48",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2023-24_33",
+    "season": "2023-24",
+    "matchday": 33,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:51:56",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2023-24_34",
+    "season": "2023-24",
+    "matchday": 34,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:00",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_1",
+    "season": "2024-25",
+    "matchday": 1,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:04",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_2",
+    "season": "2024-25",
+    "matchday": 2,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:08",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_3",
+    "season": "2024-25",
+    "matchday": 3,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:12",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_4",
+    "season": "2024-25",
+    "matchday": 4,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:15",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_5",
+    "season": "2024-25",
+    "matchday": 5,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:20",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_6",
+    "season": "2024-25",
+    "matchday": 6,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:23",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_7",
+    "season": "2024-25",
+    "matchday": 7,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:28",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_8",
+    "season": "2024-25",
+    "matchday": 8,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:35",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_9",
+    "season": "2024-25",
+    "matchday": 9,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:44",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_10",
+    "season": "2024-25",
+    "matchday": 10,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:47",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_11",
+    "season": "2024-25",
+    "matchday": 11,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:50",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_12",
+    "season": "2024-25",
+    "matchday": 12,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:55",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_13",
+    "season": "2024-25",
+    "matchday": 13,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:52:59",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_14",
+    "season": "2024-25",
+    "matchday": 14,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:03",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_15",
+    "season": "2024-25",
+    "matchday": 15,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:07",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_16",
+    "season": "2024-25",
+    "matchday": 16,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:12",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_17",
+    "season": "2024-25",
+    "matchday": 17,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:18",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_18",
+    "season": "2024-25",
+    "matchday": 18,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:23",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_19",
+    "season": "2024-25",
+    "matchday": 19,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:30",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_20",
+    "season": "2024-25",
+    "matchday": 20,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:37",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_21",
+    "season": "2024-25",
+    "matchday": 21,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:40",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_22",
+    "season": "2024-25",
+    "matchday": 22,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:43",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_23",
+    "season": "2024-25",
+    "matchday": 23,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:48",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_24",
+    "season": "2024-25",
+    "matchday": 24,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:52",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_25",
+    "season": "2024-25",
+    "matchday": 25,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:56",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_26",
+    "season": "2024-25",
+    "matchday": 26,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:53:59",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_27",
+    "season": "2024-25",
+    "matchday": 27,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:54:05",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_28",
+    "season": "2024-25",
+    "matchday": 28,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:54:11",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_29",
+    "season": "2024-25",
+    "matchday": 29,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:54:17",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_30",
+    "season": "2024-25",
+    "matchday": 30,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:54:22",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_31",
+    "season": "2024-25",
+    "matchday": 31,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:54:26",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_32",
+    "season": "2024-25",
+    "matchday": 32,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:54:33",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_33",
+    "season": "2024-25",
+    "matchday": 33,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:54:45",
+    "type": "matchday_fetch_failed"
+  },
+  {
+    "url": "matchday_2024-25_34",
+    "season": "2024-25",
+    "matchday": 34,
+    "error": "No matches found after 3 attempts",
+    "timestamp": "2025-12-17 06:54:51",
+    "type": "matchday_fetch_failed"
+  }
+]

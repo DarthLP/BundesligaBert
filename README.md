@@ -40,9 +40,10 @@ BundesligaBert/
 │   └── results/                # Model outputs and predictions
 ├── src/
 │   ├── data/
-│   │   └── kicker_scraper.py  # Web scraper for Kicker.de
+│   │   ├── kicker_scraper.py      # Web scraper for Kicker.de
+│   │   └── process_match_data.py  # Process raw data into structured features
 │   ├── features/
-│   │   └── preprocessing.py   # Text preprocessing and leakage removal (TODO)
+│   │   └── preprocessing.py       # Additional text preprocessing (if needed)
 │   ├── models/
 │   │   └── bert_module.py      # BERT fine-tuning module (TODO)
 │   └── visualization/
@@ -208,11 +209,120 @@ python -m tests.test_scraper_live --test-bremen
 - Tests structure, targets, leakage detection, and data quality
 - Saves results to `tests/artifacts/smoke_test_result.json`
 
+### `src/data/process_match_data.py`
+
+**Purpose:** Process raw match JSON files into structured features for econometric analysis
+
+**Usage:**
+```bash
+# Process all matches from all seasons
+python src/data/process_match_data.py
+
+# Process matches from a specific season
+python src/data/process_match_data.py --season 2022-23
+
+# Process a specific match file
+python src/data/process_match_data.py --input data/raw/season_2022-23/match_xxx.json
+```
+
+**Key Features:**
+- **Robust Target Extraction** with imputation logic:
+  - Preserves raw target values for reference
+  - Standard extraction from metadata and regex patterns
+  - Intelligent imputation for missing values (4 scenarios)
+  - Calculates excess time (Actual - Announced)
+  
+- **Phase Separation**: Strictly separates events into:
+  - Phase 1: 1st Half Regular (minutes 1-45)
+  - Phase 2: Halftime Gap (between halves)
+  - Phase 3: 2nd Half Regular (minutes 46-90)
+  - Phase 4: Overtime (45+ and 90+)
+
+- **Feature Engineering**:
+  - Regular features: Goals, Cards, Subs, VAR, Injuries (by half)
+  - Overtime features: Same features for overtime periods
+  - Corona/Ghost game flags
+  - Score timelines with corrected overtime minutes
+
+- **BERT Input Construction**:
+  - Smart truncation preserving critical events
+  - Context-aware (pre-match, halftime)
+  - Includes Corona flag and 1st half stats
+  - Token-aware (targets ~400 words, ~512 tokens max)
+
+- **Data Quality Checks**:
+  - Validates required cutoff markers (Anpfiff, Halbzeitpfiff, etc.)
+  - Verifies score_timeline matches final_score
+  - Fixes overtime minutes in timelines (90 → 90+x)
+
+**Output Structure:**
+```json
+{
+  "match_id": "...",
+  "season": "2022-23",
+  "metadata": {
+    "home": "...",
+    "away": "...",
+    "attendance": 30000,
+    "final_score": "2:1",
+    "matchday": 1,
+    "is_sold_out": false,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {...}
+  },
+  "targets": {
+    "announced_45": 2,
+    "actual_45": 3,
+    "excess_45": 1,
+    "announced_90": 4,
+    "actual_90": 5,
+    "excess_90": 1,
+    "targets_raw": {...}
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "target_missing_45": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_announced_45": false,
+    ...
+  },
+  "features_regular": {
+    "goals_1st": 1,
+    "cards_1st": 2,
+    "subs_1st": 3,
+    "var_1st": 0,
+    "injuries_1st": 0,
+    ...
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_cards_45": 1,
+    ...
+  },
+  "bert_input_45": "[META] Home: ... Corona: Normal [PRE] ... [START] [MIN_1] ...",
+  "bert_input_90": "[META] Home: ... Corona: Normal [STATS_1ST] Cards_1st: 2 ...",
+  "bert_input_45_tokens": 387,
+  "bert_input_90_tokens": 421,
+  "overtime_ticker_45": [...],
+  "overtime_ticker_90": [...]
+}
+```
+
+**Target Imputation Scenarios:**
+1. **Missing Board, Short Game**: If Announced is null and Actual ≤ 1 → Set Announced = 0
+2. **Missing Board, Long Game**: If Announced is null and Actual > 1 → Keep Announced = null (mark as missing)
+3. **Missing Whistle, Valid Board**: If Actual is null and Announced > 0 → Set Actual = Announced
+4. **Both Missing**: If both are null → Set both = 0
+5. **Negative Excess (Announced > Actual)**: If Announced > Actual → Set Actual = Announced (we probably didn't capture the actual event)
+
+**Output:** Processed JSON files in `data/processed/season_{season}/match_{match_id}.json`
+
 ### `src/features/preprocessing.py` (TODO)
 
-**Purpose:** Text preprocessing and leakage removal utilities
+**Purpose:** Additional text preprocessing utilities (if needed beyond process_match_data.py)
 
-**Status:** Not yet implemented
+**Status:** Not yet implemented (most preprocessing is handled in process_match_data.py)
 
 ### `src/models/bert_module.py` (TODO)
 
@@ -251,12 +361,21 @@ The scraper implements strict leakage prevention:
 - **2022-23, 2023-24**: Post-Corona, Clean
 - **2024-25**: Placebo Test Season
 
+## Data Processing Pipeline
+
+1. **Raw Data Collection**: `src/data/kicker_scraper.py` scrapes match data
+2. **Data Processing**: `src/data/process_match_data.py` processes raw data into features
+3. **Model Training**: `src/models/bert_module.py` fine-tunes BERT (TODO)
+4. **Analysis**: Calculate residuals and perform Placebo DID analysis (TODO)
+5. **Visualization**: Create plots and tables for results (TODO)
+
 ## Next Steps
 
-1. **Preprocessing Module**: Implement text cleaning and feature engineering
-2. **BERT Fine-Tuning**: Implement regression model using `deepset/gbert-base`
-3. **Analysis**: Calculate residuals and perform Placebo DID analysis
-4. **Visualization**: Create plots and tables for results
+1. ✅ **Data Collection**: Web scraper implemented and tested
+2. ✅ **Data Processing**: Feature engineering and BERT input construction implemented
+3. **BERT Fine-Tuning**: Implement regression model using `deepset/gbert-base` (TODO)
+4. **Analysis**: Calculate residuals and perform Placebo DID analysis (TODO)
+5. **Visualization**: Create plots and tables for results (TODO)
 
 ## License
 
