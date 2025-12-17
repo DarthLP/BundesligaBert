@@ -1,0 +1,72 @@
+================================================================================
+Model 3A: Placebo Baseline 1st Half (announced_45)
+================================================================================
+
+Hypothesis: Pressure coefficients should be INSIGNIFICANT (p > 0.05) in 1st half
+If significant, this suggests the model might be flawed.
+
+Formula: announced_45 ~ goals_1st + subs_1st + cards_1st + var_1st + injuries_1st + disturbances_1st + pressure_add_45 + pressure_draw_45 + pressure_end_45 + C(season)
+
+Samples: 1100
+Train R² Adjusted: 0.2426
+AIC: 3364.8933
+
+================================================================================
+Model Summary:
+================================================================================
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:           announced_45   R-squared:                       0.253
+Model:                            OLS   Adj. R-squared:                  0.243
+Method:                 Least Squares   F-statistic:                     24.47
+Date:                Wed, 17 Dec 2025   Prob (F-statistic):           1.03e-58
+Time:                        23:02:34   Log-Likelihood:                -1666.4
+No. Observations:                1100   AIC:                             3365.
+Df Residuals:                    1084   BIC:                             3445.
+Df Model:                          15                                         
+Covariance Type:            nonrobust                                         
+========================================================================================
+                           coef    std err          t      P>|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------
+Intercept               -0.1174      0.121     -0.970      0.332      -0.355       0.120
+C(season)[T.2018-19]     0.0383      0.178      0.215      0.830      -0.311       0.387
+C(season)[T.2019-20]     0.1368      0.110      1.241      0.215      -0.079       0.353
+C(season)[T.2020-21]    -0.0127      0.124     -0.103      0.918      -0.256       0.230
+C(season)[T.2021-22]     0.1131      0.136      0.831      0.406      -0.154       0.380
+C(season)[T.2022-23]     0.6630      0.129      5.158      0.000       0.411       0.915
+C(season)[T.2023-24]     1.6752      0.121     13.865      0.000       1.438       1.912
+goals_1st                0.1031      0.033      3.091      0.002       0.038       0.168
+subs_1st                 0.2391      0.053      4.544      0.000       0.136       0.342
+cards_1st                0.0024      0.025      0.096      0.924      -0.047       0.051
+var_1st                  0.0865      0.025      3.398      0.001       0.037       0.136
+injuries_1st             0.2263      0.042      5.383      0.000       0.144       0.309
+disturbances_1st         0.0333      0.105      0.317      0.752      -0.173       0.240
+pressure_add_45          0.2340      0.136      1.723      0.085      -0.033       0.501
+pressure_draw_45        -0.0804      0.116     -0.693      0.489      -0.308       0.147
+pressure_end_45          0.1347      0.116      1.157      0.248      -0.094       0.363
+==============================================================================
+Omnibus:                      606.674   Durbin-Watson:                   1.975
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             9097.553
+Skew:                           2.202   Prob(JB):                         0.00
+Kurtosis:                      16.382   Cond. No.                         20.8
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+================================================================================
+Pressure Coefficient Analysis:
+================================================================================
+
+pressure_add_45 (Losing by 1) coefficient: 0.2340
+pressure_add_45 p-value: 0.0852
+pressure_add_45 significant: No
+
+pressure_draw_45 (Draw) coefficient: -0.0804
+pressure_draw_45 p-value: 0.4888
+pressure_draw_45 significant: No
+
+pressure_end_45 (Defending Lead) coefficient: 0.1347
+pressure_end_45 p-value: 0.2476
+pressure_end_45 significant: No

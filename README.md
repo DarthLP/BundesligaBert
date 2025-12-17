@@ -25,6 +25,7 @@ A BERT-based NLP model predicting Bundesliga stoppage time from live ticker text
 - Python 3.10
 - PyTorch, transformers, tokenizers, datasets, accelerate
 - pandas, numpy, scikit-learn
+- statsmodels (for econometric regression analysis)
 - selenium, undetected-chromedriver (for scraping)
 - matplotlib, seaborn (for visualization)
 - jupyterlab (for notebooks)
@@ -40,20 +41,29 @@ BundesligaBert/
 │   └── results/                # Model outputs and predictions
 ├── src/
 │   ├── data/
-│   │   ├── kicker_scraper.py      # Web scraper for Kicker.de
-│   │   └── process_match_data.py  # Process raw data into structured features
+│   │   ├── kicker_scraper.py         # Web scraper for Kicker.de
+│   │   ├── process_match_data.py     # Process raw data into structured features
+│   │   └── retry_failed_matches.py   # Retry failed match downloads
+│   ├── analysis/
+│   │   ├── descriptive_stats.py      # Descriptive statistics and visualizations
+│   │   └── diagnose_negative_correlation.py  # Diagnostic analysis
 │   ├── features/
-│   │   └── preprocessing.py       # Additional text preprocessing (if needed)
+│   │   └── preprocessing.py          # Additional text preprocessing (if needed)
 │   ├── models/
-│   │   └── bert_module.py      # BERT fine-tuning module (TODO)
+│   │   └── bert_module.py            # BERT fine-tuning module (TODO)
 │   └── visualization/
-│       └── plot_results.py     # Visualization utilities (TODO)
+│       └── plot_results.py          # Visualization utilities (TODO)
 ├── tests/
 │   └── test_scraper_live.py   # Integration tests for scraper
 ├── notebooks/                  # Jupyter notebooks for analysis
 ├── reports/
-│   ├── figures/                # Generated plots
-│   └── tables/                 # Generated tables
+│   ├── processed_data/
+│   │   ├── figures/            # Generated plots (19 figures from descriptive_stats.py)
+│   │   └── tables/             # Generated tables and reports
+│   └── regression/
+│       ├── tables/             # Regression model summaries and residuals
+│       ├── figures/            # Regression visualizations
+│       └── baseline_comparison_data.json  # Comparison metrics JSON
 ├── environment.yml             # Conda environment specification
 └── README.md                  # This file
 ```
@@ -229,7 +239,7 @@ python src/data/process_match_data.py --input data/raw/season_2022-23/match_xxx.
 - **Robust Target Extraction** with imputation logic:
   - Preserves raw target values for reference
   - Standard extraction from metadata and regex patterns
-  - Intelligent imputation for missing values (4 scenarios)
+  - Intelligent imputation for missing values (5 scenarios)
   - Calculates excess time (Actual - Announced)
   
 - **Phase Separation**: Strictly separates events into:
@@ -241,8 +251,17 @@ python src/data/process_match_data.py --input data/raw/season_2022-23/match_xxx.
 - **Feature Engineering**:
   - Regular features: Goals, Cards, Subs, VAR, Injuries (by half)
   - Overtime features: Same features for overtime periods
-  - Corona/Ghost game flags
+  - Corona/Ghost game flags (see Ghost Game Detection below)
   - Score timelines with corrected overtime minutes
+
+**Ghost Game Detection (`is_ghost_game` flag):**
+The `is_ghost_game` flag can have three values: `True`, `False`, or `None`.
+
+- **`True`**: Attendance is known and < 1500 (confirmed ghost game)
+- **`False`**: Non-corona season with missing attendance (data collection issue, not a ghost game), or attendance is known and ≥ 1500
+- **`None`**: Corona season (2019-20, 2020-21, 2021-22) with missing attendance (unknown/uncertain - likely a ghost game but not confirmed)
+
+**Rationale:** During COVID seasons, missing attendance data is more likely to indicate a ghost game (no fans allowed). For other seasons, missing attendance is treated as a data collection issue rather than indicating a ghost game.
 
 - **BERT Input Construction**:
   - Smart truncation preserving critical events
@@ -312,11 +331,150 @@ python src/data/process_match_data.py --input data/raw/season_2022-23/match_xxx.
 **Target Imputation Scenarios:**
 1. **Missing Board, Short Game**: If Announced is null and Actual ≤ 1 → Set Announced = 0
 2. **Missing Board, Long Game**: If Announced is null and Actual > 1 → Keep Announced = null (mark as missing)
-3. **Missing Whistle, Valid Board**: If Actual is null and Announced > 0 → Set Actual = Announced
+3. **Missing Whistle, Valid Board**: If Actual is null and Announced > 0 → Set Actual = Announced (sets `is_imputed_actual`)
 4. **Both Missing**: If both are null → Set both = 0
-5. **Negative Excess (Announced > Actual)**: If Announced > Actual → Set Actual = Announced (we probably didn't capture the actual event)
+5. **Negative Excess (Announced > Actual)**: If Announced > Actual → Set Actual = Announced (sets `is_imputed_announced`)
 
 **Output:** Processed JSON files in `data/processed/season_{season}/match_{match_id}.json`
+
+### `src/data/retry_failed_matches.py`
+
+**Purpose:** Retry scraping matches that failed during initial download
+
+**Usage:**
+```bash
+# Retry all failed matches
+python src/data/retry_failed_matches.py
+
+# Retry only matches from a specific season
+python src/data/retry_failed_matches.py --season 2023-24
+
+# Retry with verbose logging
+python src/data/retry_failed_matches.py --verbose
+```
+
+**Key Features:**
+- Reads failed matches from `data/failed_matches.json`
+- Retries scraping with same anti-ban measures as main scraper
+- Updates failed_matches.json (removes successfully scraped matches)
+- Supports season filtering
+- Comprehensive logging
+
+**Output:** Retries scraping and updates `data/failed_matches.json`
+
+### `src/analysis/descriptive_stats.py`
+
+**Purpose:** Generate comprehensive descriptive statistics and visualizations for processed match data
+
+**Usage:**
+```bash
+# Run from project root
+python src/analysis/descriptive_stats.py
+
+# Or as module
+python -m src.analysis.descriptive_stats
+```
+
+**Key Features:**
+- **Data Integrity Analysis**: Imputation rates, missing data, ghost games
+- **Target Variable Analysis**: Announced vs actual time distributions, time creep analysis
+- **Excess Time Analysis**: Distribution of excess time (actual - announced)
+- **Event Distributions**: Goals, subs, cards, VAR, injuries, disturbances by half
+- **Overtime Analysis**: Overtime event patterns and chaos metrics
+- **Bias & Pressure Analysis**: Home bias, attendance effects, crowd pressure
+
+**Output:**
+- Figures: `reports/processed_data/figures/*.png` (19 figures)
+- Tables: `reports/processed_data/tables/*.csv`
+- Report: `reports/processed_data/tables/descriptive_report.txt`
+
+### `src/analysis/diagnose_negative_correlation.py`
+
+**Purpose:** Diagnostic script to investigate negative correlation between goals_2nd/subs_2nd and announced_90
+
+**Usage:**
+```bash
+python src/analysis/diagnose_negative_correlation.py
+```
+
+**Key Features:**
+- Analyzes potential causes of negative correlation:
+  1. Missing data bias (target_missing_90)
+  2. Imputation effects
+  3. Selection bias
+  4. Conditional correlations by data availability
+- Splits analysis by missing data status
+- Analyzes extreme cases (high events, low announced time)
+
+**Output:** Console output with diagnostic analysis
+
+### `src/analysis/regression_analysis.py`
+
+**Purpose:** Econometric regression analysis to test hypotheses about crowd pressure effects on referee decisions
+
+**Usage:**
+```bash
+# Run from project root
+python src/analysis/regression_analysis.py
+
+# Or as module
+python -m src.analysis.regression_analysis
+```
+
+**Key Features:**
+- **Model 1: Baseline 2nd Half** - Predicts `announced_90` using game events and pressure variables
+  - Train/test split: 2017-24 train, 2024-25 test
+  - Handles unseen season (2024-25) by using 2023-24 season coefficient
+  - Calculates RMSE and MAE on test set
+  
+- **Model 2: Excess Time 2nd Half** - Analyzes `excess_90` (actual - announced) to detect bias
+  - Tests significance of crowd pressure coefficients
+  
+- **Model 3A: Placebo Baseline 1st Half** - Tests if pressure effects exist in 1st half (should be insignificant)
+  - Predicts `announced_45` using 1st half events
+  
+- **Model 3B: Placebo Excess 1st Half** - Tests if pressure effects exist in 1st half excess time
+  - Analyzes `excess_45` (actual - announced) for 1st half
+
+**Pressure Variables:**
+- **Crowd Pressure: Extend Time** (`pressure_add`): When home team is losing by 1 in close game (desperate, wants MORE time)
+  - Formula: `attendance_norm × home_losing_1 × is_close_game`
+  - Expected coefficient: **Positive** (more attendance when losing → more stoppage time)
+  
+- **Crowd Pressure: Draw** (`pressure_draw`): When game is tied in close game (cautious, may waste time)
+  - Formula: `attendance_norm × draw × is_close_game`
+  - Expected coefficient: **Unknown** (could be positive or negative depending on behavior)
+  
+- **Crowd Pressure: End Game** (`pressure_end`): When home team is defending 1-goal lead in close game (wants LESS time)
+  - Formula: `attendance_norm × home_defending × is_close_game`
+  - Expected coefficient: **Negative** (more attendance when defending → less stoppage time)
+
+**Missing Attendance Handling:**
+The regression uses season-specific median imputation for missing attendance data:
+- **COVID seasons** (2019-20, 2020-21, 2021-22): Missing attendance → 0 (ghost games, no crowd pressure)
+- **Non-COVID seasons**: Missing attendance → season-specific median:
+  - 2017-18: 43,250
+  - 2018-19: 39,100
+  - 2022-23: 45,147
+  - 2023-24: 33,305
+  - 2024-25: 33,305 (uses 2023-24 median as proxy)
+
+This preserves sample size (20-31% of matches in non-COVID seasons) while using realistic attendance values for pressure calculations.
+
+**Technical Details:**
+- Uses `statsmodels.formula.api.ols` for regression
+- Separates losing by 1 vs. drawing (avoids canceling out effects)
+- Removes `is_blowout` variable (avoids multicollinearity with `close_game`)
+- Filters out imputed actual values (prevents attenuation bias)
+- Handles unseen seasons in predictions (2024-25 → uses 2023-24 coefficient)
+
+**Output:**
+- Model summaries: `reports/regression/tables/regression_*_summary.txt` (4 files)
+- Comparison metrics: `reports/regression/baseline_comparison_data.json`
+- Residuals CSV: `reports/regression/tables/residuals_*.csv` (4 files)
+- Visualizations:
+  - `reports/regression/figures/plot_bias_comparison.png` - Pressure coefficient comparison
+  - `reports/regression/figures/plot_predicted_vs_actual.png` - Scatter plots for all models
 
 ### `src/features/preprocessing.py` (TODO)
 
@@ -365,17 +523,19 @@ The scraper implements strict leakage prevention:
 
 1. **Raw Data Collection**: `src/data/kicker_scraper.py` scrapes match data
 2. **Data Processing**: `src/data/process_match_data.py` processes raw data into features
-3. **Model Training**: `src/models/bert_module.py` fine-tunes BERT (TODO)
-4. **Analysis**: Calculate residuals and perform Placebo DID analysis (TODO)
-5. **Visualization**: Create plots and tables for results (TODO)
+3. **Descriptive Analysis**: `src/analysis/descriptive_stats.py` generates statistics and visualizations
+4. **Econometric Analysis**: `src/analysis/regression_analysis.py` performs regression analysis with pressure variables
+5. **Model Training**: `src/models/bert_module.py` fine-tunes BERT (TODO)
+6. **Residual Analysis**: Calculate residuals (Actual - Predicted) and perform Placebo DID analysis (TODO)
 
 ## Next Steps
 
 1. ✅ **Data Collection**: Web scraper implemented and tested
 2. ✅ **Data Processing**: Feature engineering and BERT input construction implemented
-3. **BERT Fine-Tuning**: Implement regression model using `deepset/gbert-base` (TODO)
-4. **Analysis**: Calculate residuals and perform Placebo DID analysis (TODO)
-5. **Visualization**: Create plots and tables for results (TODO)
+3. ✅ **Descriptive Analysis**: Comprehensive statistics and visualizations implemented
+4. ✅ **Econometric Analysis**: Regression analysis with pressure variables implemented
+5. **BERT Fine-Tuning**: Implement regression model using `deepset/gbert-base` (TODO)
+6. **Residual Analysis**: Calculate residuals (Actual - Predicted) and perform Placebo DID analysis (TODO)
 
 ## License
 

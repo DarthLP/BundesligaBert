@@ -1,0 +1,66 @@
+================================================================================
+Model 3B: Placebo Excess Time 1st Half (excess_45)
+================================================================================
+
+Hypothesis: Pressure coefficients should be INSIGNIFICANT (p > 0.05) in 1st half
+If significant, this suggests the model might be flawed.
+
+Formula: excess_45 ~ ot_goals_45 + ot_subs_45 + ot_cards_45 + ot_var_45 + ot_injuries_45 + ot_disturbances_45 + pressure_add_45 + pressure_draw_45 + pressure_end_45
+
+Samples: 1078
+Train R² Adjusted: 0.3015
+AIC: 2457.4116
+
+================================================================================
+Model Summary:
+================================================================================
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:              excess_45   R-squared:                       0.307
+Model:                            OLS   Adj. R-squared:                  0.302
+Method:                 Least Squares   F-statistic:                     52.66
+Date:                Wed, 17 Dec 2025   Prob (F-statistic):           3.43e-79
+Time:                        23:02:34   Log-Likelihood:                -1218.7
+No. Observations:                1078   AIC:                             2457.
+Df Residuals:                    1068   BIC:                             2507.
+Df Model:                           9                                         
+Covariance Type:            nonrobust                                         
+======================================================================================
+                         coef    std err          t      P>|t|      [0.025      0.975]
+--------------------------------------------------------------------------------------
+Intercept              0.3379      0.032     10.456      0.000       0.275       0.401
+ot_goals_45            0.4777      0.112      4.260      0.000       0.258       0.698
+ot_subs_45             1.9336      0.205      9.415      0.000       1.531       2.337
+ot_cards_45            0.2872      0.072      4.001      0.000       0.146       0.428
+ot_var_45              0.2694      0.073      3.675      0.000       0.126       0.413
+ot_injuries_45         0.9055      0.161      5.620      0.000       0.589       1.222
+ot_disturbances_45     2.7754      0.289      9.607      0.000       2.209       3.342
+pressure_add_45       -0.0736      0.086     -0.858      0.391      -0.242       0.095
+pressure_draw_45      -0.0225      0.064     -0.352      0.725      -0.148       0.103
+pressure_end_45       -0.0380      0.069     -0.547      0.584      -0.174       0.098
+==============================================================================
+Omnibus:                      890.550   Durbin-Watson:                   2.155
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):            84364.008
+Skew:                           3.180   Prob(JB):                         0.00
+Kurtosis:                      45.869   Cond. No.                         13.4
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+================================================================================
+Pressure Coefficient Analysis:
+================================================================================
+
+pressure_add_45 (Losing by 1) coefficient: -0.0736
+pressure_add_45 p-value: 0.3913
+pressure_add_45 significant: No
+
+pressure_draw_45 (Draw) coefficient: -0.0225
+pressure_draw_45 p-value: 0.7249
+pressure_draw_45 significant: No
+
+pressure_end_45 (Defending Lead) coefficient: -0.0380
+pressure_end_45 p-value: 0.5843
+pressure_end_45 significant: No

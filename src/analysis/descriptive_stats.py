@@ -40,6 +40,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from matplotlib.patches import Rectangle
 
 # Configure logging
 logging.basicConfig(
@@ -585,20 +586,20 @@ def plot_event_distributions_combined(df: pd.DataFrame, output_dir: Path):
 
 def plot_overtime_chaos(df: pd.DataFrame, output_dir: Path):
     """
-    Plot overtime chaos: average OT events per OT minute per season (including VAR, injuries and disturbances).
+    Plot overtime chaos: average OT events per game per season (goals, subs, cards, VAR, injuries, disturbances).
     
     Only includes games with actual_90 > 90 (positive overtime).
     If actual_90 is None, the game is excluded.
     If we don't have a value for ot_*_45 but we do for ot_*_90, still use the 90 minute data.
     
-    Calculates: (sum of OT events) / (sum of OT minutes) for each event type per season.
-    OT minutes = max(0, actual_90 - 90) where actual_90 is not None.
+    Calculates: (sum of OT events) / (count of games with overtime) for each event type per season.
+    This gives the average number of each event type per game that had overtime.
     
     Args:
         df: DataFrame with match data
         output_dir: Directory to save plots
     """
-    logger.info("Plotting overtime chaos (events per OT minute)")
+    logger.info("Plotting overtime chaos (average events per game)")
     
     # Work with a copy to avoid modifying the original
     df_ot = df.copy()
@@ -633,55 +634,86 @@ def plot_overtime_chaos(df: pd.DataFrame, output_dir: Path):
     for col in ot_cols_90:
         if col in df_ot_positive.columns:
             df_ot_positive[col] = df_ot_positive[col].fillna(0)
+        else:
+            # If column doesn't exist, create it with zeros
+            logger.warning(f"Column {col} not found in dataframe, creating with zeros")
+            df_ot_positive[col] = 0
     
-    # Calculate events per OT minute per season
-    # For each season: sum(events) / sum(OT_minutes)
-    ot_stats = df_ot_positive.groupby('season').agg({
-        'ot_goals_90': 'sum',
-        'ot_subs_90': 'sum',
-        'ot_cards_90': 'sum',
-        'ot_var_90': 'sum',
-        'ot_injuries_90': 'sum',
-        'ot_disturbances_90': 'sum',
-        'ot_minutes': 'sum'
-    }).reset_index()
+    # Log VAR data availability for debugging
+    if 'ot_var_90' in df_ot_positive.columns:
+        var_sum = df_ot_positive['ot_var_90'].sum()
+        var_nonzero = (df_ot_positive['ot_var_90'] > 0).sum()
+        logger.info(f"VAR data: total sum={var_sum}, games with VAR={var_nonzero} out of {len(df_ot_positive)}")
+    else:
+        logger.warning("ot_var_90 column not found in dataframe!")
     
-    # Calculate rates (events per OT minute)
-    ot_stats['goals_per_ot_min'] = ot_stats['ot_goals_90'] / ot_stats['ot_minutes']
-    ot_stats['subs_per_ot_min'] = ot_stats['ot_subs_90'] / ot_stats['ot_minutes']
-    ot_stats['cards_per_ot_min'] = ot_stats['ot_cards_90'] / ot_stats['ot_minutes']
-    ot_stats['var_per_ot_min'] = ot_stats['ot_var_90'] / ot_stats['ot_minutes']
-    ot_stats['injuries_per_ot_min'] = ot_stats['ot_injuries_90'] / ot_stats['ot_minutes']
-    ot_stats['disturbances_per_ot_min'] = ot_stats['ot_disturbances_90'] / ot_stats['ot_minutes']
+    # Calculate average events per game per season
+    # For each season: sum(events) / count(games with overtime)
+    # Build aggregation dict, ensuring all columns exist
+    agg_dict = {'match_id': 'count'}  # Count games with overtime
+    for col in ['ot_goals_90', 'ot_subs_90', 'ot_cards_90', 'ot_var_90', 'ot_injuries_90', 'ot_disturbances_90']:
+        if col in df_ot_positive.columns:
+            agg_dict[col] = 'sum'
+        else:
+            logger.warning(f"Column {col} missing, will use 0")
+            df_ot_positive[col] = 0
+            agg_dict[col] = 'sum'
+    
+    ot_stats = df_ot_positive.groupby('season').agg(agg_dict).reset_index()
+    ot_stats.rename(columns={'match_id': 'games_with_ot'}, inplace=True)
+    
+    # Calculate average events per game (including VAR)
+    ot_stats['goals_per_game'] = ot_stats['ot_goals_90'] / ot_stats['games_with_ot']
+    ot_stats['subs_per_game'] = ot_stats['ot_subs_90'] / ot_stats['games_with_ot']
+    ot_stats['cards_per_game'] = ot_stats['ot_cards_90'] / ot_stats['games_with_ot']
+    ot_stats['var_per_game'] = ot_stats['ot_var_90'] / ot_stats['games_with_ot']
+    ot_stats['injuries_per_game'] = ot_stats['ot_injuries_90'] / ot_stats['games_with_ot']
+    ot_stats['disturbances_per_game'] = ot_stats['ot_disturbances_90'] / ot_stats['games_with_ot']
+    
+    # Log VAR stats per season for debugging
+    logger.info("VAR per game by season:")
+    for _, row in ot_stats.iterrows():
+        logger.info(f"  {row['season']}: {row['var_per_game']:.4f} (total VAR: {row['ot_var_90']}, games: {row['games_with_ot']})")
     
     fig, ax = plt.subplots(figsize=(12, 6))
     
     x = np.arange(len(ot_stats))
     width = 0.6
     
-    # Stacked bars showing events per OT minute
-    ax.bar(x, ot_stats['goals_per_ot_min'], width, label='Goals', color='green', alpha=0.7)
-    ax.bar(x, ot_stats['subs_per_ot_min'], width, bottom=ot_stats['goals_per_ot_min'], label='Subs', color='blue', alpha=0.7)
-    ax.bar(x, ot_stats['cards_per_ot_min'], width, 
-           bottom=ot_stats['goals_per_ot_min'] + ot_stats['subs_per_ot_min'], 
-           label='Cards', color='red', alpha=0.7)
-    ax.bar(x, ot_stats['var_per_ot_min'], width,
-           bottom=ot_stats['goals_per_ot_min'] + ot_stats['subs_per_ot_min'] + ot_stats['cards_per_ot_min'],
-           label='VAR', color='yellow', alpha=0.7)
-    ax.bar(x, ot_stats['injuries_per_ot_min'], width,
-           bottom=ot_stats['goals_per_ot_min'] + ot_stats['subs_per_ot_min'] + ot_stats['cards_per_ot_min'] + ot_stats['var_per_ot_min'],
-           label='Injuries', color='orange', alpha=0.7)
-    ax.bar(x, ot_stats['disturbances_per_ot_min'], width,
-           bottom=ot_stats['goals_per_ot_min'] + ot_stats['subs_per_ot_min'] + ot_stats['cards_per_ot_min'] + ot_stats['var_per_ot_min'] + ot_stats['injuries_per_ot_min'],
-           label='Disturbances', color='purple', alpha=0.7)
+    # Calculate bottom positions for stacking
+    bottom_goals = 0
+    bottom_subs = ot_stats['goals_per_game']
+    bottom_cards = ot_stats['goals_per_game'] + ot_stats['subs_per_game']
+    bottom_var = ot_stats['goals_per_game'] + ot_stats['subs_per_game'] + ot_stats['cards_per_game']
+    bottom_injuries = bottom_var + ot_stats['var_per_game']
+    bottom_disturbances = bottom_injuries + ot_stats['injuries_per_game']
+    
+    # Stacked bars showing average events per game (including VAR)
+    # Always plot VAR even if values are 0, to ensure it appears in legend
+    bars_goals = ax.bar(x, ot_stats['goals_per_game'], width, label='Goals', color='green', alpha=0.7)
+    bars_subs = ax.bar(x, ot_stats['subs_per_game'], width, bottom=bottom_subs, label='Subs', color='blue', alpha=0.7)
+    bars_cards = ax.bar(x, ot_stats['cards_per_game'], width, bottom=bottom_cards, label='Cards', color='red', alpha=0.7)
+    bars_var = ax.bar(x, ot_stats['var_per_game'], width, bottom=bottom_var, label='VAR', color='yellow', alpha=0.7)
+    bars_injuries = ax.bar(x, ot_stats['injuries_per_game'], width, bottom=bottom_injuries, label='Injuries', color='orange', alpha=0.7)
+    bars_disturbances = ax.bar(x, ot_stats['disturbances_per_game'], width, bottom=bottom_disturbances, label='Disturbances', color='purple', alpha=0.7)
     
     ax.set_xlabel('Season', fontsize=12)
-    ax.set_ylabel('Average Events per OT Minute', fontsize=12)
-    ax.set_title('Overtime Chaos: Average OT Events per OT Minute per Season\n(Only games with actual_90 > 90)', 
+    ax.set_ylabel('Average Events per Game', fontsize=12)
+    ax.set_title('Overtime Chaos: Average OT Events per Game per Season\n(Only games with actual_90 > 90)', 
                  fontsize=14, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(ot_stats['season'], rotation=45, ha='right')
-    ax.legend()
+    
+    # Explicitly set legend - create explicit handles to ensure VAR appears even if values are zero
+    legend_elements = [
+        Rectangle((0, 0), 1, 1, facecolor='green', alpha=0.7, label='Goals'),
+        Rectangle((0, 0), 1, 1, facecolor='blue', alpha=0.7, label='Subs'),
+        Rectangle((0, 0), 1, 1, facecolor='red', alpha=0.7, label='Cards'),
+        Rectangle((0, 0), 1, 1, facecolor='yellow', alpha=0.7, label='VAR'),
+        Rectangle((0, 0), 1, 1, facecolor='orange', alpha=0.7, label='Injuries'),
+        Rectangle((0, 0), 1, 1, facecolor='purple', alpha=0.7, label='Disturbances')
+    ]
+    ax.legend(handles=legend_elements, loc='upper left')
     ax.grid(axis='y', alpha=0.3)
     ax.set_ylim(bottom=0)
     
