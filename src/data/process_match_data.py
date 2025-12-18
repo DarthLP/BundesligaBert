@@ -33,8 +33,15 @@ import argparse
 import json
 import logging
 import re
+import warnings
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+
+try:
+    from transformers import AutoTokenizer
+    TOKENIZER_AVAILABLE = True
+except ImportError:
+    TOKENIZER_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -204,6 +211,31 @@ def is_substitution_event(text: str) -> bool:
     return False
 
 
+def clean_team_name(team_name: str) -> str:
+    """
+    Remove common prefixes from team names (FC, SV, etc.).
+    
+    Args:
+        team_name: Team name with possible prefixes
+        
+    Returns:
+        Cleaned team name without prefixes
+    """
+    if not team_name:
+        return team_name
+    
+    # Common prefixes to remove (case-insensitive)
+    prefixes = ['FC ', 'SV ', 'TSV ', 'VfL ', 'VfB ', '1. ', '1.FC ', 'SC ', 'SpVgg ', 'FSV ', 'SG ', 'SSV ']
+    
+    team_cleaned = team_name
+    for prefix in prefixes:
+        if team_cleaned.startswith(prefix):
+            team_cleaned = team_cleaned[len(prefix):]
+            break
+    
+    return team_cleaned.strip()
+
+
 def extract_score_at_minute(score_timeline: Dict[str, List[int]], minute: int, inclusive: bool = False) -> Tuple[int, int]:
     """
     Extract score at a specific minute from score timeline.
@@ -242,7 +274,9 @@ def is_critical_event(text: str) -> bool:
     """
     Check if an event is critical and should be preserved during truncation.
     
-    Critical events include goals, cards, substitutions, VAR, and injuries.
+    Critical events include: goals, cards (yellow/red/yellow-red), substitutions, VAR,
+    injuries, and disturbances (pitch invasions, pyrotechnics, etc.).
+    These events are NEVER removed during truncation.
     
     Args:
         text: Event text to check
@@ -314,59 +348,304 @@ def is_critical_event(text: str) -> bool:
     return False
 
 
-def construct_bert_input(metadata_str: str, events_list: List[str], max_words: int = 400) -> str:
+def construct_bert_input(metadata_str: str, events_list: List[str], max_tokens: int = 400, half: int = 45, early_period_minutes: int = 40) -> str:
     """
     Construct BERT input with smart truncation that preserves critical events.
     
-    Uses tail-priority truncation: removes earliest non-critical events first,
-    preserving the end of the half which is most critical for stoppage time.
+    Uses priority-based truncation with period-specific logic:
+    
+    For FIRST HALF (half=45, minutes 1-45):
+    1. Early period (1-40 min): Remove non-critical events FIRST
+    2. Late period (41-45 min): Preserve as much as possible (most critical for 1st half stoppage time)
+    
+    For SECOND HALF (half=90, minutes 46-90):
+    1. Early period (46-85 min): Remove non-critical events FIRST
+    2. Late period (86-90 min): Preserve as much as possible (most critical for 2nd half stoppage time)
+    
+    CRITICAL EVENTS (goals, cards, subs, VAR, injuries, disturbances) are NEVER removed.
+    Uses actual token counting with BERT tokenizer to ensure sequences stay under 512 tokens.
     
     Args:
-        metadata_str: Metadata string (e.g., "[META] Home: ... [START]")
-        events_list: List of formatted event strings (e.g., "[MIN_1] ...")
-        max_words: Maximum word count (default 400, gives ~520 tokens, safe under 512 limit)
+        metadata_str: Metadata string (e.g., "HomeTeam AwayTeam 81360 Krank" for first half, or "HomeTeam AwayTeam 81360 Stand 1:0 Krank C1:2 S1:1" for second half)
+        events_list: List of formatted event strings (e.g., "[20] ...")
+        max_tokens: Maximum token count (default 400, safe under 512 limit with special tokens)
+        half: Which half (45 for first half, 90 for second half) - determines period boundaries
+        early_period_minutes: Minutes considered "early period" for truncation priority
+            - For first half: default 40 (so late period is 41-45)
+            - For second half: default 85 (so late period is 86-90)
         
     Returns:
-        Final BERT input string within word limit
+        Final BERT input string within token limit
     """
+    # Determine late period start and adjust early period based on which half
+    if half == 45:
+        # First half: minutes 1-45, late period is 41-45
+        late_period_start = 41
+        # For first half, early period is 1-40 (default early_period_minutes=40 works)
+    elif half == 90:
+        # Second half: minutes 46-90, late period is 86-90
+        late_period_start = 86
+        # For second half, early period is 46-85, so adjust if using default
+        if early_period_minutes == 40:  # Default was for first half
+            early_period_minutes = 85  # Adjust for second half
+    else:
+        # Fallback: assume second half
+        late_period_start = 86
+        if early_period_minutes == 40:
+            early_period_minutes = 85
+    # Initialize tokenizer if available (lazy loading to avoid import errors)
+    tokenizer = None
+    if TOKENIZER_AVAILABLE:
+        try:
+            # Use same tokenizer as training script
+            tokenizer = AutoTokenizer.from_pretrained('distilbert-base-german-cased')
+        except Exception:
+            tokenizer = None
+    
+    # Helper function to count tokens accurately (for truncation decisions)
+    def count_tokens(text: str, accurate: bool = False) -> int:
+        """
+        Count tokens in text.
+        
+        Args:
+            text: Text to count tokens for
+            accurate: If True, use accurate counting (may be slower, no truncation). 
+                     If False, truncate to prevent warnings during counting.
+        """
+        if tokenizer:
+            # Suppress tokenizer warnings
+            with warnings.catch_warnings():
+                warnings.filterwarnings('ignore')
+                try:
+                    if accurate:
+                        # Accurate count - no truncation, but may be slow for very long texts
+                        # Use a high max_length to get accurate count
+                        tokens = tokenizer.encode(text, add_special_tokens=False, truncation=False, max_length=10000)
+                        return len(tokens)
+                    else:
+                        # Fast count - truncate to prevent warnings (for iteration)
+                        tokens = tokenizer.encode(text, add_special_tokens=False, truncation=True, max_length=600)
+                        return len(tokens)
+                except Exception:
+                    # If encoding fails, fall back to word count
+                    return len(text.split())
+        else:
+            # Fallback to word count approximation if tokenizer unavailable
+            return len(text.split())
+    
+    # Helper function to extract minute from event string
+    def extract_minute_from_event(event: str) -> Optional[int]:
+        """Extract minute integer from event string like '20: text' or '45+2: text'."""
+        if not event:
+            return None
+        # Extract content before first colon (format: "20: text" or "45+2: text")
+        match = re.match(r'^([^:]+):', event)
+        if match:
+            minute_str = match.group(1).strip()
+            # Parse minute (handles "20" or "45+2" -> 45)
+            return parse_minute_to_int(minute_str)
+        return None
+    
     # Initial build
     all_text = metadata_str + ' ' + ' '.join(events_list)
-    word_count = len(all_text.split())
+    token_count = count_tokens(all_text)
     
     # If within limit, return immediately
-    if word_count <= max_words:
+    if token_count <= max_tokens:
         return all_text.strip()
     
     # Need to truncate - start with events list
     remaining_events = events_list.copy()
     
-    # Tail-priority truncation: remove earliest non-critical events
-    while word_count > max_words and len(remaining_events) > 0:
-        # Find the first non-critical event
-        removed = False
-        for i, event in enumerate(remaining_events):
-            # Extract text from event string (format: "[MIN_X] text")
-            # Try to extract the text part after the minute marker
-            event_text = event
-            if '] ' in event:
-                # Extract text after "[MIN_X] "
-                event_text = event.split('] ', 1)[1] if '] ' in event else event
-            
-            if not is_critical_event(event_text):
-                # Remove this non-critical event
-                remaining_events.pop(i)
-                removed = True
-                break
-        
-        # If all remaining events are critical, force remove the oldest one
-        if not removed and len(remaining_events) > 0:
-            remaining_events.pop(0)
-        
-        # Recalculate word count
-        all_text = metadata_str + ' ' + ' '.join(remaining_events)
-        word_count = len(all_text.split())
+    # Priority-based truncation with three periods:
+    # 1. Early (1-40 min): Remove non-critical FIRST
+    # 2. Middle (45-85 min): Remove non-critical SECOND (before late period)
+    # 3. Late (86-90 min): Preserve as much as possible
+    # CRITICAL EVENTS (goals, cards, subs, VAR, injuries, disturbances) are NEVER removed
+    # Use more aggressive truncation: remove multiple events at once if way over limit
+    max_iterations = 1000  # Safety limit to prevent infinite loops
+    iteration = 0
     
-    return all_text.strip()
+    while token_count > max_tokens and len(remaining_events) > 0 and iteration < max_iterations:
+        iteration += 1
+        removed = False
+        
+        # If way over limit, remove multiple events at once for efficiency
+        batch_remove = (token_count > max_tokens * 1.5) and len(remaining_events) > 10
+        
+        # Strategy 1: Remove non-critical events from early period first (1-40 minutes)
+        events_to_remove = []
+        for i, event in enumerate(remaining_events):
+            minute_int = extract_minute_from_event(event)
+            # Check if event is in early period
+            if minute_int is not None and minute_int <= early_period_minutes:
+                # Extract text from event string (format: "20: text")
+                event_text = event
+                if ': ' in event:
+                    event_text = event.split(': ', 1)[1] if ': ' in event else event
+                
+                # ONLY remove non-critical events from early period
+                # CRITICAL EVENTS are NEVER removed
+                if not is_critical_event(event_text):
+                    events_to_remove.append(i)
+                    if not batch_remove:
+                        break
+        
+        # Remove events (in reverse order to maintain indices)
+        if events_to_remove:
+            for i in reversed(events_to_remove):
+                remaining_events.pop(i)
+            removed = True
+        
+        # Strategy 2: If no early non-critical events, remove non-critical from any period EXCEPT late period
+        # This preserves late period which is most critical for stoppage time
+        if not removed:
+            events_to_remove = []
+            for i, event in enumerate(remaining_events):
+                minute_int = extract_minute_from_event(event)
+                # Skip late period events - preserve these
+                if minute_int is not None and minute_int >= late_period_start:
+                    continue
+                
+                # Extract text from event string (format: "20: text")
+                event_text = event
+                if ': ' in event:
+                    event_text = event.split(': ', 1)[1] if ': ' in event else event
+                
+                # ONLY remove non-critical events (not in late period)
+                # CRITICAL EVENTS are NEVER removed
+                if not is_critical_event(event_text):
+                    events_to_remove.append(i)
+                    if not batch_remove:
+                        break
+            
+            if events_to_remove:
+                for i in reversed(events_to_remove):
+                    remaining_events.pop(i)
+                removed = True
+        
+        # Strategy 3: If no early non-critical events remain, remove non-critical from any period
+        # (but late period should already be preserved if possible)
+        if not removed:
+            events_to_remove = []
+            for i, event in enumerate(remaining_events):
+                # Extract text from event string (format: "20: text")
+                event_text = event
+                if ': ' in event:
+                    event_text = event.split(': ', 1)[1] if ': ' in event else event
+                
+                # ONLY remove non-critical events
+                # CRITICAL EVENTS are NEVER removed
+                if not is_critical_event(event_text):
+                    events_to_remove.append(i)
+                    if not batch_remove:
+                        break
+            
+            if events_to_remove:
+                for i in reversed(events_to_remove):
+                    remaining_events.pop(i)
+                removed = True
+        
+        # Strategy 3: If all remaining events are critical, we cannot remove them
+        # Log a warning and break - we'll handle this in the final safety check
+        if not removed:
+            # All remaining events are critical - cannot remove any
+            logger.warning(
+                f"All remaining events are critical (goals/cards/subs/VAR/injuries/disturbances). "
+                f"Token count: {token_count}, Max: {max_tokens}, Events: {len(remaining_events)}. "
+                f"Cannot truncate further without losing critical information."
+            )
+            break
+        
+        # Recalculate token count
+        all_text = metadata_str + ' ' + ' '.join(remaining_events)
+        token_count = count_tokens(all_text)
+    
+    # Final safety check: if still too long, only remove non-critical events
+    # Respect period priorities: remove from early/middle before late period
+    # If all events are critical, we keep them all (even if over limit)
+    if token_count > max_tokens and len(remaining_events) > 0:
+        # Only remove non-critical events, prioritizing early/middle periods
+        while token_count > max_tokens and len(remaining_events) > 0:
+            # Find first non-critical event that's NOT in late period
+            removed = False
+            for i, event in enumerate(remaining_events):
+                minute_int = extract_minute_from_event(event)
+                # Skip late period events (86-90 min) - preserve these
+                if minute_int is not None and minute_int >= late_period_start:
+                    continue
+                
+                # Extract text and check if non-critical
+                event_text = event
+                if '] ' in event:
+                    event_text = event.split('] ', 1)[1] if '] ' in event else event
+                
+                # Remove non-critical event from early/middle period
+                if not is_critical_event(event_text):
+                    remaining_events.pop(i)
+                    removed = True
+                    break
+            
+            # If no early/middle non-critical events, check if we can remove late period non-critical
+            if not removed:
+                for i, event in enumerate(remaining_events):
+                    minute_int = extract_minute_from_event(event)
+                    # Only consider late period if no other options
+                    if minute_int is not None and minute_int >= late_period_start:
+                        event_text = event
+                        if ': ' in event:
+                            event_text = event.split(': ', 1)[1] if ': ' in event else event
+                        
+                        if not is_critical_event(event_text):
+                            remaining_events.pop(i)
+                            removed = True
+                            break
+            
+            # If all remaining events are critical, we cannot remove them
+            if not removed:
+                logger.warning(
+                    f"Final truncation stopped: remaining events are all critical. "
+                    f"Token count: {token_count}, Max: {max_tokens}. "
+                    f"Keeping all critical events even if over limit."
+                )
+                break
+            
+            # Recalculate token count
+            all_text = metadata_str + ' ' + ' '.join(remaining_events)
+            token_count = count_tokens(all_text)
+    
+    # Final check: If still over 512 tokens (with special tokens), force truncate
+    # This is a last resort - we preserve as much as possible but must stay under 512
+    final_text = all_text.strip()
+    
+    # Use accurate token counting for final check (no truncation during counting)
+    final_token_count = count_tokens(final_text, accurate=True)
+    
+    # Account for special tokens (CLS and SEP) - add 2 tokens
+    # We need final_token_count + 2 <= 512, so final_token_count <= 510
+    if final_token_count > 510:
+        # Force truncate using tokenizer's truncation
+        if tokenizer:
+            with warnings.catch_warnings():
+                warnings.filterwarnings('ignore')
+                # Truncate to 510 tokens (512 - 2 special tokens)
+                tokens = tokenizer.encode(final_text, add_special_tokens=False, truncation=True, max_length=510)
+                final_text = tokenizer.decode(tokens, skip_special_tokens=True)
+                
+                # Verify it's actually under 512 with special tokens
+                verify_tokens = tokenizer.encode(final_text, add_special_tokens=True)
+                if len(verify_tokens) > 512:
+                    # If still over, truncate more aggressively to 508
+                    tokens = tokenizer.encode(final_text, add_special_tokens=False, truncation=True, max_length=508)
+                    final_text = tokenizer.decode(tokens, skip_special_tokens=True)
+        else:
+            # Fallback: truncate by words (rough approximation)
+            words = final_text.split()
+            # Estimate: 510 tokens ≈ 390 words (510 / 1.3)
+            if len(words) > 390:
+                final_text = ' '.join(words[:390])
+    
+    return final_text.strip()
 
 
 def count_feature_in_events(events: List[Dict[str, Any]], feature_type: str, half: Optional[str] = None) -> int:
@@ -1057,9 +1336,6 @@ def process_match_data_final(raw_data: Dict[str, Any]) -> Dict[str, Any]:
                 # Phase 4: Overtime 2nd half (minute > 90 or contains "+")
                 phase_4_overtime_2nd.append(event)
     
-    # Build halftime context from Phase 2
-    halftime_context = ' '.join([event.get('text', '') for event in phase_2_events])
-    
     # ========== 3. FEATURE ENGINEERING ==========
     
     # A. Regular Features (minutes 0-45 & 46-90)
@@ -1107,23 +1383,7 @@ def process_match_data_final(raw_data: Dict[str, Any]) -> Dict[str, Any]:
     # ========== 4. TEXT CONSTRUCTION FOR BERT ==========
     
     # CRITICAL: Exclude all Phase 4 (Overtime) events to prevent leakage
-    
-    # Build prematch text (events with empty minute before first minute >= 1)
-    prematch_text_parts = []
-    for event in ticker_data:
-        minute_str = event.get('minute', '')
-        if not minute_str or minute_str.strip() == '':
-            text = event.get('text', '')
-            if 'anpfiff' not in text.lower():
-                prematch_text_parts.append(text)
-            else:
-                break  # Stop at "Anpfiff"
-        else:
-            minute_int = parse_minute_to_int(minute_str)
-            if minute_int is not None and minute_int >= 1:
-                break
-    
-    prematch_text = ' '.join(prematch_text_parts)
+    # CRITICAL: Never include prematch or halftime data in BERT inputs
     
     # Build Phase 1 events list (1st Half Regular only) - sorted by minute
     phase_1_events_sorted = sorted(phase_1_events, key=lambda e: (
@@ -1135,7 +1395,7 @@ def process_match_data_final(raw_data: Dict[str, Any]) -> Dict[str, Any]:
         minute_str = event.get('minute', '')
         text = event.get('text', '')
         if minute_str:
-            phase_1_events_list.append(f"[MIN_{minute_str}] {text}")
+            phase_1_events_list.append(f"{minute_str}: {text}")
     
     # Build Phase 3 events list (2nd Half Regular only) - sorted by minute
     phase_3_events_sorted = sorted(phase_3_events, key=lambda e: (
@@ -1147,80 +1407,82 @@ def process_match_data_final(raw_data: Dict[str, Any]) -> Dict[str, Any]:
         minute_str = event.get('minute', '')
         text = event.get('text', '')
         if minute_str:
-            phase_3_events_list.append(f"[MIN_{minute_str}] {text}")
+            phase_3_events_list.append(f"{minute_str}: {text}")
     
     # Get score at 45 for 2nd half input
     home_score_45, away_score_45 = extract_score_at_minute(score_timeline, 45, inclusive=True)
     
     # Construct BERT input strings with smart truncation
-    # IMPORTANT: Drop context (prematch/halftime) BEFORE truncating events
-    home = result['metadata']['home']
-    away = result['metadata']['away']
+    # CRITICAL: Never include prematch or halftime context in BERT inputs
+    home = clean_team_name(result['metadata']['home'])
+    away = clean_team_name(result['metadata']['away'])
     att = result['metadata']['attendance']
-    corona_flag = "Corona" if is_corona_season else "Normal"
     cards_1st = features_regular['cards_1st']
     subs_1st = features_regular['subs_1st']
     var_1st = features_regular['var_1st']
     injuries_1st = features_regular['injuries_1st']
     
-    # 1st Half BERT input
-    # Step 1: Build with prematch context and check word count
-    metadata_45_with_pre = f"[META] Home: {home} Away: {away} Attendance: {att} Corona: {corona_flag} [PRE] {prematch_text} [START]"
-    test_with_pre = metadata_45_with_pre + ' ' + ' '.join(phase_1_events_list)
-    word_count_with_pre = len(test_with_pre.split())
+    # 1st Half BERT input (no prematch context)
+    # Events are from minutes 1-45, so early period is 1-40, late period is 41-45
+    # Format: "HomeTeam AwayTeam [attendance] [Krank]"
+    metadata_parts_45 = [home, away]
+    if att is not None:
+        metadata_parts_45.append(str(att))
+    if is_corona_season:
+        metadata_parts_45.append("Krank")
+    metadata_45 = " ".join(metadata_parts_45)
+    bert_input_45_str = construct_bert_input(metadata_45, phase_1_events_list, max_tokens=400, half=45)
     
-    # Step 2: If too long, drop prematch context FIRST (before truncating events)
-    if word_count_with_pre > 400:
-        metadata_45 = f"[META] Home: {home} Away: {away} Attendance: {att} Corona: {corona_flag} [START]"
+    # 2nd Half BERT input (no halftime context)
+    # Events are from minutes 46-90, so early period is 46-85, late period is 86-90
+    # Format: "HomeTeam AwayTeam [attendance] Stand 1:1 [Krank]"
+    # Note: First half stats (C1, S1, V1, I1) are removed - not important for 2nd half prediction
+    metadata_parts_90 = [home, away]
+    if att is not None:
+        metadata_parts_90.append(str(att))
+    metadata_parts_90.append(f"Stand {home_score_45}:{away_score_45}")
+    if is_corona_season:
+        metadata_parts_90.append("Krank")
+    
+    metadata_90 = " ".join(metadata_parts_90)
+    bert_input_90_str = construct_bert_input(metadata_90, phase_3_events_list, max_tokens=400, half=90)
+    
+    # Season token injection: Prepend season token to help BERT understand temporal trends
+    # Future mapping: Map 2024-25 to 2023-24 to use modern weights for unseen season
+    # Use just start year: "2017-18" -> "[17]"
+    if season == "2024-25":
+        injection_token = "[23] "
     else:
-        metadata_45 = metadata_45_with_pre
+        # Extract start year: "2017-18" -> "17", "2023-24" -> "23"
+        start_year = season[:4]  # "2017-18" -> "2017"
+        year_short = start_year[2:]  # "2017" -> "17"
+        injection_token = f"[{year_short}] "
     
-    # Step 3: Now truncate events if needed
-    bert_input_45_str = construct_bert_input(metadata_45, phase_1_events_list, max_words=400)
+    # Prepend token to both BERT inputs
+    bert_input_45_str = injection_token + bert_input_45_str
+    bert_input_90_str = injection_token + bert_input_90_str
+    
+    # Store modified BERT inputs
     result['bert_input_45'] = bert_input_45_str
-    
-    # 2nd Half BERT input
-    # Step 1: Build with halftime context and check word count
-    # Build STATS string (only include stats if > 0 to save tokens)
-    stats_parts = [f"Cards_1st: {cards_1st}", f"Subs_1st: {subs_1st}"]
-    if var_1st > 0:
-        stats_parts.append(f"VAR_1st: {var_1st}")
-    if injuries_1st > 0:
-        stats_parts.append(f"Injuries_1st: {injuries_1st}")
-    stats_str = " ".join(stats_parts)
-    
-    metadata_90_with_half = (
-        f"[META] Home: {home} Away: {away} Score_45: {home_score_45}:{away_score_45} Corona: {corona_flag} "
-        f"[STATS_1ST] {stats_str} [HALF] {halftime_context} [START]"
-    )
-    test_with_half = metadata_90_with_half + ' ' + ' '.join(phase_3_events_list)
-    word_count_with_half = len(test_with_half.split())
-    
-    # Step 2: If too long, drop halftime context FIRST (before truncating events)
-    if word_count_with_half > 400:
-        metadata_90 = (
-            f"[META] Home: {home} Away: {away} Score_45: {home_score_45}:{away_score_45} Corona: {corona_flag} "
-            f"[STATS_1ST] {stats_str} [START]"
-        )
-    else:
-        metadata_90 = metadata_90_with_half
-    
-    # Step 3: Now truncate events if needed
-    bert_input_90_str = construct_bert_input(metadata_90, phase_3_events_list, max_words=400)
     result['bert_input_90'] = bert_input_90_str
     
-    # Calculate token counts (simple word-based approximation)
-    # BERT uses WordPiece tokenization, but word count is a reasonable approximation
-    def estimate_tokens(text: str) -> int:
-        """Estimate token count using word splitting (rough approximation for BERT)."""
+    # Calculate actual token counts using the German tokenizer
+    def count_actual_tokens(text: str) -> int:
+        """Count actual tokens using the German BERT tokenizer."""
         if not text:
             return 0
-        # Split on whitespace and count words (BERT typically has ~1.3 tokens per word)
-        words = text.split()
-        return len(words)
+        try:
+            from transformers import AutoTokenizer
+            tokenizer_check = AutoTokenizer.from_pretrained('distilbert-base-german-cased')
+            # Count with special tokens (CLS and SEP) for accurate count
+            tokens = tokenizer_check.encode(text, add_special_tokens=True)
+            return len(tokens)
+        except Exception:
+            # Fallback to word count if tokenizer unavailable
+            return len(text.split())
     
-    result['bert_input_45_tokens'] = estimate_tokens(bert_input_45_str)
-    result['bert_input_90_tokens'] = estimate_tokens(bert_input_90_str)
+    result['bert_input_45_tokens'] = count_actual_tokens(bert_input_45_str)
+    result['bert_input_90_tokens'] = count_actual_tokens(bert_input_90_str)
     
     # Build overtime ticker event data
     # Overtime 1st half (45+)
@@ -1272,6 +1534,8 @@ def process_all_matches(raw_dir: Path, processed_dir: Path, season_filter: Optio
     total_matches = 0
     successful = 0
     failed = 0
+    over_limit_count = 0  # Counter for files exceeding 512 tokens
+    MAX_OVER_LIMIT = 5  # Stop after this many files exceed 512 tokens
     
     for season_dir in sorted(season_dirs):
         season = season_dir.name.replace('season_', '')
@@ -1285,6 +1549,15 @@ def process_all_matches(raw_dir: Path, processed_dir: Path, season_filter: Optio
         match_files = list(season_dir.glob('match_*.json'))
         
         for match_file in sorted(match_files):
+            # Check failsafe: stop if too many files exceed 512 tokens
+            if over_limit_count >= MAX_OVER_LIMIT:
+                logger.error(
+                    f"FAILSAFE TRIGGERED: {over_limit_count} files exceeded 512 tokens. "
+                    f"Stopping processing to prevent further issues. "
+                    f"Processed {successful} successful, {failed} failed out of {total_matches} total."
+                )
+                return
+            
             total_matches += 1
             match_id = match_file.stem.replace('match_', '')
             output_file = processed_season_dir / match_file.name
@@ -1301,6 +1574,32 @@ def process_all_matches(raw_dir: Path, processed_dir: Path, season_filter: Optio
                 
                 # Process match
                 processed_data = process_match_data_final(raw_data)
+                
+                # Check token counts after processing (with special tokens)
+                # bert_input_45_tokens and bert_input_90_tokens are word-based estimates
+                # We need to check actual token counts
+                try:
+                    from transformers import AutoTokenizer
+                    tokenizer_check = AutoTokenizer.from_pretrained('distilbert-base-german-cased')
+                    
+                    bert_45 = processed_data.get('bert_input_45', '')
+                    bert_90 = processed_data.get('bert_input_90', '')
+                    
+                    # Count actual tokens (with special tokens)
+                    tokens_45 = len(tokenizer_check.encode(bert_45, add_special_tokens=True)) if bert_45 else 0
+                    tokens_90 = len(tokenizer_check.encode(bert_90, add_special_tokens=True)) if bert_90 else 0
+                    
+                    # Check if either exceeds 512
+                    if tokens_45 > 512 or tokens_90 > 512:
+                        over_limit_count += 1
+                        logger.error(
+                            f"Match {match_id}: Token count exceeds 512! "
+                            f"bert_input_45: {tokens_45} tokens, bert_input_90: {tokens_90} tokens. "
+                            f"Over-limit count: {over_limit_count}/{MAX_OVER_LIMIT}"
+                        )
+                except Exception as e:
+                    # If tokenizer check fails, log but continue
+                    logger.warning(f"Could not verify token counts for {match_id}: {e}")
                 
                 # Save processed data
                 with open(output_file, 'w', encoding='utf-8') as f:

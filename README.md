@@ -38,24 +38,28 @@ BundesligaBert/
 │   ├── raw/                    # Scraped match JSON files
 │   │   └── season_YYYY-YY/     # Per-season directories
 │   ├── processed/              # Processed datasets for training
+│   ├── kaggle_export/          # JSON files exported for Kaggle dataset upload
 │   └── results/                # Model outputs and predictions
 ├── src/
 │   ├── data/
 │   │   ├── kicker_scraper.py         # Web scraper for Kicker.de
 │   │   ├── process_match_data.py     # Process raw data into structured features
-│   │   └── retry_failed_matches.py   # Retry failed match downloads
+│   │   ├── retry_failed_matches.py   # Retry failed match downloads
+│   │   └── export_for_kaggle.py      # Export processed data to JSON for Kaggle
 │   ├── analysis/
 │   │   ├── descriptive_stats.py      # Descriptive statistics and visualizations
 │   │   └── diagnose_negative_correlation.py  # Diagnostic analysis
 │   ├── features/
 │   │   └── preprocessing.py          # Additional text preprocessing (if needed)
 │   ├── models/
+│   │   ├── train_bert.py             # BERT fine-tuning script (local training)
 │   │   └── bert_module.py            # BERT fine-tuning module (TODO)
 │   └── visualization/
 │       └── plot_results.py          # Visualization utilities (TODO)
 ├── tests/
 │   └── test_scraper_live.py   # Integration tests for scraper
 ├── notebooks/                  # Jupyter notebooks for analysis
+│   └── kaggle_bert_training.ipynb  # Kaggle notebook for GPU-accelerated BERT training
 ├── reports/
 │   ├── processed_data/
 │   │   ├── figures/            # Generated plots (19 figures from descriptive_stats.py)
@@ -362,6 +366,110 @@ python src/data/retry_failed_matches.py --verbose
 
 **Output:** Retries scraping and updates `data/failed_matches.json`
 
+### `src/data/export_for_kaggle.py`
+
+**Purpose:** Export processed match data into JSON files ready for Kaggle dataset upload
+
+**Usage:**
+```bash
+# Run from project root
+python src/data/export_for_kaggle.py
+
+# Or as module
+python -m src.data.export_for_kaggle
+```
+
+**Key Features:**
+- Loads processed matches from `data/processed/` (same logic as `train_bert.py`)
+- Creates samples for both halves (45 and 90) from each match
+- Splits History data (< 2024-25) into train/val/test_history using 80/10/10 split with match-level splitting
+- Separates Future data (2024-25) as test_future
+- Uses same random seed (42) and split logic as `train_bert.py` for reproducibility
+- Preserves all metadata (match_id, season, half) needed for diagnostics
+
+**Output:** JSON files saved to `data/kaggle_export/`:
+- `train.json`: Training samples (80% of History data)
+- `val.json`: Validation samples (10% of History data)
+- `test_history.json`: Test History samples (10% of History data)
+- `test_future.json`: Test Future samples (all 2024-25 season data)
+
+Each JSON file contains an array of objects with structure:
+```json
+[
+  {
+    "text": "BERT input text...",
+    "label": 2.0,
+    "match_id": "match_12345",
+    "season": "2023-24",
+    "half": 45
+  },
+  ...
+]
+```
+
+**Next Steps After Export:**
+1. Zip the JSON files: `cd data/kaggle_export && zip bundesliga_bert_data.zip *.json`
+2. Upload to Kaggle: Datasets → New Dataset → Upload
+3. Use in Kaggle notebook: `/kaggle/input/your-dataset-name/`
+
+### `src/models/train_bert.py`
+
+**Purpose:** BERT fine-tuning script for local training (supports Apple Silicon MPS, CUDA, or CPU)
+
+**Usage:**
+```bash
+# Run from project root
+python src/models/train_bert.py
+
+# Or as module
+python -m src.models.train_bert
+```
+
+**Key Features:**
+- Fine-tunes `distilbert-base-german-cased` for regression (predicting minutes)
+- Creates samples for both halves (45 and 90) from each match
+- Four-set split: train, validation, test_history, test_future
+- Automatic device detection (MPS > CUDA > CPU)
+- Early stopping with patience
+- Comprehensive diagnostic plots (10 plots)
+- Saves predictions, metrics, and training logs
+
+**Output:**
+- Model checkpoints: `models/checkpoints/bert_unified/`
+- Final model: `models/bert_stoppage_time_final/`
+- Predictions: `reports/processed_data/bert_predictions_history.csv`, `bert_predictions_future.csv`
+- Metrics: `reports/metrics/bert_performance.json`, `bert_training_log.json`
+- Diagnostic plots: `reports/figures/bert_diagnostics/*.png` (10 plots)
+
+### `notebooks/kaggle_bert_training.ipynb`
+
+**Purpose:** Complete BERT training pipeline for Kaggle's free GPU environment
+
+**Usage:**
+1. **Export Data Locally**: Run `python src/data/export_for_kaggle.py` to create JSON files
+2. **Upload to Kaggle**: Zip JSON files and upload as a private Kaggle dataset
+3. **Attach Dataset**: In Kaggle notebook, click "Add data" → Search for your dataset → Add it
+4. **Enable GPU**: Settings → Accelerator → GPU T4 x2 (or available GPU)
+5. **Update Dataset Path**: Change `DATASET_NAME` in the Config cell to your dataset name
+6. **Run All**: Run all cells to train the model and generate diagnostics
+
+**Key Features:**
+- Self-contained notebook (no local environment needed)
+- Staged dependency installation (core first, plotting later)
+- Config cell for easy hyperparameter tweaking
+- Early data validation (catches issues before training)
+- Uses `trainer.predict()` which returns both metrics and predictions
+- Evaluates and generates predictions for ALL splits (train, val, test_history, test_future)
+- All 10 diagnostic plots from `train_bert.py`
+- Comprehensive outputs including aggregated statistics for local comparison
+
+**Outputs** (saved to `/kaggle/working/`):
+- Predictions CSV: `bert_predictions_train.csv`, `bert_predictions_val.csv`, `bert_predictions_history.csv`, `bert_predictions_future.csv`
+- Metrics JSON: `bert_performance.json`, `bert_training_log.json`, `bert_aggregated_stats.json`
+- Diagnostic plots: `figures/*.png` (10 plots)
+
+**Note:** The notebook replicates the exact same training logic as `train_bert.py` but runs on Kaggle's free GPU for faster training.
+
 ### `src/analysis/descriptive_stats.py`
 
 **Purpose:** Generate comprehensive descriptive statistics and visualizations for processed match data
@@ -484,13 +592,14 @@ This preserves sample size (20-31% of matches in non-COVID seasons) while using 
 
 ### `src/models/bert_module.py` (TODO)
 
-**Purpose:** BERT fine-tuning module for regression
+**Purpose:** BERT fine-tuning module for regression (refactored from train_bert.py)
 
-**Status:** Not yet implemented
+**Status:** Not yet implemented (functionality exists in `train_bert.py` and Kaggle notebook)
 
 **Planned Features:**
-- Fine-tune `deepset/gbert-base` for regression
-- Use `BertForSequenceClassification.from_pretrained()`
+- Refactor training logic from `train_bert.py` into reusable module
+- Fine-tune `distilbert-base-german-cased` for regression
+- Use `AutoModelForSequenceClassification.from_pretrained()`
 - Predict stoppage time from ticker text
 
 ### `src/visualization/plot_results.py` (TODO)
@@ -525,8 +634,11 @@ The scraper implements strict leakage prevention:
 2. **Data Processing**: `src/data/process_match_data.py` processes raw data into features
 3. **Descriptive Analysis**: `src/analysis/descriptive_stats.py` generates statistics and visualizations
 4. **Econometric Analysis**: `src/analysis/regression_analysis.py` performs regression analysis with pressure variables
-5. **Model Training**: `src/models/bert_module.py` fine-tunes BERT (TODO)
-6. **Residual Analysis**: Calculate residuals (Actual - Predicted) and perform Placebo DID analysis (TODO)
+5. **Data Export (Optional)**: `src/data/export_for_kaggle.py` exports JSON files for Kaggle upload
+6. **Model Training**: 
+   - **Local**: `src/models/train_bert.py` fine-tunes BERT (supports MPS/CUDA/CPU)
+   - **Kaggle**: `notebooks/kaggle_bert_training.ipynb` for GPU-accelerated training
+7. **Residual Analysis**: Calculate residuals (Actual - Predicted) and perform Placebo DID analysis (TODO)
 
 ## Next Steps
 
@@ -534,8 +646,10 @@ The scraper implements strict leakage prevention:
 2. ✅ **Data Processing**: Feature engineering and BERT input construction implemented
 3. ✅ **Descriptive Analysis**: Comprehensive statistics and visualizations implemented
 4. ✅ **Econometric Analysis**: Regression analysis with pressure variables implemented
-5. **BERT Fine-Tuning**: Implement regression model using `deepset/gbert-base` (TODO)
-6. **Residual Analysis**: Calculate residuals (Actual - Predicted) and perform Placebo DID analysis (TODO)
+5. ✅ **BERT Fine-Tuning**: Training scripts implemented (`train_bert.py` and Kaggle notebook)
+6. ✅ **Kaggle Export**: Export script for GPU-accelerated training on Kaggle
+7. **Residual Analysis**: Calculate residuals (Actual - Predicted) and perform Placebo DID analysis (TODO)
+8. **Model Comparison**: Compare BERT predictions with econometric regression results (TODO)
 
 ## License
 
