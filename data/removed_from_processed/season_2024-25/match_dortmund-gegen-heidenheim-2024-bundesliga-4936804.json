@@ -1,0 +1,174 @@
+{
+  "match_id": "dortmund-gegen-heidenheim-2024-bundesliga-4936804",
+  "season": "2024-25",
+  "metadata": {
+    "home": "Borussia Dortmund",
+    "away": "1. FC Heidenheim",
+    "attendance": 81365,
+    "final_score": "4:2",
+    "matchday": 3,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "xgoals": {
+        "title": "xGoals",
+        "home": 2.69,
+        "away": 1.8
+      },
+      "shots": {
+        "title": "Torschüsse",
+        "home": 13,
+        "away": 11
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 86,
+        "away": 79
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 61,
+        "away": 39
+      }
+    }
+  },
+  "score_timeline": {
+    "12": [
+      1,
+      0
+    ],
+    "17": [
+      2,
+      0
+    ],
+    "39": [
+      2,
+      1
+    ],
+    "41": [
+      3,
+      1
+    ],
+    "74": [
+      3,
+      2
+    ],
+    "90+3": [
+      4,
+      2
+    ]
+  },
+  "yellow_cards": {
+    "63": 1,
+    "82": 1,
+    "83": 1,
+    "86": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {},
+  "substitutes": {
+    "46": 1,
+    "59": 1,
+    "68": 1,
+    "72": 1,
+    "79": 1,
+    "86": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 2,
+    "actual_45": 2,
+    "excess_45": 0,
+    "announced_90": 2,
+    "actual_90": 7,
+    "excess_90": 5,
+    "targets_raw": {
+      "announced_time_45": 2,
+      "announced_time_90": null,
+      "actual_played_45": 2,
+      "actual_played_90": 7
+    }
+  },
+  "features_regular": {
+    "goals_1st": 4,
+    "goals_2nd": 1,
+    "subs_1st": 0,
+    "subs_2nd": 7,
+    "cards_1st": 0,
+    "cards_2nd": 4,
+    "var_1st": 0,
+    "var_2nd": 2,
+    "injuries_1st": 0,
+    "injuries_2nd": 0,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 3,
+    "away_score_90": 2
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 1,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 0,
+    "ot_cards_90": 0,
+    "ot_var_45": 0,
+    "ot_var_90": 2,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[23] Borussia Dortmund FC Heidenheim 81365 12: tor (Borussia Dortmund) 17: tor (Borussia Dortmund) 19: Nach dem Gegentor probiert es Heidenheim gegen den Ball mit einem Eins-zu-eins Pressing über das ganze Feld. Kriegen die Gäste dadurch besser Zugriff? 34: Starkes Gegenpressing von Nmecha, der an der Mittellinie die Kugel erobert. Sein anschließender Steckpass auf Guirassy ist aber zu ungenau. 36: Die bislang beste Chance der Gäste. Pieringer köpft Scienzas Freistoßflanke aus rund sechs Metern in die Arme von Kobel. Ein Treffer hätte aber wohl ohnehin nicht gezählt, weil sofort die Fahne des Assistenten hoch ging. 38: Aufs Tornetz. Dortmund presst hoch und sofort wird es gefährlich. Anton fängt den Ball auf der linken Seite ab und leitet sofort auf Adeyemi weiter. Dieser hat links im Sechzehner viel Platz, hebt den Ball aber nur aufs Tornetz. 39: tor (Heidenheim) 41: Tor für Dortmund Der BVB antwortet postwendend. Ryerson spitzelt den Ball an der rechte Seite an Scienza vorbei und nimmt Tempo auf. Im Anschluss flankt er flach ins Zentrum. Dort lässt Guirassy den Ball clever durch seine Beine passieren und ermöglicht somit Adeyemi eine sehr gute Schusschance. Der Außenspieler trifft aus gut zwölf Metern in zentraler Position durch die Beine von Mainka und gegen die Laufrichtung Müllers zum 3:1. 43: Adeyemi überträgt seine Form vom U-21-Lehrgang also auch in die Bundesliga. Er war an allen drei Treffer direkt beteiligt. 45: Aufschreit auf der Südtribüne. Malens Flanke fälscht der grätschende Föhrenbach im eigenen Sechzehner an seine Hand. Schiedsrichter Robert Schröder lässt weiterspielen.",
+  "bert_input_90": "[23] Borussia Dortmund FC Heidenheim 81365 Stand 3:1 46: Spielerwechsel 59: Spielerwechsel 66: Die Torhymne ertönt, doch Robert Schröder unterbricht den Jubel. Groß nimmt eine abgeblockte rund in halblinker Position rund 18 Meter vor dem Tor mit. Im Anschluss findet er mit einem feinen Zuspiel den völlig allein gelassenen Sabitzer am Elferpunkt. Dessen abgefälschter Schuss landet im Netz. Weil Groß zuvor wohl mit dem Oberarm am Ball war, zählt der Treffer nicht. 67: var 67: tor 68: Guirassy fast mit seinem Debüttor. Sabitzers Flanke von der rechten Seite prallt von Guirassy Fuß in die Luft. Im Anschluss setzt der Angreifer zum Seitfallzieher an, scheitert aber am herauseilenden Müller. 68: Spielerwechsel 72: Spielerwechsel 72: wechsel 73: Foulelfmeter für Heidenheim 73' Foulelfmeter für Heidenheim Kaufmann zieht den Strafstoß. Conteh findet den Joker rechts im Sechzehner. Obwohl Süle in dieser Situation nicht zwingend in den Zweikampf gehen muss, versucht er an den Ball zu kommen und trifft dabei Kaufmann. Referee Robert Schröder zeigt sofort auf den Punkt. 74: tor (Heidenheim) 79: Spielerwechsel 86: Die Borussen versuchen mit Ballbesitz Ruhe ins Spiel zu bringen. 86: Spielerwechsel 86: Couto stempelt Breunig und sieht Gelb. 88: Dortmund schwimmt. Die Borussen stehen tief in der eigenen Hälfte. Can blockt Contehs Flanke. 90: Beier verpasst die Entscheidung. Dorsch Rettungsaktion landet halblinks an der Strafraumkante bei Beier, der sofort abschließt. Traoré fälscht die Kugel knapp neben das eigene Gehäuse ab.",
+  "bert_input_45_tokens": 385,
+  "bert_input_90_tokens": 366,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+2",
+      "text": "Wanner taucht links im gegnerischen Sechzehner auf. Seine flache Flanke landet nur im Seitenaus."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Nächster Abschluss der Gastgeber. Bei einer Ecke von Groß bleibt Süle in zentraler Position aufmerksam und dreht sich im Anschluss auf. Sein Schuss aus der Drehung fliegt rechts vorbei."
+    },
+    {
+      "minute": "90+2",
+      "text": "VAR-Prüfung 90' +2 VAR-Prüfung Der VAR greift ein: Es wird ein Handspiel von Traoré im eigenen Strafraum überprüft."
+    },
+    {
+      "minute": "90+2",
+      "text": "Entscheidung nach VAR-Prüfung 90' +2 Entscheidung nach VAR-Prüfung Traoré, der sich im Zweikampf mit Süle befand, blockte die Ecke von Groß mit seinem linken Arm. Daher entscheidet Robert Schröder nach Ansicht der Videobilder auf Strafstoß."
+    },
+    {
+      "minute": "90+2",
+      "text": "Handelfmeter für Dortmund 90' +2 Handelfmeter für Dortmund Can schnappt sich die Kugel."
+    },
+    {
+      "minute": "90+3",
+      "text": "Tor für Dortmund 90' +3 Tor für Dortmund Der etatmäßige Kapitän schiebt den Ball vom Punkt mit wenig Tempo zentral ins Tor, während Müller nach rechts abtaucht - die Entscheidung. Anschließend jubelt er mit dem Zeigefinger auf den Lippen."
+    },
+    {
+      "minute": "90+6",
+      "text": "Dortmund kontert nochmals über Sabitzer. Dessen Heber aus dem Mittelfeld landet bei Müller."
+    },
+    {
+      "minute": "90+7",
+      "text": "Föhrenbach hebt das Leder in den Strafraum. Breunig kommt nicht an die Hereingabe dran."
+    }
+  ]
+}

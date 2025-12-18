@@ -1,0 +1,191 @@
+{
+  "match_id": "bochum-gegen-mgladbach-2023-bundesliga-4862017",
+  "season": "2023-24",
+  "metadata": {
+    "home": "VfL Bochum",
+    "away": "Bor. Mönchengladbach",
+    "attendance": 26000,
+    "final_score": "1:3",
+    "matchday": 6,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "xgoals": {
+        "title": "xGoals",
+        "home": 1.74,
+        "away": 2.9
+      },
+      "shots": {
+        "title": "Torschüsse",
+        "home": 24,
+        "away": 27
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 72,
+        "away": 65
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 58,
+        "away": 42
+      }
+    }
+  },
+  "score_timeline": {
+    "27": [
+      0,
+      1
+    ],
+    "37": [
+      0,
+      2
+    ],
+    "45+3": [
+      0,
+      3
+    ],
+    "68": [
+      1,
+      3
+    ]
+  },
+  "yellow_cards": {
+    "45+1": 1,
+    "52": 1,
+    "80": 1,
+    "90+10": 1,
+    "90+9": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {},
+  "substitutes": {
+    "7": 1,
+    "46": 1,
+    "64": 1,
+    "67": 1,
+    "71": 1,
+    "89": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 6,
+    "actual_45": 7,
+    "excess_45": 1,
+    "announced_90": 2,
+    "actual_90": 10,
+    "excess_90": 8,
+    "targets_raw": {
+      "announced_time_45": 6,
+      "announced_time_90": 2,
+      "actual_played_45": 7,
+      "actual_played_90": 10
+    }
+  },
+  "features_regular": {
+    "goals_1st": 2,
+    "goals_2nd": 1,
+    "subs_1st": 2,
+    "subs_2nd": 5,
+    "cards_1st": 0,
+    "cards_2nd": 2,
+    "var_1st": 0,
+    "var_2nd": 0,
+    "injuries_1st": 1,
+    "injuries_2nd": 1,
+    "disturbances_1st": 1,
+    "disturbances_2nd": 0,
+    "home_score_90": 1,
+    "away_score_90": 3
+  },
+  "features_overtime": {
+    "ot_goals_45": 1,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 1,
+    "ot_cards_90": 2,
+    "ot_var_45": 0,
+    "ot_var_90": 4,
+    "ot_injuries_45": 1,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[23] Bochum Bor. Mönchengladbach 26000 2: Pfosten! Die erste Gelegenheit des Spiels gehört den Gästen. Gladbach schaltet schnell um, Plea spielt den Ball auf die rechte Seite auf Honorat, der in den Strafraum zieht, mit seinem Abschluss aber nur den rechten Pfosten trifft. 4: Bernardo ist Bero nach einem Kopfballduell mit Wöber bei der anschließenden Ecke unglücklich ins Knie gefallen. Der Slowake wird mit Unterstützung von den Betreuern vom Platz getragen - das sah nicht gut aus. 7: wechsel 9: Der eingewechselte Antwi-Adjei versucht es einfach mal aus der Distanz. Er rutscht beim Schuss allerdings weg, so dass Nicolas den Ball problemlos aufnehmen kann. 10: Wieder die Borussia. Wöber steckt im Sechzehner auf Plea durch, der Ordets beim Abschluss tunnelt. Der Ball geht aber knapp links am Tor vorbei. 15: Gladbach kann einen Einwurf von der linken Seite klären. Aus der zweiten Reihe setzt Wittek zur Direktabnahmen an - verzieht aber weit rechts am Tor vorbei. Es gibt Abstoß. 16: rote karte 18: Wieder trifft Gladbach nur das Aluminium! Plea macht den Ball im Zentrum mit der Brust fest, nimmt Tempo auf und zieht ab. Bernardo fälscht ab, über Riemann hinweg landet der Ball auf dem Querbalken. 19: Bei der anschließenden Ecke kommt Itakura zum Kopfball, aber der Ball geht rechts am Tor vorbei. 25: Nach gut 25 Minuten stehen zwei zu acht Torschüsse aus Sicht der Gastgeber zu Buche. 27: tor (Bor. Mönchengladbach) 32: Weiter geht's nach gut dreiminütiger Unterbrechung. 32: Ordets kommt nach einer Ecke von links am ersten Pfosten zum Kopfball, doch er bekommt den Ball nicht aufs Tor. 37: tor (Bor. Mönchengladbach) 37: tor (Bor. Mönchengladbach)",
+  "bert_input_90": "[23] Bochum Bor. Mönchengladbach 26000 Stand 0:2 46: wechsel 51: Das muss das 4:0 für die Borussia sein. Plea steckt den Ball stark auf Jordan durch, der zunächst an Riemann scheitert. Neuhaus bekommt den zweiten Ball, scheitert zunächst mit der Hacke und schießt den Abpraller per Volley dann über das leere Tor. 52: Bernardo ringt Plea im Zweikampf nieder und sieht Gelb. 54: Antwi-Adjei flankt den Ball von der linken Seite in die Mitte - dort köpft Hofmann den Ball aber über das Tor. 61: Sowohl Jordan als auch Elvedi müssen nun in kurzer Zeit behandelt werden. 64: wechsel 66: Netz zieht in Mitte und legt dann auf den hinterlaufenden Wöber ab anstatt selber zu schießen. Die Hereingabe Wöbers landet aber hinter dem Tor. 67: wechsel 68: tor (Bochum) 70: Bochum scheint durch das Tor regelrecht beflügelt. Zunächst klärt ein Gladbacher auf der Linie nach Abschluss von Hofmann, wenige Momente später landet ein Schlenzer von Antwi-Adjei über dem Tor. 71: wechsel 80: Kramer spielt bei einer Grätsche gegen Paciencia klar den Ball, sieht dennoch die Gelbe Karte - zu seinem Unverständnis. 84: Eine Gamboa-Hereingabe von rechts rutscht bis zu Antwi-Adjei durch. Der Deutsch-Ghanaer zieht in die Mitte, sein Abschluss landet aber in den Armen von Nicolas. 88: Bochum versucht es nun auch mehr mit langen Bällen auf die großgewachsenen Angreifer. 89: Spielerwechsel Letzter Wechsel bei Gladbach. Jantschke kommt für Reitz. Für ihn ist es das 300. Pflichtspiel im Trikot der Borussia. 90: Honorat flankt von der rechten Seite in die Mitte. Cvancara kommt zum Kopfball, aber Riemann fährt seinen linken Arm aus und verhindert das 1:4.",
+  "bert_input_45_tokens": 383,
+  "bert_input_90_tokens": 404,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+1",
+      "text": "Gelbe Karte 45' +1 Gelbe Karte Itakura trifft Hofmann im Mittelfeld am Fuß und unterbindet damit einen Angriff. Der Japaner sieht die erste Gelbe Karte der Partie."
+    },
+    {
+      "minute": "45+3",
+      "text": "Tor für M’gladbach 45' +3 Tor für M’gladbach Gladbach kontert Bochum eiskalt aus! Ein bis dato eigentlich gut vorgetragener Angriff der Hausherren endet nach einem Fehlpass von Asano. Neuhaus ist dazwischen, nimmt Jordan mit, der wiederum auf Plea weiterleitet. Der Franzose zieht auf der linken Seite in den Sechzehner und lässt Riemann mit einem platzierten Schlenzer in die lange Ecke keine Abwehrchance."
+    },
+    {
+      "minute": "45+5",
+      "text": "Die Geschichten, die nur der Fußball schreibt: Seit beinahe einem Jahr war Plea ohne Tor geblieben - nun trifft er an selber Wirkungsstätte wie beim letzten Treffer gleich zum zweiten Mal."
+    },
+    {
+      "minute": "45+7",
+      "text": "Antwi-Adjei spielt den Ball von der linken Seite scharf in die Mitte. Losilla kann ihn aber nicht kontrollieren, so dass Nicolas den Ball aufnehmen kann."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Eine Hereingabe von der rechten Seite landet bei Masovic, der allerdings von Jatschke am Abschluss gehindert werden kann."
+    },
+    {
+      "minute": "90+2",
+      "text": "VAR-Prüfung 90' +2 VAR-Prüfung Der VAR schaltet sich ein. Womöglich war Jantschke nach der Hereingabe mit der Hand am Ball."
+    },
+    {
+      "minute": "90+3",
+      "text": "Entscheidung nach VAR-Prüfung 90' +3 Entscheidung nach VAR-Prüfung Aber es geht mit Ecktsoß weiter. Das Handspiel war nicht strafbar."
+    },
+    {
+      "minute": "90+4",
+      "text": "Ein hoher Ball nach dem anderen fliegt nun in den Sechzehner der Gäste. Für Bochum gibt es den nächsten Eckstoß."
+    },
+    {
+      "minute": "90+4",
+      "text": "Tor für Bochum 90' +4 Tor für Bochum Geht hier noch was? Bei einer ziemlich undurchsichtigen Szene beim anschließenden Eckball köpft Ordets den Ball wieder in die Mitte, Wöber kann einen Schuss von Paciencia zunächst von der Linie köpfen, den Nachschuss netzt Losilla ein."
+    },
+    {
+      "minute": "90+7",
+      "text": "VAR-Prüfung 90' +7 VAR-Prüfung Aber auch in dieser Szene meldet sich der Kölner Keller. Nicolas war von Bernardo ziemlich hart angegangen worden."
+    },
+    {
+      "minute": "90+7",
+      "text": "Entscheidung nach VAR-Prüfung 90' +7 Entscheidung nach VAR-Prüfung Und der Treffer zählt nicht. Es gibt nach dem Foul von Bernardo an Nicolas Freistoß für die Borussia."
+    },
+    {
+      "minute": "90+8",
+      "text": "Kurz vor dem Ende entsteht hier noch eine Rudelbildung nach Foul an Kramer."
+    },
+    {
+      "minute": "90+9",
+      "text": "Gelbe Karte 90' +9 Gelbe Karte"
+    },
+    {
+      "minute": "90+10",
+      "text": "Gelbe Karte 90' +10 Gelbe Karte Sowohl Gamboa als auch Cvancara sehen diesbezüglich Gelb."
+    }
+  ]
+}

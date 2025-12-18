@@ -1,0 +1,143 @@
+{
+  "match_id": "hsv-gegen-mgladbach-2018-bundesliga-3827891",
+  "season": "2017-18",
+  "metadata": {
+    "home": "Hamburger SV",
+    "away": "Bor. Mönchengladbach",
+    "attendance": 57000,
+    "final_score": "2:1",
+    "matchday": 34,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 17,
+        "away": 8
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 82,
+        "away": 84
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 48,
+        "away": 52
+      }
+    }
+  },
+  "score_timeline": {
+    "11": [
+      1,
+      0
+    ],
+    "28": [
+      1,
+      1
+    ],
+    "63": [
+      2,
+      1
+    ]
+  },
+  "yellow_cards": {
+    "10": 1,
+    "35": 1,
+    "44": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {
+    "71": 1
+  },
+  "substitutes": {
+    "57": 1,
+    "78": 1,
+    "82": 1,
+    "89": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": true,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 0,
+    "actual_45": 0,
+    "excess_45": 0,
+    "announced_90": 2,
+    "actual_90": 18,
+    "excess_90": 16,
+    "targets_raw": {
+      "announced_time_45": null,
+      "announced_time_90": 2,
+      "actual_played_45": null,
+      "actual_played_90": 18
+    }
+  },
+  "features_regular": {
+    "goals_1st": 2,
+    "goals_2nd": 1,
+    "subs_1st": 0,
+    "subs_2nd": 4,
+    "cards_1st": 3,
+    "cards_2nd": 1,
+    "var_1st": 2,
+    "var_2nd": 2,
+    "injuries_1st": 0,
+    "injuries_2nd": 0,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 1,
+    "home_score_90": 2,
+    "away_score_90": 1
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 0,
+    "ot_cards_90": 0,
+    "ot_var_45": 0,
+    "ot_var_90": 0,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 4
+  },
+  "bert_input_45": "[17] Hamburger SV Bor. Mönchengladbach 57000 1: Erster Torschuss: Sommer krallt sich Kostics Schlenzer aus 18 Metern sicher. 10: VAR-Prüfung 10' VAR-Prüfung Brych hatte weiterlaufen lassen und wird sich die Szene noch einmal anschauen. 10: Entscheidung nach VAR-Prüfung 10' Entscheidung nach VAR-Prüfung Und nach Ansicht der Bilder entscheidet Brych auf Strafstoß. 11: tor (Hamburger SV) 16: Schwache Freistoßflanke von Wendt. Zu nah vors Tor, Pollersbeck fängt ab. 27: Zakaria bringt Ito auf der Außenbahn zu Fall. Freistoß von links ... 27: ... und Hunt macht`s, aber der Angriff verpufft nach schlechter Hereingabe. Und der Gegenzug läuft ... 28: tor (Bor. Mönchengladbach) 32: In Wolfsburg ist der Ausgleich gefallen - und schon herrscht wieder Hochspannung im Keller. 33: Das Publikum hat dies natürlich bemerkt und feuert das Team frenetisch an. 35: Gladbach ist nach dem 1:1 deutlich besser im Spiel, der HSV hat den Faden verloren. 35: Wood mäht Vestergaard nach dessen Pass von der Seite um. Klare Sache, die Gelbe. 38: Papadopoulos findet Kostic, der links das Tempo anzieht und in die Mitte auf Hunt spielt. Wendt wirft sich in den Schuss des Technikers, der mit Sicherheit gefährlich geworden wäre. 40: Santos auf Holtby, der von der Grundlinie auf Wood zurücklegt. Aus elf Metern halblinker Position schießt der Stürmer vier Meter daneben. Da war weit mehr drin. 43: Überzahlkonter der Borussia, aber erst Zakaria und dann Raffael treffen nicht die richtige Wahl. 44: Der Verteidiger unterbindet einen Konter von Drmic.",
+  "bert_input_90": "[17] Hamburger SV Bor. Mönchengladbach 57000 Stand 1:1 56: Wolfsburgs Tor zählt. Damit hat der VfL wieder klar die besseren Karten. 57: Spielerwechsel 58: Eine Flanke rutscht auf Kostic durch, der vom rechten Fünfereck an Sommer scheitert. Weltklasse-Parade des Keepers. 60: Hazard und Raffael spielen Wendt frei, der an dem vor der Torlinie postierten Sakai scheitert. Mit Hilfe der Hand? 61: VAR-Prüfung 61' VAR-Prüfung Die Hand war im Spiel, aber auch absichtlich? Brych schaut sich die Szene an ... 61: Entscheidung nach VAR-Prüfung 61' Entscheidung nach VAR-Prüfung ... und entscheidet auf Ecke. Die bringt nichts ein. 62: Holtby sucht Kostic in der Mitte, der die Hereingabe um Zentimeter verpasst. 63: tor (Hamburger SV) 65: Kostic zieht aus 28 Metern ab. Sommer hat Mühe mit dem Flatterball. 70: Kostic legt quer auf Ito, der Ginter umdribbelt. Dann aber ist seine Hereingabe weder Fisch noch Fleisch und läuft am zweiten Pfosten vorbei. 71: Der Angreifer begeht gegen Kramer sein zweites gelbwürdiges Foul und muss zu Recht runter. 72: Und in Wolfsburg fällt das 3:1 - war's das für den Dino? 75: Der HSV igelt sich hinten ein, die Borussia ist auf der Suche nach einer Lücke. 78: Spielerwechsel 82: Spielerwechsel 83: Ob Gladbach Kenntnis vom Stuttgarter Coup bei den Bayern hat? Das Spiel plätschert seinem Ende entgegen, das bei diesem Ergebnis zwei Verlierer hat: Der HSV muss absteigen und die Borussia verpasst die Europa League. 86: Konter der Hausherren mit Hunt, der Jatta in den Sechzehner schickt. Sommer bliebt gegen den Joker im Tiefflug Sieger. 89: Spielerwechsel",
+  "bert_input_45_tokens": 385,
+  "bert_input_90_tokens": 397,
+  "overtime_ticker_45": [],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Nun fliegen Feuerwerkskörper in den Gladbacher Strafraum. Das Spiel ist unterbrochen."
+    },
+    {
+      "minute": "90+3",
+      "text": "Eine Vielzahl von Ordnern und Polizisten ist auf dem Platz gelaufen, die Spieler haben den Rasen längst verlassen und verfolgen die Szenerie am Rande des Spielfelds."
+    },
+    {
+      "minute": "90+13",
+      "text": "Noch stehen die Polizisten auf dem Rasen vor den Rängen, von denen die Pyrotechnik abgefeuert wurde. Die Spieler stehen in der anderen Hälfte und warten darauf, dass das Spiel an- und dann wohl sofort abgepfiffen wird."
+    },
+    {
+      "minute": "90+17",
+      "text": "Die Polizei rückt vom Platz ab, postiert sich auf der Grundlinie ..."
+    },
+    {
+      "minute": "90+18",
+      "text": "... und Brych gibt den Ball frei, den Pollersbeck in die gegnerische Hälfte feuert. Und jetzt ist Schluss!"
+    }
+  ]
+}

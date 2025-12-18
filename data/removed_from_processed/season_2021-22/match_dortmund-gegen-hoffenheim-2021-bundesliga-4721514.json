@@ -1,0 +1,188 @@
+{
+  "match_id": "dortmund-gegen-hoffenheim-2021-bundesliga-4721514",
+  "season": "2021-22",
+  "metadata": {
+    "home": "Borussia Dortmund",
+    "away": "TSG Hoffenheim",
+    "attendance": 25000,
+    "final_score": "3:2",
+    "matchday": 3,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": true,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 24,
+        "away": 10
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 86,
+        "away": 74
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 59,
+        "away": 41
+      }
+    }
+  },
+  "score_timeline": {
+    "49": [
+      1,
+      0
+    ],
+    "61": [
+      1,
+      1
+    ],
+    "69": [
+      2,
+      1
+    ],
+    "90+1": [
+      3,
+      2
+    ]
+  },
+  "yellow_cards": {
+    "1": 1,
+    "7": 1,
+    "20": 1,
+    "36": 1,
+    "54": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {
+    "74": 1
+  },
+  "substitutes": {
+    "46": 1,
+    "63": 1,
+    "70": 1,
+    "72": 1,
+    "83": 1,
+    "84": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": true,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": null,
+    "actual_45": 2,
+    "excess_45": null,
+    "announced_90": 2,
+    "actual_90": 8,
+    "excess_90": 6,
+    "targets_raw": {
+      "announced_time_45": null,
+      "announced_time_90": null,
+      "actual_played_45": 2,
+      "actual_played_90": 8
+    }
+  },
+  "features_regular": {
+    "goals_1st": 0,
+    "goals_2nd": 4,
+    "subs_1st": 0,
+    "subs_2nd": 6,
+    "cards_1st": 7,
+    "cards_2nd": 3,
+    "var_1st": 2,
+    "var_2nd": 0,
+    "injuries_1st": 2,
+    "injuries_2nd": 0,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 2,
+    "away_score_90": 1
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 1,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 0,
+    "ot_cards_90": 0,
+    "ot_var_45": 0,
+    "ot_var_90": 3,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[21] Borussia Dortmund TSG Hoffenheim 25000 Krank 1: var 1: tor 2: tor 3: gelbe karte 4: Auf der anderen Seite rollt der erste Dortmunder Angriff - und was für einer! Haaland steckt herrlich für den nicht im Abseits stehenden Reyna durch. Der US-Nationalspieler zieht aber frei vor Baumann aus leicht spitzem Winkel zu ungefährlich ab, der Torwart pariert ziemlich souverän. 7: gelbe karte 8: verletzung 20: gelbe karte 26: tor 27: Der Videobeweis wird nicht oder nur kurz bemüht, das Spiel läuft schnell wieder weiter. Referee Zwayer sieht sich das Ganze demzufolge nicht selbst an. 36: Haaland gewinnt ein schwieriges Kopfballduell mit Posch an der Strafraumkante, leitet so einen Angriff ein. An dessen Ende chippt Reus den Ball hoch an den Fünfmeterraum, wo wiederum Haaland hochsteigt, die Kugel jedoch aus starker Rücklage nicht aufs Tor bringt. 36: gelbe karte 37: gelbe karte 39: Nach wirklich tollem Zuspiel rechts in den Lauf von Baumgartner kommt dieser frei vor Schlussmann Kobel zum Abschluss, scheitert mit seinem flachen Versuch aber am parierenden Torwächter. 42: Nun kommt es zum schnell versuchten Konter nach Balleroberung von Gastgeber Dortmund, doch hierbei legt sich Malen die Kugel zu weit vor. So wird es nicht gefährlich. 44: Dahoud wackelt gekonnt zwei Gegenspieler aus, versucht es im Anschluss dann mit einem Distanzschuss. Dieser zieht leicht abgefälscht links vorbei. 44: Zumindest gibt es Eckball ... 44: Reynas Flanke hierbei kann von Haaland, der ziemlich hoch springt, jedoch nicht erreicht werden. 45: Die Westfalen setzen sich nun nochmals fest in der 1899-Hälfte fest, doch die Defensivabteilung der Kraichgauer macht dabei keine Anstalten, hier noch vor der Pause eine Lücke aufreißen zu lassen.",
+  "bert_input_90": "[21] Borussia Dortmund TSG Hoffenheim 25000 Stand 0:0 Krank 46: wechsel 47: Nach der folgenden Ecke, die zunächst geklärt wird, bringt Rudy die Kugel nochmals nah vors Tor. Dort findet sich aber nur die klärende Faust Kobels. 49: tor (Borussia Dortmund) 49: tor (Borussia Dortmund) 54: gelbe karte 56: Das Verhalten der Hoffenheimer zeigt aber, dass sie vom Gegentor nicht geschockt sind. Sie nehmen das 0:1 vielmehr zum Anlass, sich vorn festzusetzen und Druck auf die Borussen-Abwehr und Keeper Kobel zu machen. 61: tor (TSG Hoffenheim) 61: tor (TSG Hoffenheim) 63: wechsel 69: tor (Borussia Dortmund) 69: tor (Borussia Dortmund) 70: wechsel 71: Kurz darauf setzt Haaland die Kugel aus schwieriger Lage aufs Tordach, wird aber auch zurückgepfiffen - Abseits. 72: wechsel 74: gelb-rot 78: Nach Geiger-Eckballflanke und Kramaric-Kopfball muss Haaland kurz vor dem eigenen Kasten sicherheitshalber übers eigene Tor köpfen. 83: wechsel 84: wechsel 87: Haaland setzt sich nach lässiger Wolf-Hackenvorlage bärenstark mit seiner Robustheit gegen Posch durch, der TSG-Abwehrmann stolpert im Anschluss sogar etwas. Es folgt ein Flachschuss des Norwegers aus spitzem Winkel, der haarscharf links am Pfosten vorbei zieht. Moukoko hat hier außerdem noch den Abstauber ins leere Tor knapp verpasst. 90: . Minute - und die Abwehr der Schwarz-Gelben patzt! Nach Ecke von der rechten Seite ist es zunächst Akpoguma, der relativ unbedrängt hochsteigt und die Kugel links vors Tor weiterleitet. Dort steht Joker Dabbur mutterseelenallein und staubt aus nächster Nähe zum 2:2 ab.",
+  "bert_input_45_tokens": 399,
+  "bert_input_90_tokens": 386,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+1",
+      "text": "Oft fehlt die letzte Präzision, so auch hier: Reus lauert am Strafraum, bekommt den Ball, leitet diesen aber nicht genau genug für den durchstartenden Malen weiter. Baumann greift so sicher zu."
+    },
+    {
+      "minute": "45+1",
+      "text": "Zwei Minuten werden im Übrigen nachgespielt."
+    },
+    {
+      "minute": "45+2",
+      "text": "Reus, Guerreiro und Malen sammeln links draußen noch ein paar Ballkontakte, rennen sich am Ende aber fest."
+    },
+    {
+      "minute": "45+2",
+      "text": "Rudy schenkt einen möglichen Konter zu leichtsinnig her, darüber ärgert sich der Mittelfeldmann selbst."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Im Anschluss wird sich noch beschwert, man will Dabbur im Abseits gesehen haben. Doch dem ist nicht so, Reus hat das Abseits aufgehoben."
+    },
+    {
+      "minute": "90+1",
+      "text": "Tor für Dortmund 90' +1 Tor für Dortmund Was für ein Drama an diesem Freitagabend - und was für eine Willensleistung von Haaland! Zunächst einmal scheitert Wolf mit seinem Abschluss aus der Drehung an Baumann, direkt im Anschluss pariert der Schlussmann auch noch gegen Moukoko aus nächster Nähe. Der Ball gelangt im Anschluss zum lauernden Haaland, der mit links einfach draufhält und die Kugel unter die Latte jagt."
+    },
+    {
+      "minute": "90+2",
+      "text": "VAR-Prüfung 90' +2 VAR-Prüfung Der VAR meldet sich, hat es hier ein Handspiel oder ein Abseits von Haaland beim Moukoko-Schuss gegeben?"
+    },
+    {
+      "minute": "90+3",
+      "text": "Entscheidung nach VAR-Prüfung 90' +3 Entscheidung nach VAR-Prüfung Der Treffer bleibt bestehen! Es ist auf Handspiel von Moukoko bei der Entstehung untersucht worden, doch ein Vergehen liegt nicht vor."
+    },
+    {
+      "minute": "90+4",
+      "text": "Da geht lautstarker Applaus durchs Stadion, die BVB-Fans feiern das 3:2."
+    },
+    {
+      "minute": "90+5",
+      "text": "Offenbar ist gerade noch auf Platzverweis überprüft worden, das Spiel läuft aber weiter."
+    },
+    {
+      "minute": "90+5",
+      "text": "Reus lässt bei einem Dortmunder Angriff das schier sichere 4:2 liegen, schießt den Ball aus wenigen Metern rechts am Pfosten vorbei - und kann es hernach selbst kaum glauben, hier vergeben zu haben."
+    },
+    {
+      "minute": "90+6",
+      "text": "Es gibt nochmals Freistoß für die Kraichgauer. Wolf hat Dabbur gefoult ..."
+    },
+    {
+      "minute": "90+7",
+      "text": ".."
+    },
+    {
+      "minute": "90+8",
+      "text": "Freche Variante: Kramaric chippt den Ball beim finalen Freistoß über die Mauer zu Posch. Der Abwehrmann kann aber keinen Abschluss mehr generieren."
+    }
+  ]
+}

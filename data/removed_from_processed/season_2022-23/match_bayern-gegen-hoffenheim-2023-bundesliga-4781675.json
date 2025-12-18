@@ -1,0 +1,138 @@
+{
+  "match_id": "bayern-gegen-hoffenheim-2023-bundesliga-4781675",
+  "season": "2022-23",
+  "metadata": {
+    "home": "Bayern München",
+    "away": "TSG Hoffenheim",
+    "attendance": 75000,
+    "final_score": "1:1",
+    "matchday": 28,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 22,
+        "away": 4
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 87,
+        "away": 76
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 66,
+        "away": 34
+      }
+    }
+  },
+  "score_timeline": {
+    "17": [
+      1,
+      0
+    ],
+    "71": [
+      1,
+      1
+    ]
+  },
+  "yellow_cards": {
+    "57": 1,
+    "72": 1,
+    "82": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {},
+  "substitutes": {
+    "60": 1,
+    "62": 1,
+    "80": 1,
+    "83": 1,
+    "90+1": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": true,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 0,
+    "actual_45": 0,
+    "excess_45": 0,
+    "announced_90": 1,
+    "actual_90": 7,
+    "excess_90": 6,
+    "targets_raw": {
+      "announced_time_45": null,
+      "announced_time_90": 1,
+      "actual_played_45": null,
+      "actual_played_90": 7
+    }
+  },
+  "features_regular": {
+    "goals_1st": 1,
+    "goals_2nd": 1,
+    "subs_1st": 0,
+    "subs_2nd": 4,
+    "cards_1st": 0,
+    "cards_2nd": 3,
+    "var_1st": 4,
+    "var_2nd": 6,
+    "injuries_1st": 0,
+    "injuries_2nd": 1,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 1,
+    "away_score_90": 1
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 1,
+    "ot_cards_45": 0,
+    "ot_cards_90": 0,
+    "ot_var_45": 0,
+    "ot_var_90": 0,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[22] Bayern München TSG Hoffenheim 75000 5: Der FCB tastet sich vor das Tor, am Ende feuert Pavard kernig aus der Distanz. Kein schlechter Versuch, einen Meter drüber. 17: tor (Bayern München) 20: Die Führung hat die beiden Spielweisen nicht verändert, der Rekordmeister läuft gegen weiterhin sehr defensive Kraichgauer fortwährend an. 23: Hoffenheim bringt keine Ruhe in sein Spiel, ganz schnell ist der Ball in der Vorwärtsbewegung wieder weg. 25: Erste längere Ballbesitzphase der Matarazzo-Elf, die dabei allerdings nicht in die gefährliche Zone kommt. 26: Und dann folgt der Fehlpass - Bayern defensiv bisher ohne große Anforderungen. 29: Es geht mal schnell über links mit Coman und Cancelo, nach dessen Flanke Brooks aber aufpasst und die Situation bereinigt. 30: Akpoguma klärt nach einer Freistoßflanke per Kopf im Luftduell mit Müller. Ecke ... 31: ... die Müller diesmal erwischt, doch der Ball geht auch klar über den Balken. 35: Müller stoppt sich eine scharfe Pavard-Flanke rechts im Strafraum gekonnt und kommt nach Duell mit Geiger zu Fall. Nein, das ist kein Elfmeter. 36: Das war mal kernig: Gnabry fackelt vor dem Strafraum nicht lange und zieht von halbrechts mit links ab. An seinen Schuss, der knapp links vorbeisaust, wäre Baumann nicht herangekommen. 39: Bebou sichert das Leder gegen de Ligt, seinen scharfen Querpass jagt Upamecano zur Ecke. 40: Abgewehrt. Es bleibt dabei, offensiv ist die Darbietung der Gäste äußert mager. 42: Starkes Tackling von Cancelo gegen Kramaric, der nach Baumanns Abschlag dem Ball hinterher gehetzt war. 45: Geiger sperrt Sané und tut sich selbst dabei weh.",
+  "bert_input_90": "[22] Bayern München TSG Hoffenheim 75000 Stand 1:0 51: Sommer will eine Angelino-Flanke abfangen, Kramaric rauscht im Luftduell in den Keeper hinein. Behandlungspause. 55: Sommer faustet nach einer Flanke direkt auf Stiller, der den Ball von der Strafraumgrenze per Kopf nicht aufs verlassene Tor bringt. 57: Torschütze stoppt Baumgartners Solo - es ist die 5. Gelbe, damit fehlt er in Mainz. 60: Spielerwechsel 62: Spielerwechsel 71: tor (TSG Hoffenheim) 73: Tor für Bayern 73' Tor für Bayern Bayern antwortet prompt - und wieder ist es Pavard, der für seine Stürmer in die Bresche springt. 74: VAR-Prüfung 74' VAR-Prüfung Es wird geprüft ... 74: Entscheidung nach VAR-Prüfung 74' Entscheidung nach VAR-Prüfung ... und die Entscheidung revidiert: Pavard stand nach de Ligts Kopfballvorlage klar im Abseits. 79: Müller sucht im Direktspiel Gnabry. Etwas zu steil, Baumann passt auf und hat die Kugel. 80: Spielerwechsel 81: Drei gegen zwei - aber Kramaric vertändelt einen Hoffenheimer Überzahlkonter leichtfertig mit einem Fehlpass. 82: Baumann krallt sich einen Gnabry-Flachschuss im Nachfassen. 82: Trikottest bei seinem Gegenspieler. 83: Spielerwechsel 84: Upamecano auf Müller, der nach halbrechts zu Tel, dessen Schrägschuss aus zehn Metern Baumann entschärft. 87: Die Zeit schmilzt von der Uhr ... 87: ... und Musiala spielt Gnabry halbrechts frei, der nach einer Finte mit links drüberschießt. 89: Brooks höchst aufmerksam nach Musialas Brustablage für Gnabry: Der Abwehrchef klärt. 90: Dolberg klärt gegen Müller zur Ecke. Kurz ausgeführt, abgewehrt.",
+  "bert_input_45_tokens": 403,
+  "bert_input_90_tokens": 405,
+  "overtime_ticker_45": [],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Spielerwechsel 90' +1 Spielerwechsel"
+    },
+    {
+      "minute": "90+3",
+      "text": "Sehr gute Chance für Gnabry, der in der Drehung aber ausrutscht und so keine Kraft hinter seinen Schuss aus elf Metern bringt. Baumann packt zu."
+    },
+    {
+      "minute": "90+5",
+      "text": "Bischof behauptet den Ball und spielt ihn clever in die gegnerische Hälfte. Zeit läuft von der Uhr."
+    },
+    {
+      "minute": "90+6",
+      "text": "Noch einmal Ecke für die Bayern ..."
+    },
+    {
+      "minute": "90+7",
+      "text": "... abgewehrt - und jetzt ist Schluss!"
+    }
+  ]
+}

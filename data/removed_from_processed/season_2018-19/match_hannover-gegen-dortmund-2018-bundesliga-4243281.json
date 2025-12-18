@@ -1,0 +1,127 @@
+{
+  "match_id": "hannover-gegen-dortmund-2018-bundesliga-4243281",
+  "season": "2018-19",
+  "metadata": {
+    "home": "Hannover 96",
+    "away": "Borussia Dortmund",
+    "attendance": 49000,
+    "final_score": "",
+    "matchday": 2,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 7,
+        "away": 9
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 80,
+        "away": 76
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 56,
+        "away": 44
+      }
+    }
+  },
+  "score_timeline": {},
+  "yellow_cards": {
+    "36": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {},
+  "substitutes": {
+    "46": 1,
+    "79": 1,
+    "86": 1,
+    "89": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": true,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 0,
+    "actual_45": 1,
+    "excess_45": 1,
+    "announced_90": 1,
+    "actual_90": 6,
+    "excess_90": 5,
+    "targets_raw": {
+      "announced_time_45": null,
+      "announced_time_90": 1,
+      "actual_played_45": 1,
+      "actual_played_90": 6
+    }
+  },
+  "features_regular": {
+    "goals_1st": 0,
+    "goals_2nd": 0,
+    "subs_1st": 1,
+    "subs_2nd": 4,
+    "cards_1st": 2,
+    "cards_2nd": 0,
+    "var_1st": 0,
+    "var_2nd": 0,
+    "injuries_1st": 0,
+    "injuries_2nd": 1,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 0,
+    "away_score_90": 0
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 0,
+    "ot_cards_90": 0,
+    "ot_var_45": 0,
+    "ot_var_90": 0,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 1,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[18] Hannover 96 Borussia Dortmund 49000 1: rote karte 2: Um ein Haar die erste Torchance der Partie! Schmelzer hebt den Ball aus der zweiten Reihe in den Strafraum der Gastgeber, Reus startet durch, doch Esser spielt aufmerksam mit, eilt aus seinem Tor und fängt die Kugel ab. 10: Witsel fängt eine scharfe Hereingabe vor dem BVB-Tor ab. Sehr aufmerksam! 15: Rund eine Viertelstunde ist vorbei. Hannover ist die etwas bessere Mannschaft, doch die erste klare Torchance der Begegnung lässt noch auf sich warten. 18: Fossum zirkelt den Ball vors Tor, findet dort aber keinen Abnehmer. Geklärt! 25: Der Ball liegt im Tor der Gastgeber. Das 1:0 für die Borussia? Mitnichten! Philipp trifft zwar mit einem Flachschuss, doch zuvor steht Wolf im Abseits, als er den Ball per Kopf ablegt. 31: Reus und Wolf haben inzwischen die Seiten gewechselt. Ob sich das Offensivspiel der Dortmunder nun bessert? 34: Nun mal der BVB mit einer langen Ballbesitzphase - allerdings ohne Zug zum Tor. 36: gelbe karte 40: Erste Großchance der Partie! Anton bedient Reus unfreiwillig mit einer zu kurz geratenen Kopfballabwehr, der BVB-Kapitän sprintet ungedeckt auf das Hannoveraner Tor zu und schließt flach ab - Esser lenkt den Ball mit dem Fuß um den Pfosten. 43: Albornoz geht zu Boden. Er hat die Kugel am Kopf abbekommen, berappelt sich aber zügig. Weiter geht's! 44: Die erste Hälfte neigt sich dem Ende entgegen, und allmählich kommt der BVB in Tritt. 44: Bürki misslingt ein Befreiungsschlag. Der Dortmunder Schlussmann trifft die Kugel nicht richtig und produziert eine Bogenlampe im eigenen Strafraum, Füllkrug hat aber kein Kapital daraus schlagen. 45: Die letzte Minute des ersten Abschnitts läuft.",
+  "bert_input_90": "[18] Hannover 96 Borussia Dortmund 49000 Stand 0:0 46: wechsel 50: Guter Angriff der Hannoveraner! Walace sieht Albornoz auf dem linken Seitenstreifen und spielt den aufgerückten Abwehrmann an, Albornoz flankt vors Tor, doch Wood verpasst. 51: Wieder Wood! Maina flankt von der rechten Seite, Wood schließt am ersten Pfosten ab - und trifft das Außennetz! 52: Nach einem Ballverlust von Philipp setzt 96 zum Gegenstoß an, Maina hat jede Menge Raum auf der rechten Seite, setzt seine Flanke allerdings aufs Tornetz. Keine Gefahr! 56: Bebou zieht aus 20 Metern volley ab, trifft das Leder aber nicht richtig. Der Ball fliegt am Tor vorbei. 58: Nach knapp einer Stunde stehen lediglich 3:5 Torschüsse zu Buche. Davon waren nur zwei gefährlich - von Reus kurz vor der Pause. 60: Beinahe die Dortmunder Führung - doch erneut ist Hannover mit Fortuna im Bunde! Albornoz fängt Reus Freistoß-Flanke per Kopf, doch Philipp kommt bei der nachfolgenden Wolf-Hereingabe zum Kopfball - und trifft den Pfosten! 62: verletzung 65: Zur Erinnerung: Keines der bisherigen 52 Duelle zwischen den beiden Teams hat ohne Tore geendet. Ein gutes Omen für die verbleibenden 25 Minuten. 66: Dahoud zieht aus dem Rückraum flach ab, trifft den Ball aber nicht voll. Keine Gefahr! 68: Nächste BVB-Gelegenheit! Dahoud spielt Wolf auf der linken Seite an, der Ex-Hannoveraner hat Zeit und Raum und spielt den Ball flach vors Tor - Reus rauscht heran, verpasst aber. 73: Maina tritt den Ball von der rechten Seite vors Tor - in Bürkis Hände. 74: rote karte 79: wechsel 82: Delaney setzt im Mittelfeld zu einer Grätsche gegen Bebou an, er trifft zwar deutlich den Ball, allerdings auch den Hannoveraner - Freistoß für 96! 85: Schmelzer spielt den Ball vors Tor, dort klärt Walace per Kopf. 86: wechsel 89: wechsel",
+  "bert_input_45_tokens": 399,
+  "bert_input_90_tokens": 435,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+1",
+      "text": "Albornoz spielt den Ball von der linken Seite scharf vors Tor, Akanji klärt in höchster Not. Dann bringt Delaney Fossum kurz vor dem Strafraum zu Fall, doch Zwayer verweigert 96 den Freistoß."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+4",
+      "text": "Piszczek flankt von der rechten Seite, Bakalorz klärt per Kopf."
+    },
+    {
+      "minute": "90+4",
+      "text": "Reus geht auf dem linken Flügel gegen Sorg ins Dribbling, kommt aber nicht vorbei."
+    },
+    {
+      "minute": "90+5",
+      "text": "Die letzten 60 Sekunden sind angebrochen. Glückt einem der beiden Teams noch der Lucky Punch?"
+    },
+    {
+      "minute": "90+6",
+      "text": "Anton erwischt Wolf mit dem Schuh im Gesicht, der Dortmunder muss behandelt werden."
+    }
+  ]
+}

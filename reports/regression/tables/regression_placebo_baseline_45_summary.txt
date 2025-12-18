@@ -7,9 +7,9 @@ If significant, this suggests the model might be flawed.
 
 Formula: announced_45 ~ goals_1st + subs_1st + cards_1st + var_1st + injuries_1st + disturbances_1st + pressure_add_45 + pressure_draw_45 + pressure_end_45 + C(season)
 
-Samples: 1100
-Train R² Adjusted: 0.2426
-AIC: 3364.8933
+Samples: 755
+Train R² Adjusted: 0.3065
+AIC: 2426.1811
 
 ================================================================================
 Model Summary:
@@ -17,39 +17,40 @@ Model Summary:
 
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:           announced_45   R-squared:                       0.253
-Model:                            OLS   Adj. R-squared:                  0.243
-Method:                 Least Squares   F-statistic:                     24.47
-Date:                Wed, 17 Dec 2025   Prob (F-statistic):           1.03e-58
-Time:                        23:02:34   Log-Likelihood:                -1666.4
-No. Observations:                1100   AIC:                             3365.
-Df Residuals:                    1084   BIC:                             3445.
-Df Model:                          15                                         
+Dep. Variable:           announced_45   R-squared:                       0.321
+Model:                            OLS   Adj. R-squared:                  0.307
+Method:                 Least Squares   F-statistic:                     21.83
+Date:                Thu, 18 Dec 2025   Prob (F-statistic):           5.90e-52
+Time:                        20:21:27   Log-Likelihood:                -1196.1
+No. Observations:                 755   AIC:                             2426.
+Df Residuals:                     738   BIC:                             2505.
+Df Model:                          16                                         
 Covariance Type:            nonrobust                                         
 ========================================================================================
                            coef    std err          t      P>|t|      [0.025      0.975]
 ----------------------------------------------------------------------------------------
-Intercept               -0.1174      0.121     -0.970      0.332      -0.355       0.120
-C(season)[T.2018-19]     0.0383      0.178      0.215      0.830      -0.311       0.387
-C(season)[T.2019-20]     0.1368      0.110      1.241      0.215      -0.079       0.353
-C(season)[T.2020-21]    -0.0127      0.124     -0.103      0.918      -0.256       0.230
-C(season)[T.2021-22]     0.1131      0.136      0.831      0.406      -0.154       0.380
-C(season)[T.2022-23]     0.6630      0.129      5.158      0.000       0.411       0.915
-C(season)[T.2023-24]     1.6752      0.121     13.865      0.000       1.438       1.912
-goals_1st                0.1031      0.033      3.091      0.002       0.038       0.168
-subs_1st                 0.2391      0.053      4.544      0.000       0.136       0.342
-cards_1st                0.0024      0.025      0.096      0.924      -0.047       0.051
-var_1st                  0.0865      0.025      3.398      0.001       0.037       0.136
-injuries_1st             0.2263      0.042      5.383      0.000       0.144       0.309
-disturbances_1st         0.0333      0.105      0.317      0.752      -0.173       0.240
-pressure_add_45          0.2340      0.136      1.723      0.085      -0.033       0.501
-pressure_draw_45        -0.0804      0.116     -0.693      0.489      -0.308       0.147
-pressure_end_45          0.1347      0.116      1.157      0.248      -0.094       0.363
+Intercept               -0.2963      0.166     -1.786      0.074      -0.622       0.029
+C(season)[T.2018-19]     0.5318      0.174      3.054      0.002       0.190       0.874
+C(season)[T.2019-20]    -0.0950      0.242     -0.393      0.695      -0.570       0.380
+C(season)[T.2020-21]     0.0155      0.183      0.085      0.933      -0.344       0.375
+C(season)[T.2021-22]     0.5618      0.153      3.676      0.000       0.262       0.862
+C(season)[T.2022-23]     0.5637      0.186      3.028      0.003       0.198       0.929
+C(season)[T.2023-24]     1.9837      0.253      7.844      0.000       1.487       2.480
+C(season)[T.2024-25]     1.4420      0.163      8.820      0.000       1.121       1.763
+goals_1st                0.1245      0.041      3.064      0.002       0.045       0.204
+subs_1st                 0.3056      0.063      4.861      0.000       0.182       0.429
+cards_1st                0.0488      0.035      1.384      0.167      -0.020       0.118
+var_1st                  0.0747      0.031      2.389      0.017       0.013       0.136
+injuries_1st             0.3292      0.049      6.679      0.000       0.232       0.426
+disturbances_1st         0.3592      0.136      2.639      0.008       0.092       0.626
+pressure_add_45          0.3511      0.166      2.112      0.035       0.025       0.677
+pressure_draw_45         0.1901      0.135      1.412      0.158      -0.074       0.454
+pressure_end_45          0.2659      0.128      2.080      0.038       0.015       0.517
 ==============================================================================
-Omnibus:                      606.674   Durbin-Watson:                   1.975
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):             9097.553
-Skew:                           2.202   Prob(JB):                         0.00
-Kurtosis:                      16.382   Cond. No.                         20.8
+Omnibus:                      287.216   Durbin-Watson:                   2.103
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             2771.290
+Skew:                           1.434   Prob(JB):                         0.00
+Kurtosis:                      11.937   Cond. No.                         25.5
 ==============================================================================
 
 Notes:
@@ -59,14 +60,14 @@ Notes:
 Pressure Coefficient Analysis:
 ================================================================================
 
-pressure_add_45 (Losing by 1) coefficient: 0.2340
-pressure_add_45 p-value: 0.0852
-pressure_add_45 significant: No
+pressure_add_45 (Losing by 1) coefficient: 0.3511
+pressure_add_45 p-value: 0.0351
+pressure_add_45 significant: Yes
 
-pressure_draw_45 (Draw) coefficient: -0.0804
-pressure_draw_45 p-value: 0.4888
+pressure_draw_45 (Draw) coefficient: 0.1901
+pressure_draw_45 p-value: 0.1583
 pressure_draw_45 significant: No
 
-pressure_end_45 (Defending Lead) coefficient: 0.1347
-pressure_end_45 p-value: 0.2476
-pressure_end_45 significant: No
+pressure_end_45 (Defending Lead) coefficient: 0.2659
+pressure_end_45 p-value: 0.0378
+pressure_end_45 significant: Yes

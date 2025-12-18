@@ -4,10 +4,12 @@ Model 1: Main Baseline (2nd Half)
 
 Formula: announced_90 ~ goals_2nd + subs_2nd + cards_2nd + var_2nd + injuries_2nd + disturbances_2nd + pressure_add_90 + pressure_draw_90 + pressure_end_90 + C(season)
 
-Training samples: 750
-Test samples: 0
-Train R² Adjusted: 0.3336
-AIC: 2974.4915
+Training samples: 761
+Test samples: 124
+Test RMSE: 1.9771
+Test MAE: 1.4387
+Train R² Adjusted: 0.3260
+AIC: 2988.4135
 
 ================================================================================
 Model Summary:
@@ -15,39 +17,39 @@ Model Summary:
 
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:           announced_90   R-squared:                       0.347
-Model:                            OLS   Adj. R-squared:                  0.334
-Method:                 Least Squares   F-statistic:                     26.00
-Date:                Wed, 17 Dec 2025   Prob (F-statistic):           3.41e-58
-Time:                        23:02:34   Log-Likelihood:                -1471.2
-No. Observations:                 750   AIC:                             2974.
-Df Residuals:                     734   BIC:                             3048.
+Dep. Variable:           announced_90   R-squared:                       0.339
+Model:                            OLS   Adj. R-squared:                  0.326
+Method:                 Least Squares   F-statistic:                     25.50
+Date:                Thu, 18 Dec 2025   Prob (F-statistic):           2.47e-57
+Time:                        20:21:27   Log-Likelihood:                -1478.2
+No. Observations:                 761   AIC:                             2988.
+Df Residuals:                     745   BIC:                             3063.
 Df Model:                          15                                         
 Covariance Type:            nonrobust                                         
 ========================================================================================
                            coef    std err          t      P>|t|      [0.025      0.975]
 ----------------------------------------------------------------------------------------
-Intercept                1.5189      0.344      4.409      0.000       0.843       2.195
-C(season)[T.2018-19]     0.5633      0.417      1.350      0.177      -0.256       1.382
-C(season)[T.2019-20]     0.4199      0.206      2.042      0.042       0.016       0.824
-C(season)[T.2020-21]     0.8742      0.219      3.987      0.000       0.444       1.305
-C(season)[T.2021-22]     0.9765      0.246      3.973      0.000       0.494       1.459
-C(season)[T.2022-23]     1.6416      0.245      6.689      0.000       1.160       2.123
-C(season)[T.2023-24]     2.5389      0.218     11.657      0.000       2.111       2.966
-goals_2nd               -0.1951      0.054     -3.581      0.000      -0.302      -0.088
-subs_2nd                -0.0819      0.047     -1.757      0.079      -0.173       0.010
-cards_2nd                0.1819      0.038      4.773      0.000       0.107       0.257
-var_2nd                  0.0863      0.047      1.827      0.068      -0.006       0.179
-injuries_2nd             0.1712      0.074      2.317      0.021       0.026       0.316
-disturbances_2nd         0.1903      0.194      0.979      0.328      -0.191       0.572
-pressure_add_90          1.8646      0.296      6.295      0.000       1.283       2.446
-pressure_draw_90         1.0153      0.239      4.252      0.000       0.547       1.484
-pressure_end_90          1.4287      0.236      6.051      0.000       0.965       1.892
+Intercept                1.2082      0.335      3.612      0.000       0.551       1.865
+C(season)[T.2018-19]     0.6265      0.236      2.654      0.008       0.163       1.090
+C(season)[T.2019-20]     0.0285      0.304      0.094      0.925      -0.567       0.624
+C(season)[T.2020-21]     0.9029      0.228      3.959      0.000       0.455       1.351
+C(season)[T.2021-22]     1.3077      0.197      6.628      0.000       0.920       1.695
+C(season)[T.2022-23]     1.1310      0.250      4.517      0.000       0.639       1.623
+C(season)[T.2023-24]     2.8498      0.289      9.848      0.000       2.282       3.418
+goals_2nd               -0.2537      0.053     -4.805      0.000      -0.357      -0.150
+subs_2nd                -0.0202      0.043     -0.464      0.643      -0.106       0.065
+cards_2nd                0.1986      0.039      5.116      0.000       0.122       0.275
+var_2nd                  0.0249      0.044      0.564      0.573      -0.062       0.112
+injuries_2nd             0.2341      0.074      3.164      0.002       0.089       0.379
+disturbances_2nd         0.2428      0.195      1.245      0.213      -0.140       0.626
+pressure_add_90          1.8290      0.262      6.972      0.000       1.314       2.344
+pressure_draw_90         1.4111      0.235      6.017      0.000       0.951       1.871
+pressure_end_90          1.2974      0.199      6.514      0.000       0.906       1.688
 ==============================================================================
-Omnibus:                       10.276   Durbin-Watson:                   2.082
-Prob(Omnibus):                  0.006   Jarque-Bera (JB):                6.576
-Skew:                           0.046   Prob(JB):                       0.0373
-Kurtosis:                       2.551   Cond. No.                         52.2
+Omnibus:                        9.801   Durbin-Watson:                   1.955
+Prob(Omnibus):                  0.007   Jarque-Bera (JB):                9.782
+Skew:                           0.265   Prob(JB):                      0.00751
+Kurtosis:                       3.168   Cond. No.                         53.1
 ==============================================================================
 
 Notes:

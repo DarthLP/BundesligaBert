@@ -1,14 +1,16 @@
 """
 KickerScraper: Multi-tab scraper for Bundesliga match data from Kicker.de
 
-This module implements a robust scraper using Selenium (undetected-chromedriver) to handle
+This module implements a robust scraper using standard Selenium with webdriver_manager to handle
 cookie walls and JavaScript-rendered content. It visits two tabs (Spielinfo, Ticker)
 sequentially to extract match metadata and ticker text with precise score states at every minute.
 It strictly separates input features from target labels by extracting announced and actual played
 time before removing leakage from text.
 
-The scraper includes anti-ban measures:
+The scraper uses a Context Manager pattern for guaranteed driver cleanup, preventing zombie processes.
+It includes anti-ban measures:
 - Runs Chrome in incognito mode and background (headless)
+- Disables image loading to save memory
 - Clears cookies between requests
 - Uses random user agents
 - Implements longer delays between requests
@@ -21,29 +23,31 @@ Usage:
     # This is the fastest and safest way to download all data
     python src/data/kicker_scraper.py
     
-    # Option 2: Use as a module for individual matches
+    # Option 2: Use as a module for individual matches (Context Manager pattern)
     from src.data.kicker_scraper import KickerScraper
     from pathlib import Path
     
-    scraper = KickerScraper(save_dir=Path("data/raw"))
-    result = scraper.scrape_full_match(
-        match_url="https://www.kicker.de/...",
-        season="2023-24",
-        matchday=1
-    )
+    with KickerScraper(save_dir=Path("data/raw")) as scraper:
+        result = scraper.scrape_full_match(
+            match_url="https://www.kicker.de/...",
+            season="2023-24",
+            matchday=1
+        )
     
     # Option 3: Get match URLs for a specific matchday
-    match_urls = scraper.get_match_urls(season="2023-24", matchday=1)
-    for url in match_urls:
-        scraper.scrape_full_match(url, season="2023-24", matchday=1)
+    with KickerScraper(save_dir=Path("data/raw")) as scraper:
+        match_urls = scraper.get_match_urls(season="2023-24", matchday=1)
+        for url in match_urls:
+            scraper.scrape_full_match(url, season="2023-24", matchday=1)
     
     # Option 4: Force re-scraping even if match already downloaded (for testing)
-    result = scraper.scrape_full_match(
-        match_url="https://www.kicker.de/...",
-        season="2023-24",
-        matchday=1,
-        force_rescrape=True
-    )
+    with KickerScraper(save_dir=Path("data/raw")) as scraper:
+        result = scraper.scrape_full_match(
+            match_url="https://www.kicker.de/...",
+            season="2023-24",
+            matchday=1,
+            force_rescrape=True
+        )
 
 Multiprocessing Details:
     When running as a script (Option 1), the scraper uses multiprocessing to run
@@ -91,51 +95,81 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 
 logger = logging.getLogger(__name__)
 
 
 class KickerScraper:
     """
-    Scraper for Bundesliga match data from Kicker.de using Selenium.
+    Scraper for Bundesliga match data from Kicker.de using standard Selenium.
     
-    Uses undetected-chromedriver to bypass bot detection and handle JavaScript-rendered
-    content. Implements a multi-tab scraping strategy:
+    Uses standard Selenium with webdriver_manager for automatic ChromeDriver management.
+    Implements a multi-tab scraping strategy:
     1. Spielinfo tab (/spielinfo): Extract metadata (stadium, attendance, referee, stats)
     2. Ticker tab (/ticker): Extract ticker events from server-side rendered HTML
     
+    This class implements the Context Manager pattern for guaranteed driver cleanup.
+    Always use it with a 'with' statement to ensure proper resource management.
+    
     Attributes:
         save_dir: Directory path to save scraped JSON files
-        driver: Selenium WebDriver instance (undetected Chrome)
-        wait: WebDriverWait instance for explicit waits
+        driver: Selenium WebDriver instance (standard Chrome, initialized in __enter__)
+        wait: WebDriverWait instance for explicit waits (initialized in __enter__)
     """
     
     def __init__(self, save_dir: Union[str, Path], headless: bool = True) -> None:
         """
-        Initialize KickerScraper with Selenium WebDriver.
+        Initialize KickerScraper (driver initialization happens in __enter__).
+        
+        Use this class as a context manager:
+            with KickerScraper(save_dir="data/raw") as scraper:
+                # scraping logic
         
         Args:
             save_dir: Directory to save scraped match JSON files
             headless: If True, run browser in headless mode (default: True for background operation)
         """
+        # Reduce process priority on macOS to keep system responsive during scraping
+        if os.name == 'posix':  # Unix-like (macOS, Linux)
+            try:
+                import psutil
+                p = psutil.Process()
+                p.nice(10)  # Lower priority (higher nice value) - keeps system responsive
+                logger.debug("Reduced process priority for better system responsiveness")
+            except (ImportError, AttributeError, PermissionError):
+                # Ignore if psutil not available, nice() not supported, or permission denied
+                pass
+        
         self.save_dir = Path(save_dir)
         self.save_dir.mkdir(parents=True, exist_ok=True)
+        self.headless = headless
         
-        # Initialize Selenium WebDriver (undetected Chrome)
-        # Use file lock to prevent race conditions when multiple processes initialize simultaneously
+        # Driver will be initialized in __enter__
+        self.driver = None
+        self.wait = None
+        self._cookie_consent_handled = False
+    
+    def __enter__(self):
+        """
+        Context manager entry: Initialize Selenium WebDriver with file lock for multiprocessing safety.
+        
+        Returns:
+            self: The KickerScraper instance
+        """
         logger.info("Initializing Selenium WebDriver...")
-        options = self._create_chrome_options(headless=headless)
         
         # File-based lock to prevent race conditions in multiprocessing
-        # This ensures only one process initializes Chrome driver at a time
-        # With 4 processes (2 seasons each), lock contention is reduced
-        lock_file = Path.home() / ".undetected_chromedriver_init.lock"
-        max_lock_wait = 180  # Maximum seconds to wait for lock (allows for slower driver downloads)
+        # This ensures only one process initializes ChromeDriver at a time
+        lock_file = Path.home() / ".chromedriver_init.lock"
+        max_lock_wait = 180  # Maximum seconds to wait for lock
         lock_wait_interval = 0.5  # Check lock every 0.5 seconds
         stale_lock_threshold = 300  # Remove lock file if older than 5 minutes (stale)
         
@@ -181,13 +215,18 @@ class KickerScraper:
             time.sleep(random.uniform(0.1, 0.5))
             
             # Initialize driver with retry logic for network timeouts and conflicts
-            max_retries = 5  # Increased retries
+            max_retries = 5
             retry_delay = 3  # Start with longer delay
             for attempt in range(max_retries):
                 try:
-                    # Try to initialize with version_main=None to use cached driver if available
-                    # This avoids network calls if a driver is already cached
-                    self.driver = uc.Chrome(options=options, version_main=None, use_subprocess=True)
+                    # Create Chrome options
+                    options = self._create_chrome_options(headless=self.headless)
+                    
+                    # Use webdriver_manager to automatically handle ChromeDriver binary
+                    service = Service(ChromeDriverManager().install())
+                    
+                    # Initialize standard Selenium WebDriver
+                    self.driver = webdriver.Chrome(service=service, options=options)
                     break
                 except Exception as e:
                     if attempt < max_retries - 1:
@@ -228,7 +267,7 @@ class KickerScraper:
                 except Exception:
                     pass  # Ignore errors when removing lock file
         
-        self.wait = WebDriverWait(self.driver, timeout=10)
+        self.wait = WebDriverWait(self.driver, timeout=5)
         
         # Track if we've handled cookie consent (optimization)
         self._cookie_consent_handled = False
@@ -237,10 +276,32 @@ class KickerScraper:
         self._clear_cookies()
         
         logger.info("WebDriver initialized successfully (incognito mode, background)")
+        return self
     
-    def _create_chrome_options(self, headless: bool = True) -> uc.ChromeOptions:
+    def __exit__(self, exc_type, exc_val, exc_tb):
         """
-        Create Chrome options with anti-ban measures.
+        Context manager exit: Always cleanup driver, even on exceptions.
+        
+        Args:
+            exc_type: Exception type (if any)
+            exc_val: Exception value (if any)
+            exc_tb: Exception traceback (if any)
+            
+        Returns:
+            False: Don't suppress exceptions
+        """
+        if self.driver:
+            try:
+                self.driver.quit()
+                logger.debug("WebDriver closed successfully")
+            except Exception as e:
+                logger.debug(f"Error closing WebDriver: {e}")
+                # Ignore errors during cleanup
+        return False  # Don't suppress exceptions
+    
+    def _create_chrome_options(self, headless: bool = True) -> ChromeOptions:
+        """
+        Create Chrome options with anti-ban measures and memory optimization.
         
         Args:
             headless: If True, run browser in headless mode
@@ -248,7 +309,7 @@ class KickerScraper:
         Returns:
             Configured ChromeOptions object
         """
-        options = uc.ChromeOptions()
+        options = ChromeOptions()
         
         # Anti-ban measures: Run in background (headless) and incognito mode
         if headless:
@@ -265,6 +326,35 @@ class KickerScraper:
         options.add_argument('--disable-extensions')
         options.add_argument('--disable-plugins')
         
+        # Memory optimization: Disable image loading to save RAM
+        prefs = {
+            "profile.managed_default_content_settings.images": 2  # 2 = block images
+        }
+        options.add_experimental_option("prefs", prefs)
+        
+        # Additional memory and CPU optimizations
+        options.add_argument('--blink-settings=imagesEnabled=false')  # Disable images
+        options.add_argument('--disable-javascript-harmony-shipping')  # Reduce JS overhead
+        
+        # Additional CPU reduction flags (safe to disable in headless mode)
+        options.add_argument('--disable-background-timer-throttling')  # Reduce background processing
+        options.add_argument('--disable-backgrounding-occluded-windows')  # Don't process hidden windows
+        options.add_argument('--disable-renderer-backgrounding')  # Don't background renderer
+        options.add_argument('--disable-background-networking')  # Disable background network requests
+        options.add_argument('--disable-sync')  # Disable sync features
+        options.add_argument('--disable-default-apps')  # Disable default apps
+        options.add_argument('--disable-component-update')  # Disable component updates
+        options.add_argument('--disable-background-downloads')  # Disable background downloads
+        options.add_argument('--disable-domain-reliability')  # Disable domain reliability monitoring
+        options.add_argument('--disable-breakpad')  # Disable crash reporting
+        options.add_argument('--disable-features=TranslateUI')  # Disable translation features
+        options.add_argument('--disable-features=AudioServiceOutOfProcess')  # Disable audio service
+        options.add_argument('--disable-features=MediaRouter')  # Disable media router
+        options.add_argument('--js-flags=--max-old-space-size=256')  # Limit JS heap size
+        
+        # Exclude enable-automation switch (anti-detection)
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        
         # Random user agent for better anti-detection
         user_agents = [
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -276,14 +366,6 @@ class KickerScraper:
         options.add_argument(f'--user-agent={random.choice(user_agents)}')
         
         return options
-    
-    def __del__(self) -> None:
-        """Cleanup: Ensure driver is closed on destruction."""
-        if hasattr(self, 'driver'):
-            try:
-                self.driver.quit()
-            except Exception:
-                pass  # Ignore errors during cleanup
     
     def _clear_cookies(self) -> None:
         """
@@ -297,6 +379,74 @@ class KickerScraper:
             logger.debug("Cookies cleared")
         except Exception as e:
             logger.warning(f"Failed to clear cookies: {e}")
+    
+    def _is_driver_alive(self) -> bool:
+        """
+        Check if the WebDriver is still responsive.
+        
+        Returns:
+            True if driver is alive and responsive, False otherwise
+        """
+        try:
+            # Try a simple operation to check if driver is responsive
+            _ = self.driver.current_url
+            return True
+        except Exception:
+            return False
+    
+    def _get_page_source_safe(self, timeout: int = 30) -> Optional[str]:
+        """
+        Safely get page source with timeout handling and error recovery.
+        
+        This method wraps driver.page_source with better error handling for:
+        - urllib3 ReadTimeoutError (Chrome hung/unresponsive)
+        - Selenium WebDriverException (connection issues)
+        - Generic timeout errors
+        
+        Args:
+            timeout: Maximum seconds to wait for page source (default: 30)
+            
+        Returns:
+            Page source HTML string, or None if retrieval failed
+        """
+        try:
+            # Check if driver is still alive before attempting to get page source
+            if not self._is_driver_alive():
+                logger.error("WebDriver is not responsive. Chrome may have crashed.")
+                return None
+            
+            # Import urllib3 exceptions for specific handling
+            from urllib3.exceptions import ReadTimeoutError as Urllib3ReadTimeoutError
+            from requests.exceptions import ReadTimeout as RequestsReadTimeout
+            from selenium.common.exceptions import TimeoutException, WebDriverException
+            
+            # Try to get page source with timeout protection
+            html = self.driver.page_source
+            return html
+            
+        except (Urllib3ReadTimeoutError, RequestsReadTimeout) as e:
+            logger.error(f"ReadTimeoutError getting page source: {e}")
+            logger.error("Chrome appears to be hung or unresponsive. This may require driver restart.")
+            return None
+            
+        except (TimeoutException, WebDriverException) as e:
+            error_msg = str(e).lower()
+            if "timeout" in error_msg or "read timed out" in error_msg:
+                logger.error(f"WebDriver timeout getting page source: {e}")
+                logger.error("Chrome connection timed out. This may require driver restart.")
+            else:
+                logger.error(f"WebDriverException getting page source: {e}")
+            return None
+            
+        except Exception as e:
+            error_msg = str(e).lower()
+            # Check for timeout-related errors in generic exception
+            if "timeout" in error_msg or "read timed out" in error_msg or "timed out" in error_msg:
+                logger.error(f"Timeout error getting page source: {e}")
+                logger.error("Chrome appears to be hung or unresponsive.")
+            else:
+                logger.error(f"Unexpected error getting page source: {e}")
+            return None
     
     def _is_match_downloaded(self, match_id: str, season: Optional[str] = None) -> bool:
         """
@@ -419,47 +569,36 @@ class KickerScraper:
         except IOError as e:
             logger.warning(f"Failed to save matchday metadata for {season}, matchday {matchday}: {e}")
     
-    def _random_delay(self, min_sec: float = 2, max_sec: float = 4) -> None:
+    def _random_delay(self, min_sec: float = 1, max_sec: float = 2) -> None:
         """
         Sleep for a random duration between min_sec and max_sec.
         
+        Optimized defaults for M1 Mac: reduced from 2-4s to 1-2s for better performance.
+        Can still be overridden with custom values when needed.
+        
         Args:
-            min_sec: Minimum delay in seconds
-            max_sec: Maximum delay in seconds
+            min_sec: Minimum delay in seconds (default: 1)
+            max_sec: Maximum delay in seconds (default: 2)
         """
         delay = random.uniform(min_sec, max_sec)
         time.sleep(delay)
     
     def _scroll_page(self) -> None:
         """
-        Scroll the page slowly to trigger lazy loaders.
+        Scroll the page to trigger lazy loaders (CPU-optimized version).
         
         The Kicker ticker uses lazy loading, so elements don't exist in the DOM
-        until they are scrolled into view. This function performs a slow scroll
-        in 4 chunks (25%, 50%, 75%, 100% of document height) with 1 second
-        delays between each scroll to allow ticker items to render.
+        until they are scrolled into view. This function performs a minimal scroll
+        directly to bottom (single scroll) to reduce CPU usage.
+        
+        Optimized for M1 Mac: single scroll to bottom instead of multiple scrolls.
         """
-        logger.info("Scrolling page to trigger lazy loaders...")
+        logger.debug("Scrolling page to trigger lazy loaders...")
         try:
-            # Get total scroll height
-            total_height = self.driver.execute_script("return document.body.scrollHeight")
-            
-            # Scroll in 4 chunks: 25%, 50%, 75%, 100%
-            scroll_positions = [
-                int(total_height * 0.25),
-                int(total_height * 0.50),
-                int(total_height * 0.75),
-                total_height
-            ]
-            
-            for i, position in enumerate(scroll_positions, 1):
-                self.driver.execute_script(f"window.scrollTo(0, {position});")
-                logger.debug(f"Scrolled to {i*25}% of page ({position}px)")
-                time.sleep(1)  # Wait 1 second between each scroll to allow rendering
-            
-            # Final scroll to very bottom to ensure all content is loaded
+            # Single scroll to bottom - most efficient for CPU
+            # Most content loads when scrolling to bottom, so we skip intermediate positions
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(1)
+            time.sleep(0.3)  # Minimal wait for lazy loading (reduced from 0.5s)
             
             logger.debug("Finished scrolling to bottom")
         except Exception as e:
@@ -535,7 +674,7 @@ class KickerScraper:
             try:
                 logger.info("JS Consent failed, looking for button...")
                 # Use a longer wait for the button to appear (consent may load later)
-                button_wait = WebDriverWait(self.driver, timeout=10)
+                button_wait = WebDriverWait(self.driver, timeout=5)  # Reduced from 10s to 5s
                 button = button_wait.until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, "button.uc-accept-all-button, .kick__cmp__accept, button[class*='accept'], a[class*='accept']"))
                 )
@@ -561,8 +700,11 @@ class KickerScraper:
         """
         Extract announced added time from text.
         
-        Simply extracts the number (digit or German word) that appears directly before "Minuten"
-        when followed by context phrases indicating stoppage time.
+        Simple and robust approach:
+        1. Find all numbers (digits and German words) in the text
+        2. If multiple numbers found, prefer the one directly before "minuten"
+        3. If only one number found, use that one
+        4. Always prefer "zwei" and above over "eins", "eine", etc. (to avoid false positives)
         
         Args:
             text: Event text that may contain time announcements
@@ -589,46 +731,124 @@ class KickerScraper:
         
         text_lower = text.lower()
         
-        # Context phrases that indicate stoppage time announcements
-        context_pattern = r'(?:nachgespielt|obendrauf|oben drauf|nachspielzeit|nachschlag|gibt es oben drauf|gibt es|wird noch nachgespielt|werden noch nachgespielt)'
-        
-        # Pattern 1: Extract number (digit or German word) directly before "Minuten" followed by context
-        # Examples: "5 Minuten Nachschlag", "Fünf Minuten gibt es", "4 Minuten Nachspielzeit"
-        patterns = [
-            # German number words: "Fünf Minuten Nachschlag", "Drei Minuten gibt es"
-            rf'\b({"|".join(german_numbers.keys())})\s+minuten?\s+{context_pattern}',
-            # Digits: "5 Minuten Nachschlag", "4 Minuten Nachspielzeit"
-            rf'(\d+)\s+minuten?\s+{context_pattern}',
-            # With "Min." abbreviation: "5 Min. Nachschlag"
-            rf'(\d+)\s+min\.?\s+{context_pattern}',
-            # Pattern 2: Number appears AFTER context phrase (e.g., "mehrere Minuten Nachspielzeit geben, nämlich 5")
-            # "mehrere Minuten Nachspielzeit ... nämlich 5" or "Nachspielzeit geben, nämlich 5"
-            rf'(?:mehrere|einige)\s+minuten?\s+{context_pattern}.*?(?:nämlich|genau|und zwar|konkret)\s+(\d+)',
-            rf'{context_pattern}.*?(?:nämlich|genau|und zwar|konkret)\s+(\d+)',
-            # Alternative: "Nachspielzeit: 4" or "Nachspielzeit 5"
-            r'nachspielzeit[:\s]+(\d+)',
-            # Fallback: "+4" or "+ 4" (less reliable)
-            r'\+ ?(\d+)',
+        # Check if this is a stoppage time announcement (must contain context phrases)
+        # Simple check: context phrase + "minuten"/"minute" + number
+        context_phrases = [
+            'nachspielzeit', 'nachgespielt', 'nachgelegt', 'obendrauf', 
+            'oben drauf', 'draufgepackt', 'drauf gepackt', 'es gibt', 'gibt es', 
+            'nachschlag', 'zugabe', 'bonus', 'extra', 'tafel zeigt', 
+            'auf der tafel', 'vierter offizielle', 'werden noch', 'wird noch'
         ]
+        has_context = any(phrase in text_lower for phrase in context_phrases)
+        has_minuten = 'minuten' in text_lower or 'minute' in text_lower
         
-        for pattern in patterns:
-            match = re.search(pattern, text_lower, re.IGNORECASE)
-            if match:
-                try:
-                    # Get the matched group (could be German word or digit)
-                    matched_text = match.group(1) if match.lastindex >= 1 else match.group(0)
-                    
-                    # If it's a German number word, convert it
-                    if matched_text.lower() in german_numbers:
-                        return german_numbers[matched_text.lower()]
-                    
-                    # Otherwise, it's a digit
-                    num_str = matched_text.replace('+', '').strip()
-                    return int(num_str)
-                except (ValueError, IndexError):
-                    continue
+        if not (has_context and has_minuten):
+            return None
         
-        return None
+        # Find all numbers in the text (both digits and German words)
+        found_numbers = []
+        
+        # Find German number words
+        for word, value in german_numbers.items():
+            # Use word boundaries to avoid partial matches
+            pattern = rf'\b{word}\b'
+            matches = list(re.finditer(pattern, text_lower))
+            for match in matches:
+                found_numbers.append({
+                    'value': value,
+                    'position': match.start(),
+                    'text': match.group(),
+                    'is_german_word': True
+                })
+        
+        # Find digit numbers
+        digit_pattern = r'\b(\d+)\b'
+        digit_matches = list(re.finditer(digit_pattern, text_lower))
+        for match in digit_matches:
+            try:
+                value = int(match.group(1))
+                # Only consider reasonable values (1-15 minutes is typical)
+                if 1 <= value <= 15:
+                    found_numbers.append({
+                        'value': value,
+                        'position': match.start(),
+                        'text': match.group(1),
+                        'is_german_word': False
+                    })
+            except ValueError:
+                continue
+        
+        if not found_numbers:
+            return None
+        
+        # If multiple numbers, prefer the one EXACTLY before "minuten" or "min."
+        if len(found_numbers) > 1:
+            # Look for "minuten" or "min." in the text
+            minuten_pattern = r'\bminuten?\b|\bmin\.?\b'
+            minuten_matches = list(re.finditer(minuten_pattern, text_lower))
+            
+            if not minuten_matches:
+                # No "minuten" found, fall through to single number or higher value logic
+                pass
+            else:
+                # For each "minuten" match, find the number that is CLOSEST to it (immediately before)
+                numbers_before_minuten = []
+                for min_match in minuten_matches:
+                    min_pos = min_match.start()
+                    # Find the number that appears immediately before this "minuten"
+                    # (closest number that is before "minuten")
+                    closest_num = None
+                    closest_distance = float('inf')
+                    
+                    for num_info in found_numbers:
+                        num_pos = num_info['position']
+                        num_end = num_pos + len(num_info['text'])
+                        
+                        # Number must be BEFORE "minuten" (not after)
+                        # This ensures we don't pick numbers that appear after "minuten"
+                        # e.g., "drei minuten und zwei sekunden" -> should get 3, not 2
+                        if num_pos < min_pos:
+                            # Exclude numbers that are part of scores (like "3:2" or "2:1")
+                            if num_end < len(text_lower):
+                                next_chars = text_lower[num_end:num_end + 3].strip()
+                                # If it starts with ':' or has ':' nearby, it's likely a score
+                                if next_chars.startswith(':') or (':' in text_lower[max(0, num_pos - 2):num_end + 3]):
+                                    continue  # Skip this number, it's part of a score
+                            
+                            # Calculate distance (how far before "minuten")
+                            distance = min_pos - num_end
+                            # Only consider numbers within reasonable distance (20 chars)
+                            if distance <= 20 and distance < closest_distance:
+                                closest_num = num_info
+                                closest_distance = distance
+                    
+                    if closest_num:
+                        numbers_before_minuten.append(closest_num)
+                
+                # If we found numbers exactly before "minuten", prefer higher values (>= 2) over "eins"/"eine"
+                if numbers_before_minuten:
+                    higher_values = [n for n in numbers_before_minuten if n['value'] >= 2]
+                    if higher_values:
+                        # Return the leftmost (first) higher value
+                        return min(higher_values, key=lambda n: n['position'])['value']
+                    else:
+                        # Only "eins"/"eine" before "minuten", return it
+                        return numbers_before_minuten[0]['value']
+        
+        # If only one number found, use it
+        if len(found_numbers) == 1:
+            return found_numbers[0]['value']
+        
+        # Multiple numbers but none before "minuten" - prefer higher values (>= 2)
+        # Filter out "eins", "eine", "ein" (value 1) if there are higher values
+        # This avoids false positives from "eine Minute" when there's a real time announcement
+        higher_values = [n for n in found_numbers if n['value'] >= 2]
+        if higher_values:
+            # Return the leftmost (first) higher value
+            return min(higher_values, key=lambda n: n['position'])['value']
+        else:
+            # Only "eins"/"eine" found, return it (but this is less reliable)
+            return found_numbers[0]['value']
     
     def _extract_actual_played_time(self, minute: str, text: str) -> Optional[int]:
         """
@@ -1329,41 +1549,34 @@ class KickerScraper:
         """
         # 1. Construct URL
         url = f"https://www.kicker.de/bundesliga/spieltag/{season}/{matchday}"
-        logger.info(f"Fetching match URLs for {season}, matchday {matchday}")
+        logger.info(f"Fetching match URLs for {season}, matchday {matchday} from {url}")
         
         # 2. Navigate and get HTML
         try:
-            # Check if window is still open
-            try:
-                self.driver.current_window_handle
-            except Exception:
-                logger.warning("Browser window was closed. Reinitializing driver...")
-                # Reinitialize driver if window was closed (use same options as init)
-                try:
-                    options = self._create_chrome_options(headless=True)
-                    self.driver = uc.Chrome(options=options, version_main=None, use_subprocess=True)
-                    self.wait = WebDriverWait(self.driver, timeout=10)
-                    self._cookie_consent_handled = False  # Reset consent flag
-                    self._clear_cookies()
-                    logger.info("Driver reinitialized successfully")
-                except Exception as init_error:
-                    logger.error(f"Failed to reinitialize driver: {init_error}")
-                    raise  # Re-raise to be caught by outer exception handler
-            
             # Clear cookies before request
             self._clear_cookies()
             self.driver.get(url)
-            # Longer delay for anti-ban (3-6 seconds)
-            self._random_delay(3, 6)
+            # Longer delay for anti-ban (2-3 seconds, reduced from 3-6 for M1 Mac optimization)
+            self._random_delay(2, 3)
             self._handle_cookie_consent()
             
-            # Scroll down to ensure all content is loaded (lazy loading)
-            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            self._random_delay(2, 3)
-            self.driver.execute_script("window.scrollTo(0, 0);")  # Scroll back to top
-            self._random_delay(2, 3)
+            # Wait for match links to load (they might be loaded via JavaScript)
+            try:
+                # Wait for at least one match link to appear
+                match_wait = WebDriverWait(self.driver, timeout=10)
+                match_wait.until(
+                    EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '-gegen-') and contains(@href, 'bundesliga')]"))
+                )
+                logger.debug("Match links detected on page")
+            except Exception:
+                # If no links found immediately, try scrolling to trigger lazy loading
+                logger.debug("No match links found immediately, scrolling to trigger lazy loading...")
+                self._scroll_page()
+                self._random_delay(1, 2)  # Wait a bit after scrolling
             
-            html = self.driver.page_source
+            html = self._get_page_source_safe(timeout=30)
+            if html is None:
+                raise RuntimeError("Failed to get page source (timeout or Chrome hung)")
         except Exception as e:
             error_msg = str(e)
             # Check if it's a network disconnection error
@@ -1375,8 +1588,25 @@ class KickerScraper:
             # Re-raise so caller can handle retry logic
             raise
         
+        # Check if page is valid (not 404 or error page)
         if not html or len(html) < 5000:
-            logger.warning(f"Page seems short ({len(html)} chars)")
+            logger.warning(f"Page seems short ({len(html)} chars if html else 0) for {url}")
+            # Check for common error indicators
+            html_lower = html.lower() if html else ""
+            if "404" in html_lower or "nicht gefunden" in html_lower or "seite nicht gefunden" in html_lower:
+                logger.warning(f"Page appears to be a 404 error page for {season}, matchday {matchday}")
+                logger.warning(f"This matchday might not exist or the URL format might be incorrect for this season")
+            return []
+        
+        # Check if page contains expected matchday content
+        html_lower = html.lower()
+        if "spieltag" not in html_lower and "match" not in html_lower:
+            logger.warning(f"Page doesn't appear to contain matchday content for {season}, matchday {matchday}")
+            logger.warning(f"URL: {url}")
+            logger.warning(f"Page length: {len(html)} chars")
+            # Log a snippet of the page to help debug
+            if len(html) > 500:
+                logger.debug(f"Page content snippet (first 500 chars): {html[:500]}")
             return []
         
         soup = BeautifulSoup(html, 'html.parser')
@@ -1384,10 +1614,22 @@ class KickerScraper:
         
         # 3. Link Extraction: Find all <a> tags
         links = soup.find_all('a', href=True)
-        logger.info(f"Found {len(links)} total links on matchday page")
+        logger.info(f"Found {len(links)} total links on matchday page for {season}, matchday {matchday}")
+        
+        if len(links) == 0:
+            logger.warning(f"No links found on page for {season}, matchday {matchday}")
+            logger.warning(f"This might indicate the page structure has changed or the page is empty")
+            return []
         
         # Keywords to exclude (only media galleries and women's league - we want analyse, liveticker)
         exclude_keywords = ['fotos', 'video', 'tabelle', 'frauen']
+        
+        links_with_gegen = 0
+        links_with_bundesliga = 0
+        excluded_links = 0
+        failed_format_check = 0
+        successfully_added = 0
+        excluded_samples = []  # Store first few excluded links for debugging
         
         for link in links:
             href = link.get('href', '').strip()
@@ -1396,36 +1638,156 @@ class KickerScraper:
             # 1. Contains "-gegen-" (German for "-vs-")
             if '-gegen-' not in href:
                 continue
+            links_with_gegen += 1
             
             # 2. Must contain "bundesliga" (not "2-bundesliga" or other variations)
             # But exclude "frauen-bundesliga" (women's league)
             if 'bundesliga' not in href.lower():
                 continue
-            if 'frauen' in href.lower() or '2-bundesliga' in href.lower():
+            links_with_bundesliga += 1
+            # Check for 'frauen' (women's league) or '2-bundesliga' (2nd division)
+            # Use word boundary checks to avoid false positives (e.g., '2022-bundesliga' should not match '2-bundesliga')
+            has_frauen = 'frauen' in href.lower()
+            # Check for '2-bundesliga' but not as part of a year (e.g., '2022-bundesliga')
+            # Pattern: '-2-bundesliga' or '2-bundesliga-' or start/end of string
+            has_2_bundesliga = bool(re.search(r'(^|[^0-9])2-bundesliga([^0-9]|$)', href.lower()))
+            if has_frauen or has_2_bundesliga:
+                excluded_links += 1
+                reason = 'frauen' if has_frauen else '2-bundesliga'
+                if len(excluded_samples) < 3:
+                    excluded_samples.append(f"{reason}: {href}")
+                logger.warning(f"Excluding link ({reason}): {href}")
                 continue
             
             # 3. Does NOT contain excluded keywords
-            if any(keyword in href.lower() for keyword in exclude_keywords):
+            matching_keyword = None
+            for keyword in exclude_keywords:
+                if keyword in href.lower():
+                    matching_keyword = keyword
+                    break
+            if matching_keyword:
+                excluded_links += 1
+                if len(excluded_samples) < 3:
+                    excluded_samples.append(f"keyword '{matching_keyword}': {href}")
+                logger.warning(f"Excluding link (keyword '{matching_keyword}'): {href}")
                 continue
             
             # 4. Starts with '/' (relative) or 'https://www.kicker.de' (absolute)
             if not (href.startswith('/') or href.startswith('https://www.kicker.de')):
+                failed_format_check += 1
                 continue
             
-            # 4. Cleaning: Convert relative links to absolute
+            # 5. Cleaning: Convert relative links to absolute
             if href.startswith('/'):
-                    full_url = f"https://www.kicker.de{href}"
+                full_url = f"https://www.kicker.de{href}"
             elif href.startswith('https://www.kicker.de'):
-                    full_url = href
+                full_url = href
             else:
+                failed_format_check += 1
                 continue
             
             # Strip known suffixes to get clean base match URL
             clean_url = re.sub(r'/(analyse|liveticker|ticker|spielinfo|spielbericht)$', '', full_url)
             clean_url = clean_url.rstrip('/')
             
+            # Validate clean URL before adding
+            if not clean_url or len(clean_url) < 10:
+                logger.debug(f"Skipping invalid clean URL: '{clean_url}' (from {href})")
+                failed_format_check += 1
+                continue
+            
             # Add to set (automatic deduplication)
             match_urls_set.add(clean_url)
+            successfully_added += 1
+            logger.debug(f"Added match URL: {clean_url}")
+        
+        # If no matches found, try scrolling and reloading the page
+        if len(match_urls_set) == 0 and len(links) > 0:
+            logger.warning(f"No match URLs found on first attempt for {season}, matchday {matchday}. Trying scroll and reload...")
+            try:
+                # Scroll to trigger lazy loading
+                self._scroll_page()
+                self._random_delay(2, 3)
+                # Reload HTML after scrolling
+                html = self._get_page_source_safe(timeout=30)
+                if html:
+                    soup = BeautifulSoup(html, 'html.parser')
+                    links = soup.find_all('a', href=True)
+                    logger.info(f"After scrolling: Found {len(links)} total links")
+                    
+                    # Try extracting again
+                    for link in links:
+                        href = link.get('href', '').strip()
+                        if '-gegen-' not in href:
+                            continue
+                        if 'bundesliga' not in href.lower():
+                            continue
+                        # Check for 'frauen' (women's league) or '2-bundesliga' (2nd division)
+                        # Use word boundary checks to avoid false positives
+                        has_frauen = 'frauen' in href.lower()
+                        has_2_bundesliga = bool(re.search(r'(^|[^0-9])2-bundesliga([^0-9]|$)', href.lower()))
+                        if has_frauen or has_2_bundesliga:
+                            continue
+                        if any(keyword in href.lower() for keyword in exclude_keywords):
+                            continue
+                        if not (href.startswith('/') or href.startswith('https://www.kicker.de')):
+                            continue
+                        
+                        if href.startswith('/'):
+                            full_url = f"https://www.kicker.de{href}"
+                        elif href.startswith('https://www.kicker.de'):
+                            full_url = href
+                        else:
+                            continue
+                        
+                        clean_url = re.sub(r'/(analyse|liveticker|ticker|spielinfo|spielbericht)$', '', full_url)
+                        clean_url = clean_url.rstrip('/')
+                        match_urls_set.add(clean_url)
+                    
+                    if len(match_urls_set) > 0:
+                        logger.info(f"✓ Found {len(match_urls_set)} match URLs after scrolling for {season}, matchday {matchday}")
+            except Exception as e:
+                logger.debug(f"Error during scroll retry: {e}")
+        
+        # Log diagnostic information if still no matches found
+        if len(match_urls_set) == 0:
+            logger.warning(f"No match URLs found for {season}, matchday {matchday}")
+            logger.warning(f"Diagnostics: {len(links)} total links, {links_with_gegen} with '-gegen-', {links_with_bundesliga} with 'bundesliga', {excluded_links} excluded, {failed_format_check} failed format check, {successfully_added} successfully added to set")
+            if excluded_samples:
+                logger.warning(f"Sample excluded links: {excluded_samples}")
+            logger.warning(f"URL tried: {url}")
+            # Log example links to help debug - show links with 'gegen' even if they don't pass other filters
+            if len(links) > 0:
+                example_links = [link.get('href', '') for link in links[:20]]
+                logger.warning(f"Example links found on page (first 20): {example_links}")
+                # Also show links that contain 'gegen' to see the format
+                gegen_links = [link.get('href', '') for link in links if '-gegen-' in link.get('href', '').lower()][:10]
+                if gegen_links:
+                    logger.warning(f"Example links with '-gegen-' found: {gegen_links}")
+                else:
+                    logger.warning(f"No links with '-gegen-' found. Checking for alternative formats...")
+                    # Check for other possible formats
+                    vs_links = [link.get('href', '') for link in links if ' vs ' in link.get('href', '').lower() or '/vs/' in link.get('href', '').lower()][:10]
+                    bundesliga_links = [link.get('href', '') for link in links if 'bundesliga' in link.get('href', '').lower()][:10]
+                    if vs_links:
+                        logger.warning(f"Found links with 'vs' format: {vs_links[:5]}")
+                    if bundesliga_links:
+                        logger.warning(f"Found bundesliga links (first 5): {bundesliga_links[:5]}")
+        
+        # Validation: Check if we got expected number of matches (9 per matchday for Bundesliga)
+        match_urls_list = sorted(list(match_urls_set))
+        if len(match_urls_list) != 9:
+            logger.warning(f"Expected 9 matches per matchday, but found {len(match_urls_list)} matches for {season}, matchday {matchday}")
+            if len(match_urls_list) == 0:
+                logger.warning(f"This might indicate:")
+                logger.warning(f"  1. The matchday hasn't been played yet")
+                logger.warning(f"  2. The URL format is incorrect for this season")
+                logger.warning(f"  3. The page structure has changed")
+                logger.warning(f"  4. Network/page loading issues")
+            else:
+                logger.warning(f"This might indicate incomplete page loading. Consider retrying with scrolling enabled.")
+        else:
+            logger.info(f"✓ Found all 9 matches for {season}, matchday {matchday}")
         
         # Convert set to sorted list for consistent output
         match_urls = sorted(list(match_urls_set))
@@ -1746,37 +2108,56 @@ class KickerScraper:
                 # Make detection VERY specific to avoid false positives
                 # Only match actual overtime announcement phrases
                 text_lower_check = text.lower() if text else ""
-                is_nachspielzeit_announcement = any(phrase in text_lower_check for phrase in [
-                    # Standard Phrasing
-                    'minuten wird nachgespielt', 
-                    'minuten werden nachgespielt',
-                    'minute wird nachgespielt',
-                    'minute wird noch nachgespielt',
-                    'minuten wird noch nachgespielt',
-                    'minuten werden noch nachgespielt',
-                    'nachspielzeit:',
-                    'nachspielzeit wird',
-                    'nachspielzeit beträgt',
-                    'angezeigte nachspielzeit',
-                    
-                    # "On Top" variations
-                    'minuten gibt es oben drauf',
-                    'minuten obendrauf',
-                    'gibt es oben drauf',
-                    'minuten drauf',
-                    
-                    # Colloquial / Synonyms
-                    'minuten nachschlag',
-                    'minuten zugabe',
-                    'minuten bonus',
-                    'minuten extra',
-                    'zeigerumdrehungen', # Cliché for "minutes"
-                    
-                    # The Action/Official
-                    'die tafel zeigt',
-                    'auf der tafel',
-                    'vierter offizielle', # Covers "Der vierte Offizielle zeigt..."
-                ])
+                
+                # Simple and robust detection: If text contains:
+                # 1. A context phrase (nachspielzeit, es gibt, obendrauf, nachgespielt, etc.)
+                # 2. "minuten" or "minute"
+                # 3. A number (digit or German word)
+                # Then it's a stoppage time announcement
+                
+                # Context phrases that indicate stoppage time announcements
+                context_phrases = [
+                    'nachspielzeit', 'nachgespielt', 'nachgelegt', 'obendrauf', 
+                    'oben drauf', 'draufgepackt', 'drauf gepackt', 'es gibt', 'gibt es', 
+                    'nachschlag', 'zugabe', 'bonus', 'extra', 'tafel zeigt', 
+                    'auf der tafel', 'vierter offizielle', 'werden noch', 'wird noch'
+                ]
+                has_context = any(phrase in text_lower_check for phrase in context_phrases)
+                
+                # Check for "minuten" or "minute"
+                has_minuten = 'minuten' in text_lower_check or 'minute' in text_lower_check
+                
+                # Check for numbers (digits 1-15 or German number words)
+                has_number = (
+                    re.search(r'\b([1-9]|1[0-5])\b', text_lower_check) or
+                    any(word in text_lower_check for word in ['eine', 'eins', 'ein', 'zwei', 'drei', 'vier', 'fünf', 'sechs', 'sieben', 'acht', 'neun', 'zehn'])
+                )
+                
+                # It's an announcement if it has context + minuten + number
+                # BUT: Only check for announcements in messages that are:
+                # - At minute 40+ (for first half) OR in overtime (45+)
+                # - At minute 85+ (for second half) OR in overtime (90+)
+                # This is where announcements typically appear
+                minute_num = self._parse_minute_to_int(minute)
+                is_overtime = '+' in minute if minute else False
+                
+                # Check if this message is in a relevant time period for announcements
+                is_relevant_for_45 = False
+                is_relevant_for_90 = False
+                
+                if minute_num:
+                    if minute_num <= 45:
+                        # First half: check if minute >= 40 OR in overtime (45+)
+                        is_relevant_for_45 = (minute_num >= 40) or (is_overtime and minute_num == 45)
+                    else:
+                        # Second half: check if minute >= 85 OR in overtime (90+)
+                        is_relevant_for_90 = (minute_num >= 85) or (is_overtime and minute_num >= 90)
+                
+                # Only treat as announcement if it matches the pattern AND is in relevant time period
+                is_nachspielzeit_announcement = (
+                    has_context and has_minuten and has_number and 
+                    (is_relevant_for_45 or is_relevant_for_90)
+                )
                 
                 # Extract announced_time from this event if it's a nachspielzeit announcement
                 # Only skip THIS specific event, not other events at the same minute
@@ -1784,13 +2165,12 @@ class KickerScraper:
                     # Extract announced time before skipping
                     temp_announced_time = self._extract_announced_time(text)
                     if temp_announced_time is not None:
-                        minute_num = self._parse_minute_to_int(minute)
-                        if minute_num and minute_num <= 45:
+                        if is_relevant_for_45:
                             # We process events in reverse order (newest first)
                             # We want the LAST announcement chronologically (closest to halftime)
                             # So we always update to keep the latest one we've seen
                             targets['announced_time_45'] = temp_announced_time
-                        elif minute_num and minute_num > 45:
+                        elif is_relevant_for_90:
                             # We want the LAST announcement chronologically (closest to fulltime)
                             targets['announced_time_90'] = temp_announced_time
                     # Now skip ONLY this specific event (leakage prevention)
@@ -2040,6 +2420,18 @@ class KickerScraper:
                 elif event_text_lower == "abpfiff" or event_text_lower == "spielende":
                     abpfiff_index = idx
                     break  # Stop after finding Abpfiff
+            
+            # Validation: Check that we have Anpfiff and Abpfiff (required for complete match)
+            if anpfiff_index is None:
+                logger.warning(f"⚠️  Anpfiff event not found in ticker for match {match_id}. This might indicate incomplete page loading.")
+            if abpfiff_index is None:
+                logger.warning(f"⚠️  Abpfiff event not found in ticker for match {match_id}. This might indicate incomplete page loading.")
+            if anpfiff_index is not None and abpfiff_index is not None:
+                # Count events between Anpfiff and Abpfiff
+                in_game_events = abpfiff_index - anpfiff_index - 1
+                logger.debug(f"✓ Found {in_game_events} events between Anpfiff (index {anpfiff_index}) and Abpfiff (index {abpfiff_index})")
+            elif anpfiff_index is None or abpfiff_index is None:
+                logger.warning(f"⚠️  Missing key events (Anpfiff: {anpfiff_index is not None}, Abpfiff: {abpfiff_index is not None}). Consider retrying with scrolling enabled.")
             
             # Second pass: set minute to empty for pre/post match events
             # No event_type field - we just need to clean up the minute field
@@ -2435,39 +2827,19 @@ class KickerScraper:
         match_info = {'info': {}, 'stats': {}}
         
         try:
-            # Validate window is still open and reinitialize if needed
-            try:
-                _ = self.driver.current_window_handle
-            except Exception as e:
-                logger.warning(f"Browser window check failed: {e}. Reinitializing driver...")
-                try:
-                    if hasattr(self, 'driver') and self.driver:
-                        self.driver.quit()
-                except Exception as quit_error:
-                    logger.debug(f"Error quitting old driver: {quit_error}")
-                # Reinitialize driver (use same options as init)
-                try:
-                    options = self._create_chrome_options(headless=True)
-                    self.driver = uc.Chrome(options=options, version_main=None, use_subprocess=True)
-                    self.wait = WebDriverWait(self.driver, timeout=10)
-                    self._cookie_consent_handled = False  # Reset consent flag
-                    self._clear_cookies()
-                    logger.info("Driver reinitialized successfully")
-                except Exception as init_error:
-                    logger.error(f"Failed to reinitialize driver: {init_error}")
-                    return None
-            
             # Clear cookies before each request
             self._clear_cookies()
             self.driver.get(info_url)
-            # Longer delay for anti-ban (3-6 seconds)
-            self._random_delay(3, 6)
+            # Longer delay for anti-ban (2-3 seconds, reduced from 3-6 for M1 Mac optimization)
+            self._random_delay(2, 3)
             self._handle_cookie_consent()
             
-            # Scroll to ensure stats bars load (they often animate/load on scroll)
-            self._scroll_page()
+            # No scrolling for normal operation (CPU optimization)
+            # Scrolling only happens on retry if needed
             
-            info_html = self.driver.page_source
+            info_html = self._get_page_source_safe(timeout=30)
+            if info_html is None:
+                logger.error("Failed to get spielinfo page source (timeout or Chrome hung)")
         except Exception as e:
             logger.error(f"Failed to fetch spielinfo tab: {e}")
             info_html = None
@@ -2494,33 +2866,11 @@ class KickerScraper:
         ticker_url = f"{base_url}/ticker"  # Use /ticker instead of /liveticker
         logger.debug(f"Fetching ticker tab: {ticker_url}")
         try:
-            # Validate window is still open and reinitialize if needed
-            try:
-                _ = self.driver.current_window_handle
-            except Exception as e:
-                logger.warning(f"Browser window check failed: {e}. Reinitializing driver...")
-                try:
-                    if hasattr(self, 'driver') and self.driver:
-                        self.driver.quit()
-                except Exception as quit_error:
-                    logger.debug(f"Error quitting old driver: {quit_error}")
-                # Reinitialize driver (use same options as init)
-                try:
-                    options = self._create_chrome_options(headless=True)
-                    self.driver = uc.Chrome(options=options, version_main=None, use_subprocess=True)
-                    self.wait = WebDriverWait(self.driver, timeout=10)
-                    self._cookie_consent_handled = False  # Reset consent flag
-                    self._clear_cookies()
-                    logger.info("Driver reinitialized successfully")
-                except Exception as init_error:
-                    logger.error(f"Failed to reinitialize driver: {init_error}")
-                    return None
-            
             # Clear cookies before each request
             self._clear_cookies()
             self.driver.get(ticker_url)
-            # Longer delay for anti-ban (3-6 seconds)
-            self._random_delay(3, 6)
+            # Longer delay for anti-ban (2-3 seconds, reduced from 3-6 for M1 Mac optimization)
+            self._random_delay(2, 3)
             self._handle_cookie_consent()
             
             # Wait for any ticker item to load (using CLASS_NAME like Gemini - more reliable)
@@ -2539,10 +2889,16 @@ class KickerScraper:
                 else:
                     logger.warning("This might indicate a slow page or network issue. Continuing anyway...")
             
-            # Scroll page to trigger lazy-loading (using dedicated method)
-            self._scroll_page()
+            # Only scroll on retry to trigger lazy-loading (CPU optimization)
+            # Normal operation: no scrolling - page should load all content without it
+            if is_retry:
+                logger.debug("Retry detected - scrolling to trigger lazy-loading")
+                self._scroll_page()
             
-            ticker_html = self.driver.page_source
+            ticker_html = self._get_page_source_safe(timeout=30)
+            if ticker_html is None:
+                logger.error("Failed to get ticker page source (timeout or Chrome hung)")
+                return None
         except Exception as e:
             logger.error(f"Failed to fetch ticker tab: {e}")
             return None
@@ -2715,220 +3071,213 @@ def scrape_seasons(seasons: List[str], save_dir: Path, process_id: int, max_retr
     time.sleep(initial_delay)
     
     # Initialize scraper for these seasons (each process gets its own driver)
-    scraper = None
     results = []
     
     try:
-        scraper = KickerScraper(save_dir=save_dir, headless=True)
-        
-        # Process each season sequentially in this process
-        for season in seasons:
-            # Statistics for this season
-            total_matches = 0
-            successful_matches = 0
-            failed_matches = 0
-            failed_urls = []  # Track failed match URLs for retry
-            
-            try:
-                logger.info(f"\n{'='*60}")
-                logger.info(f"Processing season: {season}")
-                logger.info(f"{'='*60}")
+        # Use Context Manager for guaranteed cleanup
+        with KickerScraper(save_dir=save_dir, headless=True) as scraper:
+            # Process each season sequentially in this process
+            for season in seasons:
+                # Statistics for this season
+                total_matches = 0
+                successful_matches = 0
+                failed_matches = 0
+                failed_urls = []  # Track failed match URLs for retry
                 
-                # Iterate through matchdays (1-34 for Bundesliga)
-                for matchday in range(1, 35):
-                    logger.info(f"\nSeason {season}, Matchday {matchday}")
+                try:
+                    logger.info(f"\n{'='*60}")
+                    logger.info(f"Processing season: {season}")
+                    logger.info(f"{'='*60}")
                     
-                    try:
-                        # Check if matchday is already complete (skip visiting page if all matches exist)
-                        if scraper._is_matchday_complete(season, matchday):
-                            logger.info(f"✓ Matchday {matchday} already complete, skipping...")
-                            # Load metadata to get match count for statistics
-                            metadata_path = scraper._get_matchday_metadata_path(season, matchday)
-                            try:
-                                with open(metadata_path, 'r', encoding='utf-8') as f:
-                                    metadata = json.load(f)
-                                    match_count = metadata.get('total_matches', 0)
-                                    total_matches += match_count
-                                    successful_matches += match_count
-                                    logger.info(f"  → {match_count} matches already downloaded")
-                            except (json.JSONDecodeError, IOError):
-                                pass
-                            continue
+                    # Iterate through matchdays (1-34 for Bundesliga)
+                    for matchday in range(1, 35):
+                        logger.info(f"\nSeason {season}, Matchday {matchday}")
                         
-                        # Get match URLs with retry logic for network failures
-                        match_urls = []
-                        matchday_retries = 2  # Retry matchday page fetch up to 2 times
-                        for matchday_attempt in range(matchday_retries + 1):
-                            try:
-                                match_urls = scraper.get_match_urls(season, matchday)
-                                if match_urls:
-                                    break  # Success, exit retry loop
-                                elif matchday_attempt < matchday_retries:
-                                    logger.warning(f"No matches found for {season}, matchday {matchday} (attempt {matchday_attempt + 1}/{matchday_retries + 1}), retrying...")
-                                    scraper._random_delay(5, 10)
-                                else:
-                                    logger.warning(f"No matches found for {season}, matchday {matchday} after {matchday_retries + 1} attempts")
-                            except Exception as matchday_error:
-                                if matchday_attempt < matchday_retries:
-                                    error_msg = str(matchday_error)
-                                    if "ERR_INTERNET_DISCONNECTED" in error_msg or "timeout" in error_msg.lower():
-                                        logger.warning(f"Network error fetching matchday page (attempt {matchday_attempt + 1}/{matchday_retries + 1}): {matchday_error}")
-                                        logger.info(f"Retrying in 10-15 seconds...")
-                                        scraper._random_delay(10, 15)
-                                    else:
-                                        # Non-network error, don't retry
-                                        logger.error(f"Error fetching matchday page: {matchday_error}")
-                                        break
-                                else:
-                                    logger.error(f"Failed to fetch matchday page after {matchday_retries + 1} attempts: {matchday_error}")
-                        
-                        if not match_urls:
-                            logger.warning(f"No matches found for {season}, matchday {matchday} - skipping this matchday")
-                            # Track failed matchdays for potential retry
-                            failed_urls.append({
-                                'url': f"matchday_{season}_{matchday}",
-                                'season': season,
-                                'matchday': matchday,
-                                'error': f"No matches found after {matchday_retries + 1} attempts",
-                                'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
-                                'type': 'matchday_fetch_failed'
-                            })
-                            continue
-                        
-                        # Check if all matches are already downloaded (handles case where matches exist but metadata doesn't)
-                        all_matches_downloaded = True
-                        for match_url in match_urls:
-                            match_id = scraper._extract_match_id_from_url(match_url)
-                            if not scraper._is_match_downloaded(match_id, season):
-                                all_matches_downloaded = False
-                                break
-                        
-                        if all_matches_downloaded:
-                            # All matches already exist, save metadata and skip scraping
-                            logger.info(f"✓ All {len(match_urls)} matches for matchday {matchday} already downloaded")
-                            scraper._save_matchday_metadata(season, matchday, match_urls)
-                            total_matches += len(match_urls)
-                            successful_matches += len(match_urls)
-                            logger.info(f"  → Saved metadata, skipping individual match scraping")
-                            continue
-                        
-                        # Scrape each match with retry logic
-                        for match_url in match_urls:
-                            total_matches += 1
-                            success = False
-                            last_error = None
-                            
-                            # Retry loop
-                            for attempt in range(max_retries + 1):  # 0 to max_retries (inclusive)
+                        try:
+                            # Check if matchday is already complete (skip visiting page if all matches exist)
+                            if scraper._is_matchday_complete(season, matchday):
+                                logger.info(f"✓ Matchday {matchday} already complete, skipping...")
+                                # Load metadata to get match count for statistics
+                                metadata_path = scraper._get_matchday_metadata_path(season, matchday)
                                 try:
-                                    is_retry_attempt = attempt > 0  # True if this is a retry (not first attempt)
-                                    result = scraper.scrape_full_match(
-                                        match_url, 
-                                        season=season, 
-                                        matchday=matchday,
-                                        is_retry=is_retry_attempt
-                                    )
-                                    
-                                    if result:
-                                        successful_matches += 1
-                                        logger.info(f"✓ Successfully scraped match {result['match_id']}")
-                                        success = True
-                                        break  # Success, exit retry loop
-                                    else:
-                                        # Result is None - could be skipped (already downloaded) or failed
-                                        # Check if file exists to distinguish
-                                        match_id = scraper._extract_match_id_from_url(match_url)
-                                        if scraper._is_match_downloaded(match_id, season):
-                                            # Already downloaded, not a failure
-                                            success = True
-                                            logger.debug(f"Match {match_id} already downloaded, skipping...")
-                                            break
-                                        else:
-                                            # Failed but no exception - treat as failure
-                                            if attempt < max_retries:
-                                                logger.warning(f"Match {match_id} returned None (attempt {attempt + 1}/{max_retries + 1}), retrying...")
-                                                scraper._random_delay(5, 10)  # Longer delay before retry
-                                            else:
-                                                last_error = "scrape_full_match returned None"
-                                
-                                except Exception as e:
-                                    last_error = str(e)
-                                    if attempt < max_retries:
-                                        logger.warning(f"✗ Error scraping match from {match_url} (attempt {attempt + 1}/{max_retries + 1}): {e}")
-                                        logger.info(f"Retrying in 5-10 seconds...")
-                                        scraper._random_delay(5, 10)  # Longer delay before retry
-                                    else:
-                                        logger.error(f"✗ Error scraping match from {match_url} after {max_retries + 1} attempts: {e}")
+                                    with open(metadata_path, 'r', encoding='utf-8') as f:
+                                        metadata = json.load(f)
+                                        match_count = metadata.get('total_matches', 0)
+                                        total_matches += match_count
+                                        successful_matches += match_count
+                                        logger.info(f"  → {match_count} matches already downloaded")
+                                except (json.JSONDecodeError, IOError):
+                                    pass
+                                continue
                             
-                            # If all retries failed, record it
-                            if not success:
-                                failed_matches += 1
-                                failed_match_info = {
-                                    'url': match_url,
+                            # Get match URLs with retry logic for network failures
+                            match_urls = []
+                            matchday_retries = 2  # Retry matchday page fetch up to 2 times
+                            for matchday_attempt in range(matchday_retries + 1):
+                                try:
+                                    match_urls = scraper.get_match_urls(season, matchday)
+                                    if match_urls:
+                                        break  # Success, exit retry loop
+                                    elif matchday_attempt < matchday_retries:
+                                        logger.warning(f"No matches found for {season}, matchday {matchday} (attempt {matchday_attempt + 1}/{matchday_retries + 1}), retrying...")
+                                        scraper._random_delay(3, 8)  # Reduced from 5-10s for M1 Mac optimization
+                                    else:
+                                        logger.warning(f"No matches found for {season}, matchday {matchday} after {matchday_retries + 1} attempts")
+                                except Exception as matchday_error:
+                                    if matchday_attempt < matchday_retries:
+                                        error_msg = str(matchday_error)
+                                        if "ERR_INTERNET_DISCONNECTED" in error_msg or "timeout" in error_msg.lower():
+                                            logger.warning(f"Network error fetching matchday page (attempt {matchday_attempt + 1}/{matchday_retries + 1}): {matchday_error}")
+                                            logger.info(f"Retrying in 3-8 seconds...")
+                                            scraper._random_delay(3, 8)  # Reduced from 10-15s for M1 Mac optimization
+                                        else:
+                                            # Non-network error, don't retry
+                                            logger.error(f"Error fetching matchday page: {matchday_error}")
+                                            break
+                                    else:
+                                        logger.error(f"Failed to fetch matchday page after {matchday_retries + 1} attempts: {matchday_error}")
+                            
+                            if not match_urls:
+                                logger.warning(f"No matches found for {season}, matchday {matchday} - skipping this matchday")
+                                # Track failed matchdays for potential retry
+                                failed_urls.append({
+                                    'url': f"matchday_{season}_{matchday}",
                                     'season': season,
                                     'matchday': matchday,
-                                    'error': last_error,
-                                    'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
-                                }
-                                failed_urls.append(failed_match_info)
-                                logger.error(f"✗ FAILED to scrape {match_url} after {max_retries + 1} attempts")
-                                logger.error(f"  Error: {last_error}")
-                                logger.error(f"  This match will be saved to failed_matches.json for retry")
+                                    'error': f"No matches found after {matchday_retries + 1} attempts",
+                                    'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+                                    'type': 'matchday_fetch_failed'
+                                })
+                                continue
                             
-                            # Longer delay between matches for anti-ban (4-8 seconds)
-                            scraper._random_delay(4, 8)
-                        
-                        # Save matchday metadata if we successfully got match URLs
-                        # This allows us to skip the matchday page on future runs
-                        if match_urls:
-                            scraper._save_matchday_metadata(season, matchday, match_urls)
-                            logger.debug(f"Saved matchday metadata for {season}, matchday {matchday}")
+                            # Check if all matches are already downloaded (handles case where matches exist but metadata doesn't)
+                            all_matches_downloaded = True
+                            for match_url in match_urls:
+                                match_id = scraper._extract_match_id_from_url(match_url)
+                                if not scraper._is_match_downloaded(match_id, season):
+                                    all_matches_downloaded = False
+                                    break
+                            
+                            if all_matches_downloaded:
+                                # All matches already exist, save metadata and skip scraping
+                                logger.info(f"✓ All {len(match_urls)} matches for matchday {matchday} already downloaded")
+                                scraper._save_matchday_metadata(season, matchday, match_urls)
+                                total_matches += len(match_urls)
+                                successful_matches += len(match_urls)
+                                logger.info(f"  → Saved metadata, skipping individual match scraping")
+                                continue
+                            
+                            # Scrape each match with retry logic
+                            for match_url in match_urls:
+                                total_matches += 1
+                                success = False
+                                last_error = None
+                                
+                                # Retry loop
+                                for attempt in range(max_retries + 1):  # 0 to max_retries (inclusive)
+                                    try:
+                                        is_retry_attempt = attempt > 0  # True if this is a retry (not first attempt)
+                                        result = scraper.scrape_full_match(
+                                            match_url, 
+                                            season=season, 
+                                            matchday=matchday,
+                                            is_retry=is_retry_attempt
+                                        )
+                                        
+                                        if result:
+                                            successful_matches += 1
+                                            logger.info(f"✓ Successfully scraped match {result['match_id']}")
+                                            success = True
+                                            break  # Success, exit retry loop
+                                        else:
+                                            # Result is None - could be skipped (already downloaded) or failed
+                                            # Check if file exists to distinguish
+                                            match_id = scraper._extract_match_id_from_url(match_url)
+                                            if scraper._is_match_downloaded(match_id, season):
+                                                # Already downloaded, not a failure
+                                                success = True
+                                                logger.debug(f"Match {match_id} already downloaded, skipping...")
+                                                break
+                                            else:
+                                                # Failed but no exception - treat as failure
+                                                if attempt < max_retries:
+                                                    logger.warning(f"Match {match_id} returned None (attempt {attempt + 1}/{max_retries + 1}), retrying...")
+                                                    scraper._random_delay(3, 8)  # Reduced from 5-10s for M1 Mac optimization
+                                                else:
+                                                    last_error = "scrape_full_match returned None"
+                                    
+                                    except Exception as e:
+                                        last_error = str(e)
+                                        if attempt < max_retries:
+                                            logger.warning(f"✗ Error scraping match from {match_url} (attempt {attempt + 1}/{max_retries + 1}): {e}")
+                                            logger.info(f"Retrying in 3-8 seconds...")
+                                            scraper._random_delay(3, 8)  # Reduced from 5-10s for M1 Mac optimization
+                                        else:
+                                            logger.error(f"✗ Error scraping match from {match_url} after {max_retries + 1} attempts: {e}")
+                                
+                                # If all retries failed, record it
+                                if not success:
+                                    failed_matches += 1
+                                    failed_match_info = {
+                                        'url': match_url,
+                                        'season': season,
+                                        'matchday': matchday,
+                                        'error': last_error,
+                                        'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+                                    }
+                                    failed_urls.append(failed_match_info)
+                                    logger.error(f"✗ FAILED to scrape {match_url} after {max_retries + 1} attempts")
+                                    logger.error(f"  Error: {last_error}")
+                                    logger.error(f"  This match will be saved to failed_matches.json for retry")
+                                
+                                # Longer delay between matches for anti-ban (4-8 seconds)
+                                scraper._random_delay(3, 5)  # Reduced from 4-8s for M1 Mac optimization
+                            
+                            # Save matchday metadata if we successfully got match URLs
+                            # This allows us to skip the matchday page on future runs
+                            if match_urls:
+                                scraper._save_matchday_metadata(season, matchday, match_urls)
+                                logger.debug(f"Saved matchday metadata for {season}, matchday {matchday}")
                     
-                    except Exception as e:
-                        logger.error(f"Error processing matchday {matchday} for season {season}: {e}")
-                        # Continue with next matchday even if one fails
-                        continue
+                        except Exception as e:
+                            logger.error(f"Error processing matchday {matchday} for season {season}: {e}")
+                            # Continue with next matchday even if one fails
+                            continue
+                    
+                    # Print summary for this season
+                    logger.info(f"\n{'='*60}")
+                    logger.info(f"SEASON {season} SUMMARY")
+                    logger.info(f"{'='*60}")
+                    logger.info(f"Total matches attempted: {total_matches}")
+                    logger.info(f"Successful: {successful_matches}")
+                    logger.info(f"Failed: {failed_matches}")
+                    logger.info(f"Success rate: {successful_matches/total_matches*100:.1f}%" if total_matches > 0 else "N/A")
+                    
+                    results.append({
+                        'season': season,
+                        'total': total_matches,
+                        'successful': successful_matches,
+                        'failed': failed_matches,
+                        'failed_urls': failed_urls
+                    })
                 
-                # Print summary for this season
-                logger.info(f"\n{'='*60}")
-                logger.info(f"SEASON {season} SUMMARY")
-                logger.info(f"{'='*60}")
-                logger.info(f"Total matches attempted: {total_matches}")
-                logger.info(f"Successful: {successful_matches}")
-                logger.info(f"Failed: {failed_matches}")
-                logger.info(f"Success rate: {successful_matches/total_matches*100:.1f}%" if total_matches > 0 else "N/A")
-                
-                results.append({
-                    'season': season,
-                    'total': total_matches,
-                    'successful': successful_matches,
-                    'failed': failed_matches,
-                    'failed_urls': failed_urls
-                })
-            
-            except Exception as e:
-                logger.error(f"Error in scraping loop for season {season}: {e}")
-                # Add failed season result
-                results.append({
-                    'season': season,
-                    'total': total_matches,
-                    'successful': successful_matches,
-                    'failed': failed_matches,
-                    'failed_urls': failed_urls
-                })
-                # Continue with next season even if one fails
+                except Exception as e:
+                    logger.error(f"Error in scraping loop for season {season}: {e}")
+                    # Add failed season result
+                    results.append({
+                        'season': season,
+                        'total': total_matches,
+                        'successful': successful_matches,
+                        'failed': failed_matches,
+                        'failed_urls': failed_urls
+                    })
+                    # Continue with next season even if one fails
+        # Context Manager automatically closes driver here
     
     except Exception as e:
         logger.error(f"Fatal error in process {process_id}: {e}")
         import traceback
         logger.error(traceback.format_exc())
-    finally:
-        # Ensure driver is closed
-        if scraper and hasattr(scraper, 'driver') and scraper.driver:
-            try:
-                scraper.driver.quit()
-            except Exception:
-                pass
     
     return results
 
@@ -3012,8 +3361,8 @@ if __name__ == "__main__":
     USE_MULTIPROCESSING = True  # Set to True when ready for parallel processing
     
     if USE_MULTIPROCESSING:
-        # Group seasons into pairs (2 seasons per process)
-        # This reduces concurrent driver initializations from 8 to 4
+        # Group seasons for 4 processes (2 seasons per process)
+        # This provides good parallelization while maintaining stability
         seasons_per_process = 2
         season_groups = []
         for i in range(0, len(all_seasons), seasons_per_process):
@@ -3021,6 +3370,7 @@ if __name__ == "__main__":
             season_groups.append(group)
         
         num_processes = len(season_groups)
+        
         logger.info(f"Starting multiprocessing scrape: {len(all_seasons)} seasons, {num_processes} processes")
         logger.info(f"Configuration: {seasons_per_process} seasons per process")
         logger.info("Each process runs Chrome in incognito mode and background")

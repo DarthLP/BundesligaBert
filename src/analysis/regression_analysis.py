@@ -204,6 +204,24 @@ def load_and_flatten_data(data_dir: Path, train_seasons: List[str], test_seasons
     train_df = pd.DataFrame(train_matches)
     test_df = pd.DataFrame(test_matches)
     
+    # Force Majeure Filter: Exclude matches with excess_time_90 > 4 minutes
+    # These represent structural breaks (riots, VAR confusion, technical failures, severe injuries)
+    # rather than normal referee bias or time-wasting, and must be excluded to preserve statistical validity
+    # See: src/data/remove_force_majeure_matches.py for detailed rationale
+    if 'excess_90' in train_df.columns:
+        train_before = len(train_df)
+        train_df = train_df[train_df['excess_90'] <= 4.0].copy()
+        train_removed = train_before - len(train_df)
+        if train_removed > 0:
+            logger.info(f"Removed {train_removed} force majeure matches from train set (excess_90 > 4.0 min)")
+    
+    if 'excess_90' in test_df.columns:
+        test_before = len(test_df)
+        test_df = test_df[test_df['excess_90'] <= 4.0].copy()
+        test_removed = test_before - len(test_df)
+        if test_removed > 0:
+            logger.info(f"Removed {test_removed} force majeure matches from test set (excess_90 > 4.0 min)")
+    
     logger.info(f"Train DataFrame shape: {train_df.shape} (seasons: {train_seasons})")
     logger.info(f"Test DataFrame shape: {test_df.shape} (seasons: {test_seasons})")
     
@@ -227,11 +245,13 @@ def filter_dataframes(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, pd.
     logger.info(f"df_baseline_90: {len(df_baseline_90)} matches")
     
     # 2. df_excess_90: Filter where target_missing_90 == False AND is_imputed_actual_90 == False
+    # Also exclude force majeure matches (excess_90 > 4.0 min) - structural breaks, not bias
     df_excess_90 = df[
         (df['target_missing_90'] == False) & 
-        (df['is_imputed_actual_90'] == False)
+        (df['is_imputed_actual_90'] == False) &
+        (df['excess_90'].isna() | (df['excess_90'] <= 4.0))
     ].copy()
-    logger.info(f"df_excess_90: {len(df_excess_90)} matches")
+    logger.info(f"df_excess_90: {len(df_excess_90)} matches (excluded force majeure: excess_90 > 4.0 min)")
     
     # 3. df_placebo_45: Filter where announced_45 is not None/null (numeric)
     df_placebo_45 = df[df['announced_45'].notna()].copy()

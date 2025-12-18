@@ -3,10 +3,12 @@
 **Repository:** `bundesliga-bert-time`
 
 ## Overview
-A BERT-based NLP model predicting Bundesliga stoppage time from live ticker text. Investigates referee behavior and home bias by comparing model-predicted norms against actual added time.
+A BERT-based NLP model predicting 1st Bundesliga stoppage time from live ticker text. Investigates referee behavior and home bias by comparing model-predicted norms against actual added time.
+
+**Note:** This project exclusively uses **1st Bundesliga** matches (top tier German football league). It does not include 2nd Bundesliga or 3rd Liga matches.
 
 ## Project Goals
-1. **Data Engineering:** Scrape Kicker.de (handling strict anti-bot measures) and parse German ticker text.
+1. **Data Engineering:** Scrape Kicker.de for 1st Bundesliga matches (handling strict anti-bot measures) and parse German ticker text.
 2. **NLP Modeling:** Fine-tune BERT for regression (predicting minutes).
 3. **Economic Analysis:** Calculate "Residuals" (Actual - Predicted) to measure referee bias and perform a Placebo DID analysis on the 2024/25 season.
 
@@ -26,7 +28,7 @@ A BERT-based NLP model predicting Bundesliga stoppage time from live ticker text
 - PyTorch, transformers, tokenizers, datasets, accelerate
 - pandas, numpy, scikit-learn
 - statsmodels (for econometric regression analysis)
-- selenium, undetected-chromedriver (for scraping)
+- selenium, webdriver-manager (for scraping)
 - matplotlib, seaborn (for visualization)
 - jupyterlab (for notebooks)
 
@@ -37,7 +39,8 @@ BundesligaBert/
 ├── data/
 │   ├── raw/                    # Scraped match JSON files
 │   │   └── season_YYYY-YY/     # Per-season directories
-│   ├── processed/              # Processed datasets for training
+│   ├── processed/              # Processed datasets for training (force majeure matches excluded)
+│   ├── removed_from_processed/ # Force majeure matches (excess_time_90 > 3 min) excluded from analysis
 │   ├── kaggle_export/          # JSON files exported for Kaggle dataset upload
 │   └── results/                # Model outputs and predictions
 ├── src/
@@ -74,7 +77,7 @@ BundesligaBert/
 
 ## Data Collection: Simultaneous Season Download
 
-The scraper can download all Bundesliga match data from 2017-18 to 2024-25 using multiprocessing for parallel execution.
+The scraper can download all **1st Bundesliga** match data from 2017-18 to 2024-25 using multiprocessing for parallel execution. This includes only top-tier German football league matches (no 2nd Bundesliga or 3rd Liga matches). **Note:** The dataset does not include any 2025/26 data (not even the first half of the season).
 
 ### Quick Start: Download All Seasons
 
@@ -92,14 +95,17 @@ This will:
 
 ### How It Works
 
-1. **Multiprocessing**: Each process handles 2 seasons with its own Chrome instance
-2. **Anti-ban measures**:
+1. **Multiprocessing**: Each process handles 2 seasons with its own Chrome instance (4 processes total)
+2. **Context Manager Pattern**: Uses Python context manager for guaranteed driver cleanup, preventing zombie Chrome processes
+3. **Anti-ban measures**:
    - Chrome runs in incognito mode and background (headless)
+   - Image loading disabled to save memory
    - Cookies are cleared between requests
    - Random user agents are used
-   - Delays of 4-8 seconds between matches
-3. **Resume capability**: Already downloaded matches are automatically skipped
-4. **Progress tracking**: Each process logs independently with prefixes like `[PROCESS 1: 2017-18, 2018-19]`
+   - Delays of 3-5 seconds between matches (optimized for M1 Mac)
+   - Anti-detection flags (`--disable-blink-features=AutomationControlled`, excludes `enable-automation`)
+4. **Resume capability**: Already downloaded matches are automatically skipped
+5. **Progress tracking**: Each process logs independently with prefixes like `[PROCESS 1: 2024-25, 2023-24]`
 
 ### Data Structure
 
@@ -159,10 +165,11 @@ python -m tests.test_scraper_live --test-bremen
 
 ### Performance Notes
 
-- **Total matches**: ~2,448 matches (8 seasons × ~306 matches/season)
+- **Total matches**: ~2,448 matches (8 seasons × ~306 matches/season, 1st Bundesliga only)
 - **Estimated time**: Several hours (depends on network speed and delays)
-- **Memory usage**: Each process uses ~200-500MB RAM
+- **Memory usage**: Each process uses ~150-300MB RAM (reduced by disabling image loading)
 - **Network**: Requires stable internet connection
+- **Processes**: 4 processes (2 seasons per process)
 
 ### Troubleshooting
 
@@ -175,31 +182,34 @@ python -m tests.test_scraper_live --test-bremen
 
 ### `src/data/kicker_scraper.py`
 
-**Purpose:** Web scraper for Bundesliga match data from Kicker.de
+**Purpose:** Web scraper for 1st Bundesliga match data from Kicker.de (top tier German football league only)
 
 **Usage:**
 ```bash
 # Download all seasons (multiprocessing)
 python src/data/kicker_scraper.py
 
-# Use as a module
+# Use as a module (Context Manager pattern)
 from src.data.kicker_scraper import KickerScraper
 from pathlib import Path
 
-scraper = KickerScraper(save_dir=Path("data/raw"))
-result = scraper.scrape_full_match(
-    match_url="https://www.kicker.de/...",
-    season="2023-24",
-    matchday=1
-)
+with KickerScraper(save_dir=Path("data/raw")) as scraper:
+    result = scraper.scrape_full_match(
+        match_url="https://www.kicker.de/...",
+        season="2023-24",
+        matchday=1
+    )
 ```
 
 **Key Features:**
+- **Context Manager Pattern**: Guaranteed driver cleanup, prevents zombie Chrome processes
+- **Standard Selenium**: Uses `webdriver_manager` for automatic ChromeDriver management (more stable than undetected_chromedriver)
 - Multi-tab scraping (Spielinfo + Ticker)
 - Automatic leakage removal (removes "Nachspielzeit" announcements from text)
 - Extracts targets (announced_time, actual_played_time) before cleaning text
 - Handles JavaScript-rendered content with Selenium
-- Anti-ban measures (incognito mode, random delays, user agents)
+- **Memory optimization**: Disables image loading to save RAM
+- Anti-ban measures (incognito mode, random delays, user agents, anti-detection flags)
 
 **Output:** JSON files in `data/raw/season_{season}/match_{match_id}.json`
 
@@ -229,7 +239,8 @@ python -m tests.test_scraper_live --test-bremen
 
 **Usage:**
 ```bash
-# Process all matches from all seasons
+# Process all matches from all seasons (multiprocessing enabled by default)
+# Each season runs in a separate process for parallel processing
 python src/data/process_match_data.py
 
 # Process matches from a specific season
@@ -237,7 +248,23 @@ python src/data/process_match_data.py --season 2022-23
 
 # Process a specific match file
 python src/data/process_match_data.py --input data/raw/season_2022-23/match_xxx.json
+
+# Explicitly enable multiprocessing
+python src/data/process_match_data.py --multiprocessing
+
+# Disable multiprocessing (for debugging - processes seasons sequentially)
+python src/data/process_match_data.py --no-multiprocessing
 ```
+
+**Multiprocessing:**
+- **Default**: Multiprocessing is enabled when processing multiple seasons
+- **Parallel Processing**: Each season runs in a separate process, allowing all seasons to process simultaneously
+- **Process Isolation**: Each process has its own logging with process-specific prefixes (e.g., `[PROCESS 1: 2023-24]`)
+- **Error Resilience**: One season failing doesn't stop others
+- **Summary Statistics**: Final summary shows per-season and overall statistics
+- **Use Cases**:
+  - Enable multiprocessing for faster processing of multiple seasons (default)
+  - Disable multiprocessing for debugging or when processing a single season
 
 **Key Features:**
 - **Robust Target Extraction** with imputation logic:
@@ -270,8 +297,24 @@ The `is_ghost_game` flag can have three values: `True`, `False`, or `None`.
 - **BERT Input Construction**:
   - Token-based truncation using German BERT tokenizer (`distilbert-base-german-cased`)
   - Smart truncation preserving critical events (goals, cards, subs, VAR, injuries, disturbances)
-  - Priority-based removal: early period (1-40 min) → middle period → late period (41-45 or 86-90)
-  - Critical events are NEVER removed during truncation
+  - **Truncation Order** (applied when token limit exceeded):
+    1. **Replace ALL goals with summaries** - Detects goals by checking `score_timeline` for score changes
+       - Preserves team that scored (e.g., `"23: tor (Bayern)"`)
+       - First number in score = home team, second = away team
+    2. **Replace ALL substitutions with summaries** - Detects substitutions by checking `substitutes` dict
+       - Preserves event type (e.g., `"67: wechsel"`)
+    3. **Delete non-critical events** - Removes less important events (starting from early period)
+    4. **Replace other critical events** - Summarizes cards, VAR, injuries, disturbances (e.g., `"3: gelbe karte"`)
+  - **Period Priority** (within each truncation step):
+    - Early period events processed first (1-40 min for 1st half, 46-85 min for 2nd half)
+    - Late period events preserved as long as possible (41-45 min for 1st half, 86-90 min for 2nd half)
+  - **Critical Event Handling**:
+    - Critical events are preserved with full details when possible
+    - When token limit is exceeded, critical events are replaced with short summaries instead of being removed
+    - Short summaries preserve event type and minute
+    - For goals, team that scored is determined from score_timeline (first number = home, second = away)
+    - Team names are cleaned (removes FC, SC, VfB, etc. prefixes)
+    - Logging: All event replacements and deletions are logged to terminal
   - Targets 400 tokens (max 512 with special tokens)
   - Final truncation ensures output ≤ 512 tokens (with special tokens)
   - Failsafe: stops processing after 5 files exceed 512 tokens
@@ -283,6 +326,10 @@ The `is_ghost_game` flag can have three values: `True`, `False`, or `None`.
     - Score: `Stand 1:0` (for 2nd half only)
     - Events: `20: text` (no brackets, saves tokens)
     - First-half stats removed from second-half input (not important)
+  - **Logging**:
+    - INFO level: Logs when critical events are replaced with summaries
+    - DEBUG level: Logs when non-critical events are deleted
+    - Example: `"Match {match_id}: Replacing goal with summary: '23: Müller schießt das 1:0...' -> '23: tor (Bayern)'"`
 
 - **Data Quality Checks**:
   - Validates required cutoff markers (Anpfiff, Halbzeitpfiff, etc.)
@@ -377,6 +424,35 @@ python src/data/retry_failed_matches.py --verbose
 
 **Output:** Retries scraping and updates `data/failed_matches.json`
 
+### `src/data/remove_force_majeure_matches.py`
+
+**Purpose:** Exclude matches with excess_time_90 > 3 minutes (force majeure events) from analysis
+
+**Usage:**
+```bash
+# Remove force majeure matches from processed data
+python src/data/remove_force_majeure_matches.py
+```
+
+**Rationale:**
+Matches with excess_time_90 > 4 minutes represent structural breaks (riots, VAR confusion, technical failures, severe injuries) rather than normal referee bias or time-wasting. These must be excluded to preserve statistical validity:
+
+- **OLS Regression Sensitivity**: A single match with 16 minutes of excess time has ~1000x more influence than a normal match (squared error 256 vs 0.25), which can distort regression coefficients and mask subtle bias signals (~30 seconds).
+- **BERT Model Generalization**: Rare out-of-distribution events (pitch invasions, police interventions) cannot be generalized by BERT models and cause memorization rather than learning.
+- **Normal Bias Range**: Referee bias operates in the -1 to +2 minute range. Excess > 4 minutes indicates external interruptions not captured by model variables (goals, subs, cards).
+- **4.0 Minute Threshold**: Matches with exactly 4.0 minutes of excess time are included as they fall within plausible range for high-event matches or VAR reviews.
+
+**Key Features:**
+- Moves 10 force majeure matches from `data/processed/` to `data/removed_from_processed/` (only > 4.0 minutes)
+- Creates detailed removal log at `data/results/removed_force_majeure_matches.json`
+- Matches are automatically filtered out in `regression_analysis.py` and `train_bert.py` (excess_90 > 4.0 filter)
+
+**Threshold:** 4.0 minutes (excludes only matches > 4.0, removes ~0.4% of data while preserving 4.0 minute matches)
+
+**Output:** 
+- Files moved to `data/removed_from_processed/season_{season}/match_{match_id}.json`
+- Removal log: `data/results/removed_force_majeure_matches.json`
+
 ### `src/data/export_for_kaggle.py`
 
 **Purpose:** Export processed match data into JSON files ready for Kaggle dataset upload
@@ -439,11 +515,13 @@ python -m src.models.train_bert
 **Key Features:**
 - Fine-tunes `distilbert-base-german-cased` for regression (predicting minutes)
 - Creates samples for both halves (45 and 90) from each match
+- **Force Majeure Filter**: Automatically excludes matches with excess_90 > 4.0 minutes (structural breaks, not bias)
 - Four-set split: train, validation, test_history, test_future
 - Automatic device detection (MPS > CUDA > CPU)
 - Early stopping with patience
 - Comprehensive diagnostic plots (10 plots)
 - Saves predictions, metrics, and training logs
+- **Force Majeure Filter**: Automatically excludes matches with excess_90 > 4.0 minutes (structural breaks, not bias)
 
 **Output:**
 - Model checkpoints: `models/checkpoints/bert_unified/`
@@ -541,6 +619,12 @@ python -m src.analysis.regression_analysis
 ```
 
 **Key Features:**
+- **Force Majeure Filter**: Automatically excludes matches with excess_90 > 4.0 minutes (structural breaks, not bias)
+  - Applied during data loading and in all model filters
+  - Prevents outliers from distorting regression coefficients
+  - Matches with exactly 4.0 minutes are included (plausible range)
+  - See `src/data/remove_force_majeure_matches.py` for rationale and details
+  
 - **Model 1: Baseline 2nd Half** - Predicts `announced_90` using game events and pressure variables
   - Train/test split: 2017-24 train, 2024-25 test
   - Handles unseen season (2024-25) by using 2023-24 season coefficient
@@ -548,6 +632,7 @@ python -m src.analysis.regression_analysis
   
 - **Model 2: Excess Time 2nd Half** - Analyzes `excess_90` (actual - announced) to detect bias
   - Tests significance of crowd pressure coefficients
+  - Excludes force majeure matches (excess_90 > 4.0) in filter
   
 - **Model 3A: Placebo Baseline 1st Half** - Tests if pressure effects exist in 1st half (should be insignificant)
   - Predicts `announced_45` using 1st half events
@@ -619,7 +704,19 @@ This preserves sample size (20-31% of matches in non-COVID seasons) while using 
 
 **Status:** Not yet implemented
 
-## Data Leakage Prevention
+## Data Quality and Filtering
+
+### Force Majeure Filter
+
+Matches with `excess_time_90 > 4 minutes` are excluded from analysis as they represent structural breaks (riots, VAR confusion, technical failures, severe injuries) rather than normal referee bias. Matches with exactly 4.0 minutes are included as they fall within plausible range for high-event matches or VAR reviews. These matches are:
+
+- **Moved** from `data/processed/` to `data/removed_from_processed/` (10 matches total, ~0.4% of data)
+- **Automatically filtered** in `regression_analysis.py` and `train_bert.py` (excess_90 > 4.0 threshold)
+- **Logged** in `data/results/removed_force_majeure_matches.json` with details
+
+See `src/data/remove_force_majeure_matches.py` for detailed rationale and implementation.
+
+### Data Leakage Prevention
 
 The scraper implements strict leakage prevention:
 
@@ -634,10 +731,16 @@ The scraper implements strict leakage prevention:
 
 ## Seasons Covered
 
+All seasons contain **1st Bundesliga** matches only (top tier German football league):
+
 - **2017-18, 2018-19**: Pre-Corona, Clean
 - **2019-20, 2020-21, 2021-22**: Corona/Ghost Games (flagged but kept)
 - **2022-23, 2023-24**: Post-Corona, Clean
 - **2024-25**: Placebo Test Season
+
+**Notes:** 
+- This project does not include 2nd Bundesliga or 3rd Liga matches.
+- **No 2025/26 data** is included (not even the first half of the season). The latest season in this dataset is 2024-25.
 
 ## Data Processing Pipeline
 

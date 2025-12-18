@@ -25,4 +25,4 @@ dependencies:
     - datasets
     - accelerate
     - selenium
-    - undetected-chromedriver
+    - webdriver-manager

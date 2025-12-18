@@ -1,0 +1,153 @@
+{
+  "match_id": "bochum-gegen-freiburg-2023-bundesliga-4781618",
+  "season": "2022-23",
+  "metadata": {
+    "home": "VfL Bochum",
+    "away": "SC Freiburg",
+    "attendance": 25100,
+    "final_score": "0:2",
+    "matchday": 21,
+    "is_sold_out": false,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 16,
+        "away": 19
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 64,
+        "away": 70
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 47,
+        "away": 53
+      }
+    }
+  },
+  "score_timeline": {
+    "39": [
+      0,
+      1
+    ],
+    "51": [
+      0,
+      2
+    ]
+  },
+  "yellow_cards": {
+    "34": 1,
+    "43": 1,
+    "62": 1,
+    "76": 1,
+    "79": 1,
+    "90+5": 1
+  },
+  "red_cards": {
+    "63": 1
+  },
+  "yellow_red_cards": {},
+  "substitutes": {
+    "45+2": 1,
+    "62": 1,
+    "68": 1,
+    "77": 1,
+    "86": 1,
+    "87": 1,
+    "89": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": true,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": null,
+    "actual_45": 2,
+    "excess_45": null,
+    "announced_90": 1,
+    "actual_90": 6,
+    "excess_90": 5,
+    "targets_raw": {
+      "announced_time_45": null,
+      "announced_time_90": null,
+      "actual_played_45": 2,
+      "actual_played_90": 6
+    }
+  },
+  "features_regular": {
+    "goals_1st": 1,
+    "goals_2nd": 1,
+    "subs_1st": 0,
+    "subs_2nd": 6,
+    "cards_1st": 2,
+    "cards_2nd": 4,
+    "var_1st": 1,
+    "var_2nd": 1,
+    "injuries_1st": 1,
+    "injuries_2nd": 0,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 0,
+    "away_score_90": 2
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 1,
+    "ot_cards_45": 0,
+    "ot_cards_90": 1,
+    "ot_var_45": 0,
+    "ot_var_90": 2,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[22] Bochum Freiburg 25100 10: Lienhart knallt mit dem Kopf unglücklich in Ginter und muss behandelt werden. 28: Höfler marschiert mit langen Schritten durch das Mittelfeld, dann ist aber der Pass zu Höler nicht präzise genug. Zwayer hatte aber Vorteil gegeben und nun entsprechend den Freiburgern den Freistoß gepfiffen. 30: Auch nach einer halben Stunde ist noch nicht das ganz große Tempo im Spiel, vor allem bei den Gästen fehlt die Entschlossenheit im Angriffsspiel. 32: Bochum mit einer kleineren Druckphase: Erst bleibt Antwi-Adjei hängen, dann kann Ginter die Flanke von Janko klären. Dennoch bleibt der VfL in Ballbesitz. 34: Zoller geht im Zweikampf mit Kübler mit dem Ellbogen zu Werke, da muss Zwayer Gelb geben. 36: Der SCF macht gar nicht groß den Anschein, als wolle er das Spiel machen. Bei Ballbesitz Bochum ziehen sich die Gäste weit zurück. 38: In den Zweikämpfen wird es ein klein wenig hitziger, dennoch ist es insgesamt noch recht fair. Ein Tor liegt nicht in der Luft. 39: Größte Chance des Spiels! Günter flankt flach von links in die Mitte, dort können die Bochumer nur flach nach vorne abwehren. Höfler rauscht heran, sein Schuss wird aber abgefälscht. 39: tor (Freiburg) 41: So wirklich angedeutet hat sich das Tor nicht, eher war der VfL dran. Den Freiburgern wird es egal sein. 43: Grifos Pass im Aufbauspiel ist zu kurz, Asano will schnell machen. Lienhart muss den Japaner stoppen und tut das auf der rechten Angriffsseite der Bochumer regelwidrig. 43: Gute Chance! Stöger zieht den an den ersten Pfosten, wo Flekken Schlotterbeck anfaustet. Nach anschließendem Flipper bekommen es die Freiburger gelöst. 44: Bochums Reaktion passt, sofort erhöhen die Gastgeber wieder den Druck.",
+  "bert_input_90": "[22] Bochum Freiburg 25100 Stand 0:1 51: tor (Freiburg) 53: Klasse Variante bei der Ecke! Stöger spielt den Ball flach an die Strafraumgrenze, wo Stafylidis die Kugel mit viel Gefühl in den Winkel heben will. Das gelingt beinahe, das Spielgerät zischt auf das Tordach. 55: Stöger mit dem nächsten Standard, Ordets bringt den Kopfball aber nicht auf das Tor. 60: Das Spiel hat sich nach der aufregenden Anfangsphase wieder etwas beruhigt. Das kann nur den Freiburgern in die Karten spielen. 62: gelbe karte 62: wechsel 66: Jetzt wird es natürlich eine Mammutaufgabe für die Gastgeber, die in Unterzahl zwei Tore aufholen müssen. 68: wechsel 75: Riemann macht schon wieder kleinere Sperenzchen und steht weit vor seinem Tor beinahe an der Mittellinie. Riskantes Spiel. 77: wechsel 79: gelbe karte 80: Sallai will eine Grifo-Flanke nochmal in die Mitte verlängern, die Kugel landet aber hinter dem Tor. 83: Freiburg schaltet nicht in den Verwaltungsmodus und schafft es dadurch, aufopferungsvolle Bochumer vom Tor fernzuhalten. 84: Gregoritsch will Riemann aus großer Distanz frech überlupfen, verfehlt das Tor aber. 86: Spielerwechsel Letzter Wechsel bei den Bochumern. 87: Spielerwechsel Zweiter Doppelwechsel bei den Freiburgern. 87: Sallai hebt den Ball an den zweiten Pfosten, wo Petersen die Kugel direkt nimmt. Schlotterbeck hält den Kopf hin und klärt zur Ecke. 88: Diese bringt nichts ein, Lienhart fehlt die Präzision. 89: Spielerwechsel Letzter Freiburger Wechsel. 90: Jeong im Pech! Weißhaupt bringt die Kugel flach von der linken Seite ins Zentrum, wo Jeong volles Risiko geht und den Ball wuchtig an die Latte knallt. 90: Im Anschluss kommt es zu einem Zweikampf, bei dem Sallai zu Boden geht.",
+  "bert_input_45_tokens": 404,
+  "bert_input_90_tokens": 405,
+  "overtime_ticker_45": [],
+  "overtime_ticker_90": [
+    {
+      "minute": "45+2",
+      "text": "Spielerwechsel 45' +2 Spielerwechsel Letsch wechselt zur Pause einmal, positionsgetreu."
+    },
+    {
+      "minute": "90+1",
+      "text": "VAR-Prüfung 90' +1 VAR-Prüfung Zwayer geht zum Bildschirm, Antwi-Adjei wollte klären und trifft im Klärungsversuch Sallai, der vor ihm am Ball ist."
+    },
+    {
+      "minute": "90+2",
+      "text": "Entscheidung nach VAR-Prüfung 90' +2 Entscheidung nach VAR-Prüfung Es geht weiter mit Freistoß für Bochum, Zwayer gibt keinen Elfmeter."
+    },
+    {
+      "minute": "90+2",
+      "text": "Spielentscheidend wird das wohl nicht mehr sein, Zeit hat sie aber eine Menge in Anspruch genommen."
+    },
+    {
+      "minute": "90+4",
+      "text": "Jeong verpasst das Abspiel, nimmt dann aber das ungestüme Einsteigen von Stafylidis dankbar an."
+    },
+    {
+      "minute": "90+5",
+      "text": "Gelbe Karte 90' +5 Gelbe Karte Unnötig von Osei-Tutu, der zu hart gegen Weißhaupt vorgeht."
+    },
+    {
+      "minute": "90+6",
+      "text": "Flekken begräbt den Ball unter sich, so langsam dürfte es das gewesen sein."
+    }
+  ]
+}

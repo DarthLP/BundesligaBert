@@ -1,0 +1,193 @@
+{
+  "match_id": "dortmund-gegen-bayern-2018-bundesliga-4243356",
+  "season": "2018-19",
+  "metadata": {
+    "home": "Borussia Dortmund",
+    "away": "Bayern München",
+    "attendance": 81365,
+    "final_score": "3:2",
+    "matchday": 11,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 11,
+        "away": 10
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 80,
+        "away": 85
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 43,
+        "away": 57
+      }
+    }
+  },
+  "score_timeline": {
+    "26": [
+      0,
+      1
+    ],
+    "49": [
+      1,
+      1
+    ],
+    "52": [
+      1,
+      2
+    ],
+    "67": [
+      2,
+      2
+    ],
+    "73": [
+      3,
+      2
+    ]
+  },
+  "yellow_cards": {
+    "29": 1,
+    "36": 1,
+    "55": 1,
+    "87": 1,
+    "90+4": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {},
+  "substitutes": {
+    "46": 1,
+    "59": 1,
+    "65": 1,
+    "74": 1,
+    "82": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": true,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": null,
+    "actual_45": 2,
+    "excess_45": null,
+    "announced_90": 1,
+    "actual_90": 6,
+    "excess_90": 5,
+    "targets_raw": {
+      "announced_time_45": null,
+      "announced_time_90": 1,
+      "actual_played_45": 2,
+      "actual_played_90": 6
+    }
+  },
+  "features_regular": {
+    "goals_1st": 1,
+    "goals_2nd": 4,
+    "subs_1st": 0,
+    "subs_2nd": 5,
+    "cards_1st": 5,
+    "cards_2nd": 3,
+    "var_1st": 1,
+    "var_2nd": 3,
+    "injuries_1st": 1,
+    "injuries_2nd": 0,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 3,
+    "away_score_90": 2
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 0,
+    "ot_cards_90": 3,
+    "ot_var_45": 0,
+    "ot_var_90": 0,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[18] Borussia Dortmund Bayern München 81365 1: Die Dortmunder sammeln über die Abwehr und Torwart Hitz erst Kontakte, während die Münchner sofort Druck ausüben und pressen. 9: Gnabry gibt Vollgas, schiebt sich rechts vor der Torauslinie an Witsel vorbei - erreicht die Kugel aber nicht mehr vor Passieren der Auslinie. 11: Pfeifkonzert im Signal-Iduna-Park, nachdem Lewandowski in die Box eindringt und nach einem vielleicht leichten Kontakt von Weigl fällt. Referee Gräfe lässt weiterlaufen und auch der Videobeweis wird nicht bemüht. 17: Nicht schlecht: Kimmich legt sich auf der rechten Seite den Ball auf den linken Fuß und flankt präzise links in den Strafraum zum freien Ribery. Dessen Volley wird nicht sauber getroffen und schnellt links neben das Tor. 18: Gleich die nächste Chance für Bayern: Gnabry bricht durchs Zentrum, nimmt mit einem verzögerten Doppelpass Lewandowski mit - und darf schließlich rechts im Sechzehner abziehen. Der Ball kommt aber nicht aufs Tor, weil im rechten Moment gerade noch Akanji mit einer sauberen Grätsche dazwischen funkt. 26: tor (Bayern München) 28: gelbe karte 29: gelbe karte 33: Zeit wieder für einen schnellen Blick auf die LIVE!-Daten: 5:1 steht es bei den Torschüssen für München, das auf 68 Prozent Ballbesitz kommt. 33: gelbe karte 36: gelbe karte 38: tor 40: verletzung 44: Hummels lässt sich defensiv ein klein wenig zu viel Zeit und bedient Javi Martinez, der sofort in Bedrängnis gerät. Dem Spanier bleibt nichts anderes übrig, als einen weiten Befreiungsschlag zu setzen. 45: Die letzten Sekunden im ersten Durchgang laufen - und Neuer führt den Ball.",
+  "bert_input_90": "[18] Borussia Dortmund Bayern München 81365 Stand 0:1 46: wechsel 49: tor (Borussia Dortmund) 48: tor (Borussia Dortmund) 49: tor (Borussia Dortmund) 49: tor (Borussia Dortmund) 52: tor (Bayern München) 52: tor (Bayern München) 54: gelbe karte 55: gelbe karte 59: wechsel 62: Unglaublich, aber wahr: Borussia Dortmund lässt auch die zweite Top-Chance aufs 2:2 liegen! Nun hängt Sancho mit einem monströsen Sprint den deutlich zu langsamen Hummels ab, zieht in den Strafraum, an Neuer vorbei und legt ins Zentrum zum lauernden Paco Alcacer. Der Spanier schließt aber nicht direkt ab, sondern stoppt die Kugel kurz - und trifft letztlich nicht. Auch der Nachschuss von Bruun Larsen saust noch drüber. 65: wechsel 67: tor (Borussia Dortmund) 67: tor (Borussia Dortmund) 71: Javi Martinez und der FC Bayern melden sich wieder an - die Flanke des Spaniers kommt aber nicht, sie landet auf dem Tordach. 73: tor (Borussia Dortmund) 73: tor (Borussia Dortmund) 74: wechsel 75: Müller nähert sich mit einem Torschuss an, der Ball saust aber links oben übers Gehäuse. 77: Gefährliche Aktion - und zwar von Dortmund selbst verursacht: Einen Kimmich-Freistoß aus dem linken Halbfeld verlängert Reus tückisch aufs eigene Tor und letztlich rechts vorbei. Die anschließende Ecke bringt derweil nichts Gefährliches ein. 81: Piszczek trifft Javi Martinez nach einem Renato-Sanches-Pass vor dem Strafraum leicht, einen Freistoß kriegen die Gäste dafür aber nicht. 82: wechsel 87: Clever: Paco Alcacer tänzelt Süle mit einer gekonnten Bewegung aus, wird danach abgeräumt - und das bringt dem Münchner Gelb ein.",
+  "bert_input_45_tokens": 379,
+  "bert_input_90_tokens": 388,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+1",
+      "text": "Noch einmal probieren es Müller und Ribery vorne links, Sancho funkt aber dazwischen."
+    },
+    {
+      "minute": "45+1",
+      "text": "Zwei Minuten werden noch nachgelegt..."
+    },
+    {
+      "minute": "45+1",
+      "text": "Die BVB-Spieler fordern Freistoß nach einem vermeintlichen Foul von Hummels, der damit einen BVB-Konter unterbindet. Doch Referee Gräfe pfeift nicht."
+    },
+    {
+      "minute": "45+2",
+      "text": "Nach einem Witsel-Ballverlust rollt nochmals ein schneller Bayern-Konter, doch nach Lewandowski-Steilpass ist Akanji schneller als Ribery an der Kugel."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Dahoud zieht das Foul im Mittelfeld gegen Boateng, auch das bringt Zeit."
+    },
+    {
+      "minute": "90+1",
+      "text": "Schnelle Freistoßausführung der Westfalen: Der Ball segelt links in den Sechzehner, wo Reus zum Volley ansetzt - und verzieht."
+    },
+    {
+      "minute": "90+2",
+      "text": "Javi Martinez findet Renato Sanches, der mit einer gefährlichen Flanke Ribery links im Strafraum findet. Der Franzose will in Seitenlage abschließen, trifft die Kugel aber nicht richtig."
+    },
+    {
+      "minute": "90+3",
+      "text": "Zweieinhalb Minuten geht das Spiel noch..."
+    },
+    {
+      "minute": "90+3",
+      "text": "Die Schwarz-Gelben stehen nun mit allen Männern tief - auch Reus hilft ganz hinten mit."
+    },
+    {
+      "minute": "90+4",
+      "text": "Es gibt Eckball für München - und Hitz blockiert den Ball. Das schmeckt Wagner nicht, es gibt eine kleine Rudelbildung."
+    },
+    {
+      "minute": "90+4",
+      "text": "Gelbe Karte 90' +4 Gelbe Karte"
+    },
+    {
+      "minute": "90+4",
+      "text": "Gelbe Karte 90' +4 Gelbe Karte Beide Akteure sehen nach dieser Aktion die Gelbe Karte."
+    },
+    {
+      "minute": "90+5",
+      "text": "Kimmich findet mit einer Ecke von der rechten Seite Neuer, doch der mit aufgerückte Keeper kriegt keinen sauberen Kopfball hin."
+    },
+    {
+      "minute": "90+5",
+      "text": "Lewandowski kriegt tatsächlich noch nach einer präzisen Flanke von Kimmich mit der Hacke das 3:3 hin, doch sofort geht die Fahne hoch. Und das ist richtig: Der Pole steht im Abseits."
+    },
+    {
+      "minute": "90+6",
+      "text": "Das Spiel ist noch nicht vorbei - und Boateng schubst BVB-Coach Favre vor einem Einwurf etwas zur Seite."
+    }
+  ]
+}
