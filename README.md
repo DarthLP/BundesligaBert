@@ -268,10 +268,21 @@ The `is_ghost_game` flag can have three values: `True`, `False`, or `None`.
 **Rationale:** During COVID seasons, missing attendance data is more likely to indicate a ghost game (no fans allowed). For other seasons, missing attendance is treated as a data collection issue rather than indicating a ghost game.
 
 - **BERT Input Construction**:
-  - Smart truncation preserving critical events
-  - Context-aware (pre-match, halftime)
-  - Includes Corona flag and 1st half stats
-  - Token-aware (targets ~400 words, ~512 tokens max)
+  - Token-based truncation using German BERT tokenizer (`distilbert-base-german-cased`)
+  - Smart truncation preserving critical events (goals, cards, subs, VAR, injuries, disturbances)
+  - Priority-based removal: early period (1-40 min) → middle period → late period (41-45 or 86-90)
+  - Critical events are NEVER removed during truncation
+  - Targets 400 tokens (max 512 with special tokens)
+  - Final truncation ensures output ≤ 512 tokens (with special tokens)
+  - Failsafe: stops processing after 5 files exceed 512 tokens
+  - Token-optimized format:
+    - Season token: `[17]` (start year only, e.g., "2017-18" → `[17]`)
+    - Teams: `HomeTeam AwayTeam` (no H:/A: labels, first is home)
+    - Attendance: `26113` (number only, omitted if None)
+    - Corona: `Krank` (only if corona season, omitted otherwise)
+    - Score: `Stand 1:0` (for 2nd half only)
+    - Events: `20: text` (no brackets, saves tokens)
+    - First-half stats removed from second-half input (not important)
 
 - **Data Quality Checks**:
   - Validates required cutoff markers (Anpfiff, Halbzeitpfiff, etc.)
@@ -323,10 +334,10 @@ The `is_ghost_game` flag can have three values: `True`, `False`, or `None`.
     "ot_cards_45": 1,
     ...
   },
-  "bert_input_45": "[META] Home: ... Corona: Normal [PRE] ... [START] [MIN_1] ...",
-  "bert_input_90": "[META] Home: ... Corona: Normal [STATS_1ST] Cards_1st: 2 ...",
-  "bert_input_45_tokens": 387,
-  "bert_input_90_tokens": 421,
+  "bert_input_45": "[17] Augsburg RB Leipzig 26113 2: Fast das 1:0...",
+  "bert_input_90": "[17] Augsburg RB Leipzig 26113 Stand 1:0 46: Spielerwechsel...",
+  "bert_input_45_tokens": 283,
+  "bert_input_90_tokens": 298,
   "overtime_ticker_45": [...],
   "overtime_ticker_90": [...]
 }

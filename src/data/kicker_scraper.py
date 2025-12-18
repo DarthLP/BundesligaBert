@@ -3009,7 +3009,7 @@ if __name__ == "__main__":
     save_dir = Path(__file__).parent.parent.parent / "data" / "raw"
     
     # Configuration: Set to False for single-process mode (testing), True for multiprocessing
-    USE_MULTIPROCESSING = False  # Set to True when ready for parallel processing
+    USE_MULTIPROCESSING = True  # Set to True when ready for parallel processing
     
     if USE_MULTIPROCESSING:
         # Group seasons into pairs (2 seasons per process)
