@@ -18,14 +18,14 @@ RESULTS:
 Announced Time (45 minutes):
 --------------------------------------------------------------------------------
    period bert_r2 bert_rmse ols_r2 ols_rmse
- Hinrunde -0.3261    1.7722 0.1726   1.3999
-Rückrunde -0.4438    1.6619 0.0270   1.3643
-  Overall -0.3771    1.7149 0.1066   1.3812
+ Hinrunde -0.3261    1.7722 0.2489   1.3099
+Rückrunde -0.4438    1.6619 0.2537   1.5383
+  Overall -0.3771    1.7149 0.2520   1.4315
 
 Announced Time (90 minutes):
 --------------------------------------------------------------------------------
-   period bert_r2 bert_rmse  ols_r2 ols_rmse
- Hinrunde -0.3141    2.0763 -0.0547   1.8602
-Rückrunde -0.4566    2.6794  0.0866   2.1218
-  Overall -0.4001    2.4066  0.0335   1.9995
+   period bert_r2 bert_rmse ols_r2 ols_rmse
+ Hinrunde -0.3141    2.0763 0.0928   1.7034
+Rückrunde -0.4566    2.6794 0.1177   1.7827
+  Overall -0.4001    2.4066 0.1062   1.7438
 

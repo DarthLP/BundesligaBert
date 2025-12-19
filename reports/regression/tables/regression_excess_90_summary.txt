@@ -4,9 +4,9 @@ Model 2: Excess Time (2nd Half)
 
 Formula: excess_90 ~ ot_goals_90 + ot_subs_90 + ot_cards_90 + ot_var_90 + ot_injuries_90 + ot_disturbances_90 + pressure_add_90 + pressure_draw_90 + pressure_end_90
 
-Samples: 876
-Train R² Adjusted: 0.1938
-AIC: 1928.9887
+Samples: 1546
+Train R² Adjusted: 0.1991
+AIC: 3283.4449
 
 ================================================================================
 Model Summary:
@@ -14,33 +14,33 @@ Model Summary:
 
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:              excess_90   R-squared:                       0.202
-Model:                            OLS   Adj. R-squared:                  0.194
-Method:                 Least Squares   F-statistic:                     24.37
-Date:                Thu, 18 Dec 2025   Prob (F-statistic):           2.01e-37
-Time:                        20:21:27   Log-Likelihood:                -954.49
-No. Observations:                 876   AIC:                             1929.
-Df Residuals:                     866   BIC:                             1977.
+Dep. Variable:              excess_90   R-squared:                       0.204
+Model:                            OLS   Adj. R-squared:                  0.199
+Method:                 Least Squares   F-statistic:                     43.68
+Date:                Fri, 19 Dec 2025   Prob (F-statistic):           4.21e-70
+Time:                        03:31:45   Log-Likelihood:                -1631.7
+No. Observations:                1546   AIC:                             3283.
+Df Residuals:                    1536   BIC:                             3337.
 Df Model:                           9                                         
 Covariance Type:            nonrobust                                         
 ======================================================================================
                          coef    std err          t      P>|t|      [0.025      0.975]
 --------------------------------------------------------------------------------------
-Intercept              0.1685      0.033      5.115      0.000       0.104       0.233
-ot_goals_90            0.2598      0.066      3.927      0.000       0.130       0.390
-ot_subs_90             0.1909      0.055      3.440      0.001       0.082       0.300
-ot_cards_90            0.2167      0.033      6.475      0.000       0.151       0.282
-ot_var_90              0.3618      0.053      6.820      0.000       0.258       0.466
-ot_injuries_90         0.6027      0.152      3.957      0.000       0.304       0.902
-ot_disturbances_90    -0.0324      0.364     -0.089      0.929      -0.747       0.683
-pressure_add_90        0.2194      0.095      2.299      0.022       0.032       0.407
-pressure_draw_90       0.0694      0.085      0.813      0.416      -0.098       0.237
-pressure_end_90        0.0543      0.072      0.753      0.452      -0.087       0.196
+Intercept              0.1877      0.025      7.611      0.000       0.139       0.236
+ot_goals_90            0.2183      0.048      4.569      0.000       0.125       0.312
+ot_subs_90             0.1167      0.037      3.138      0.002       0.044       0.190
+ot_cards_90            0.2444      0.024     10.020      0.000       0.197       0.292
+ot_var_90              0.3908      0.041      9.464      0.000       0.310       0.472
+ot_injuries_90         0.6340      0.105      6.045      0.000       0.428       0.840
+ot_disturbances_90    -0.2964      0.266     -1.114      0.266      -0.819       0.226
+pressure_add_90        0.1807      0.068      2.662      0.008       0.048       0.314
+pressure_draw_90       0.0727      0.058      1.247      0.213      -0.042       0.187
+pressure_end_90        0.0012      0.057      0.021      0.983      -0.110       0.112
 ==============================================================================
-Omnibus:                      346.580   Durbin-Watson:                   1.848
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1429.143
-Skew:                           1.847   Prob(JB):                    4.63e-311
-Kurtosis:                       8.050   Cond. No.                         17.8
+Omnibus:                      546.239   Durbin-Watson:                   1.886
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             2021.650
+Skew:                           1.712   Prob(JB):                         0.00
+Kurtosis:                       7.434   Cond. No.                         18.1
 ==============================================================================
 
 Notes:
@@ -50,14 +50,14 @@ Notes:
 Pressure Coefficient Analysis:
 ================================================================================
 
-pressure_add_90 (Losing by 1) coefficient: 0.2194
-pressure_add_90 p-value: 0.0217
+pressure_add_90 (Losing by 1) coefficient: 0.1807
+pressure_add_90 p-value: 0.0078
 pressure_add_90 significant: Yes
 
-pressure_draw_90 (Draw) coefficient: 0.0694
-pressure_draw_90 p-value: 0.4163
+pressure_draw_90 (Draw) coefficient: 0.0727
+pressure_draw_90 p-value: 0.2127
 pressure_draw_90 significant: No
 
-pressure_end_90 (Defending Lead) coefficient: 0.0543
-pressure_end_90 p-value: 0.4517
+pressure_end_90 (Defending Lead) coefficient: 0.0012
+pressure_end_90 p-value: 0.9834
 pressure_end_90 significant: No

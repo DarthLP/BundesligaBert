@@ -1,0 +1,153 @@
+{
+  "match_id": "schalke-gegen-frankfurt-2019-bundesliga-4243509",
+  "season": "2018-19",
+  "metadata": {
+    "home": "FC Schalke 04",
+    "away": "Eintracht Frankfurt",
+    "attendance": null,
+    "final_score": "1:2",
+    "matchday": 28,
+    "is_sold_out": false,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {}
+  },
+  "score_timeline": {
+    "13": [
+      0,
+      1
+    ],
+    "21": [
+      1,
+      1
+    ],
+    "90+9": [
+      1,
+      2
+    ]
+  },
+  "yellow_cards": {
+    "23": 1,
+    "25": 1,
+    "45": 1,
+    "90+8": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {
+    "90+8": 1
+  },
+  "substitutes": {
+    "37": 1,
+    "46": 1,
+    "66": 1,
+    "79": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": true,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 3,
+    "actual_45": 3,
+    "excess_45": 0,
+    "announced_90": 4,
+    "actual_90": 9,
+    "excess_90": 5,
+    "targets_raw": {
+      "announced_time_45": 3,
+      "announced_time_90": 4,
+      "actual_played_45": 2,
+      "actual_played_90": 9
+    }
+  },
+  "features_regular": {
+    "goals_1st": 2,
+    "goals_2nd": 0,
+    "subs_1st": 1,
+    "subs_2nd": 5,
+    "cards_1st": 3,
+    "cards_2nd": 0,
+    "var_1st": 2,
+    "var_2nd": 0,
+    "injuries_1st": 1,
+    "injuries_2nd": 0,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 1,
+    "away_score_90": 1
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 1,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 0,
+    "ot_cards_90": 3,
+    "ot_var_45": 0,
+    "ot_var_90": 2,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[18] Schalke 04 Eintracht Frankfurt 1: rote karte 13: tor (Eintracht Frankfurt) 13: tor (Eintracht Frankfurt) 16: Ein erster Blick auf die LIVE!-Daten: 1:0, 4:0 Torschüsse, 62 Prozent Ballbesitz und 78 Prozent gewonnene Zweikämpfe. Frankfurt hat hier alles im Griff und liegt hochverdient in Führung. 21: tor (Schalke 04) 21: tor (Schalke 04) 23: gelbe karte 24: Der Treffer hat Schalke gut getan: Sowohl die Spieler als auch die Fans in der Arena scheinen nun aufgewacht zu sein. 25: Nach Nübels Befreiungsschlag will Hinteregger zum Ball, wird aber von Serdar, der absolut keine Chance auf die Kugel hat, rabiat umgecheckt. Diese Karte hat sich der Schalker redlich verdient. 27: verletzung 27: Die Schalker haben neben dem Treffer noch etwas geschafft: Sie haben Frankfurt ein wenig den Zahn gezogen. Die Eintracht spielt nicht mehr so selbstverständlich und überfallartig nach vorne. 28: Nun aber doch mal wieder Frankfurt: Kostic wird auf links von Bruma kaum attackiert und spielt flach in die Mitte. Dort setzt Nastasic Rebic mit legalem Körpereinsatz hart zu und hindert den Kroaten so erfolgreich am Torabschluss. 31: var 31: var 36: Frankfurt liegt in den Statistiken weiter vorne, wenn auch nicht mehr so klar: 6:2 Torschüsse, 60 Prozent Ballbesitz und 66 gewonnene Zweikämpfe stehen der SGE zu Buche. 37: wechsel 42: Nach einer Caligiuri-Ecke von rechts kommt Burgstaller aus acht Metern zum Kopfball - kein Problem für Trapp. 44: Schalke hat sich definitiv stabilisiert und hält die Hessen mittlerweile erfolgreich vom eigenen Tor weg. 45: Nach seinem mittlerweile dritten Einsteigen, diesmal hat er Willems umgeräumt, sieht Embolo Gelb.",
+  "bert_input_90": "[18] Schalke 04 Eintracht Frankfurt Stand 1:1 46: Spielerwechsel 46: wechsel 49: Mascarell versucht den Seitenwechsel auf Caligiuri, doch Willems fängt den Pass ab. 53: Die anschließende Willems-Ecke verlängert Caligiuri am kurzen Pfosten auf das eigene Tor - Nübel reagiert einmal mehr unfassbar stark und verhindert das Eigentor. 64: Paciencia flankt, Nübel kommt raus, merkt aber, dass er sich verschätzt hat. Da Costa kann eigentlich zum Kopfball gehen und ins verwaiste Tor einnicken, hat aber schon abgeschalten - das Leder fliegt ins Toraus. 66: Spielerwechsel 70: Es geht im Mittelfeld hin und her. 74: Oczipka erober den Ball, doch Burgstaller verliert das Leder schon wieder. Aktuell ist kein wirklicher Spielfluss vorhanden. 76: Die letzte Viertelstunde ist angebrochen. 76: Jetzt läuft hier alles nur noch über den Kampf. 77: Kostic geht links vorbei an Caligiuri und zieht die Flanke in die Mitte. Bruma kommt angerauscht und klärt. 79: Spielerwechsel 79: Rebic wird aktuell auf dem Feld behandelt. Das medizinische Personal kümmert sich um das rechte Knie. 81: Oczipka flankt von links, Hasebe klärt, schießt dabei aber Abraham an. Schalke protestiert, will ein Handspiel gesehen haben - dass der SGE-Kapitän die Kugel jedoch an das Bein geschossen bekommen hat, hat der Großteil wohl übersehen. 87: Gelingt einem Team hier noch der Lucky Punch? 89: Serdar probiert es aus der zweiten Reihe - weit drüber.",
+  "bert_input_45_tokens": 389,
+  "bert_input_90_tokens": 336,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+2",
+      "text": "Jovic steckt auf Rebic durch, der kommt nach einem Kontakt mit Stambouli zu Fall - Stegemann entscheidet auf Weiterspielen. Und hat damit vollkommen Recht."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+3",
+      "text": "Nochmal Ecke für Frankfurt."
+    },
+    {
+      "minute": "90+4",
+      "text": "Gelb-Rote Karte 90' +4 Gelb-Rote Karte Der von Kostic getretene Eckball kommt wieder raus zum Serben. Der will mit einem Haken an Serdar vorbei, doch der senst ihn um. Gelb-Rot."
+    },
+    {
+      "minute": "90+4",
+      "text": "Freistoß unweit des rechten Strafraumecks."
+    },
+    {
+      "minute": "90+5",
+      "text": "VAR-Prüfung 90' +5 VAR-Prüfung Es gibt noch einmal Videobeweis! Die Frankfurter hatten nach Willems' Freistoß protestiert und Handspiel angezeigt."
+    },
+    {
+      "minute": "90+7",
+      "text": "Entscheidung nach VAR-Prüfung 90' +7 Entscheidung nach VAR-Prüfung Stegemann schaut sich die Szene am Bildschirm an - und entscheidet auf Handelfmeter."
+    },
+    {
+      "minute": "90+7",
+      "text": "Handelfmeter für Frankfurt 90' +7 Handelfmeter für Frankfurt Jovic wird schießen."
+    },
+    {
+      "minute": "90+8",
+      "text": "Gelbe Karte 90' +8 Gelbe Karte"
+    },
+    {
+      "minute": "90+8",
+      "text": "Gelbe Karte 90' +8 Gelbe Karte Burgstaller meckert und sieht Gelb."
+    },
+    {
+      "minute": "90+9",
+      "text": "Tor für Frankfurt 90' +9 Tor für Frankfurt Das Ding ist drin! Jovic behält die Nerven und schießt halbhoch links rein."
+    },
+    {
+      "minute": "90+9",
+      "text": "Alle sind auf dem Feld, Trainer, Ersatzspieler und Betreuer - Stevens kann sich nicht beruhigen."
+    }
+  ]
+}

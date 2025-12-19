@@ -4,23 +4,23 @@ BUNDESLIGABERT DESCRIPTIVE STATISTICS REPORT
 
 1. BASIC STATISTICS
 --------------------------------------------------------------------------------
-Total matches processed: 1375
+Total matches processed: 2424
 Total seasons: 8
 Seasons: 2017-18, 2018-19, 2019-20, 2020-21, 2021-22, 2022-23, 2023-24, 2024-25
 
 2. IMPUTATION AND FLAG STATISTICS
 --------------------------------------------------------------------------------
-Matches with is_imputed_actual_45 = True: 38 (2.76%)
-Matches with is_imputed_actual_90 = True: 9 (0.65%)
+Matches with is_imputed_actual_45 = True: 66 (2.72%)
+Matches with is_imputed_actual_90 = True: 15 (0.62%)
 
-Matches with is_imputed_announced_45 = True: 91 (6.62%)
-Matches with is_imputed_announced_90 = True: 180 (13.09%)
+Matches with is_imputed_announced_45 = True: 197 (8.13%)
+Matches with is_imputed_announced_90 = True: 352 (14.52%)
 
-Matches with is_inferred_zero_45 = True: 672 (48.87%)
-Matches with is_inferred_zero_90 = True: 217 (15.78%)
+Matches with is_inferred_zero_45 = True: 1068 (44.06%)
+Matches with is_inferred_zero_90 = True: 327 (13.49%)
 
-Matches with target_missing_45 = True: 267 (19.42%)
-Matches with target_missing_90 = True: 490 (35.64%)
+Matches with target_missing_45 = True: 506 (20.87%)
+Matches with target_missing_90 = True: 863 (35.60%)
 
 3. MISSING DATA
 --------------------------------------------------------------------------------
@@ -29,141 +29,141 @@ Matches with score_timeline_valid = False: 0
 
 4. GHOST GAMES
 --------------------------------------------------------------------------------
-Total ghost games: 16 (1.16%)
+Total ghost games: 17 (0.70%)
 
 Ghost games per season:
-  2017-18: 0 / 239 (0.00%)
-  2018-19: 0 / 140 (0.00%)
-  2019-20: 0 / 78 (0.00%)
-  2020-21: 7 / 261 (2.68%)
+  2017-18: 0 / 305 (0.00%)
+  2018-19: 0 / 303 (0.00%)
+  2019-20: 0 / 304 (0.00%)
+  2020-21: 8 / 305 (2.62%)
   2021-22: 9 / 305 (2.95%)
-  2022-23: 0 / 125 (0.00%)
-  2023-24: 0 / 93 (0.00%)
-  2024-25: 0 / 134 (0.00%)
+  2022-23: 0 / 301 (0.00%)
+  2023-24: 0 / 299 (0.00%)
+  2024-25: 0 / 302 (0.00%)
 
 Ghost games = None (missing attendance data):
-Total matches with missing attendance: 358 (26.04%)
+Total matches with missing attendance: 506 (20.87%)
 
 Missing attendance per season:
-  2017-18: 0 / 239 (0.00%)
-  2018-19: 0 / 140 (0.00%)
-  2019-20: 30 / 78 (38.46%)
-  2020-21: 247 / 261 (94.64%)
+  2017-18: 0 / 305 (0.00%)
+  2018-19: 0 / 303 (0.00%)
+  2019-20: 140 / 304 (46.05%)
+  2020-21: 285 / 305 (93.44%)
   2021-22: 81 / 305 (26.56%)
-  2022-23: 0 / 125 (0.00%)
-  2023-24: 0 / 93 (0.00%)
-  2024-25: 0 / 134 (0.00%)
+  2022-23: 0 / 301 (0.00%)
+  2023-24: 0 / 299 (0.00%)
+  2024-25: 0 / 302 (0.00%)
 
 5. CORRELATION MATRIX: announced_45 vs 1st Half Events
 --------------------------------------------------------------------------------
 (Using processed data, only matches with non-missing announced_45)
-Matches with valid announced_45: 1108 / 1375 (80.6%)
-  goals_1st: 0.1257
-  subs_1st: 0.2420
-  cards_1st: 0.0497
-  var_1st: 0.1644
-  injuries_1st: 0.2663
-  disturbances_1st: 0.1240
+Matches with valid announced_45: 1918 / 2424 (79.1%)
+  goals_1st: 0.1378
+  subs_1st: 0.2569
+  cards_1st: 0.0492
+  var_1st: 0.1641
+  injuries_1st: 0.3194
+  disturbances_1st: 0.0944
 
 6. CORRELATION MATRIX: announced_90 vs 2nd Half Events
 --------------------------------------------------------------------------------
 (Using processed data, only matches with non-missing announced_90)
-Matches with valid announced_90: 885 / 1375 (64.4%)
-  goals_2nd: -0.2733
-  subs_2nd: 0.0279
-  cards_2nd: 0.2221
-  var_2nd: 0.0786
-  injuries_2nd: 0.1378
-  disturbances_2nd: 0.0929
+Matches with valid announced_90: 1561 / 2424 (64.4%)
+  goals_2nd: -0.2078
+  subs_2nd: 0.0148
+  cards_2nd: 0.2150
+  var_2nd: 0.0897
+  injuries_2nd: 0.1485
+  disturbances_2nd: 0.0959
 
 7. CORRELATION MATRIX: actual_90 vs 2nd Half Events
 --------------------------------------------------------------------------------
 (Using processed data, only matches with non-missing actual_90)
-Matches with valid actual_90: 1375 / 1375 (100.0%)
-  goals_2nd: -0.2263
-  subs_2nd: 0.0331
-  cards_2nd: 0.2167
-  var_2nd: 0.1073
-  injuries_2nd: 0.1630
-  disturbances_2nd: 0.0920
+Matches with valid actual_90: 2424 / 2424 (100.0%)
+  goals_2nd: -0.1730
+  subs_2nd: 0.0131
+  cards_2nd: 0.1941
+  var_2nd: 0.0987
+  injuries_2nd: 0.1572
+  disturbances_2nd: 0.1148
 
 8. CORRELATION MATRIX: excess_time_90 vs OT Events
 --------------------------------------------------------------------------------
-  ot_goals_90: 0.1996
-  ot_subs_90: 0.1734
-  ot_var_90: 0.2869
-  ot_cards_90: 0.2943
-  ot_injuries_90: 0.1862
-  ot_disturbances_90: 0.0066
+  ot_goals_90: 0.1694
+  ot_subs_90: 0.1371
+  ot_var_90: 0.2873
+  ot_cards_90: 0.3199
+  ot_injuries_90: 0.1896
+  ot_disturbances_90: 0.0004
 
 9. RAW VS PROCESSED TARGETS COMPARISON
 --------------------------------------------------------------------------------
-Raw announced_time_45 available: 397 / 1375 (28.87%)
-Raw announced_time_90 available: 606 / 1375 (44.07%)
-Raw actual_played_45 available: 934 / 1375 (67.93%)
-Raw actual_played_90 available: 1199 / 1375 (87.20%)
+Raw announced_time_45 available: 770 / 2424 (31.77%)
+Raw announced_time_90 available: 1139 / 2424 (46.99%)
+Raw actual_played_45 available: 1736 / 2424 (71.62%)
+Raw actual_played_90 available: 2163 / 2424 (89.23%)
 
-Raw == Processed (announced_45): 397 / 397 (100.00%)
-Raw == Processed (announced_90): 606 / 606 (100.00%)
+Raw == Processed (announced_45): 770 / 770 (100.00%)
+Raw == Processed (announced_90): 1139 / 1139 (100.00%)
 
 10. EVENT SUMMARY STATISTICS BY PHASE
 --------------------------------------------------------------------------------
 
 Goals:
   goals_1st:
-    Mean: 1.34, Std: 1.14, Min: 0.00, Max: 6.00
+    Mean: 1.32, Std: 1.12, Min: 0.00, Max: 7.00
   goals_2nd:
-    Mean: 1.59, Std: 1.20, Min: 0.00, Max: 8.00
+    Mean: 1.54, Std: 1.20, Min: 0.00, Max: 8.00
   ot_goals_45:
-    Mean: 0.06, Std: 0.24, Min: 0.00, Max: 2.00
+    Mean: 0.07, Std: 0.26, Min: 0.00, Max: 2.00
   ot_goals_90:
-    Mean: 0.16, Std: 0.40, Min: 0.00, Max: 2.00
+    Mean: 0.17, Std: 0.41, Min: 0.00, Max: 2.00
 
 Subs:
   subs_1st:
-    Mean: 0.44, Std: 0.76, Min: 0.00, Max: 5.00
+    Mean: 0.44, Std: 0.75, Min: 0.00, Max: 5.00
   subs_2nd:
-    Mean: 6.06, Std: 1.43, Min: 1.00, Max: 12.00
+    Mean: 6.05, Std: 1.43, Min: 1.00, Max: 12.00
   ot_subs_45:
-    Mean: 0.01, Std: 0.11, Min: 0.00, Max: 2.00
+    Mean: 0.02, Std: 0.14, Min: 0.00, Max: 2.00
   ot_subs_90:
-    Mean: 0.24, Std: 0.48, Min: 0.00, Max: 3.00
+    Mean: 0.26, Std: 0.50, Min: 0.00, Max: 3.00
 
 Cards:
   cards_1st:
-    Mean: 1.48, Std: 1.35, Min: 0.00, Max: 9.00
+    Mean: 1.51, Std: 1.37, Min: 0.00, Max: 10.00
   cards_2nd:
-    Mean: 2.30, Std: 1.65, Min: 0.00, Max: 10.00
+    Mean: 2.41, Std: 1.70, Min: 0.00, Max: 10.00
   ot_cards_45:
-    Mean: 0.09, Std: 0.34, Min: 0.00, Max: 4.00
+    Mean: 0.12, Std: 0.39, Min: 0.00, Max: 4.00
   ot_cards_90:
-    Mean: 0.41, Std: 0.76, Min: 0.00, Max: 5.00
+    Mean: 0.41, Std: 0.75, Min: 0.00, Max: 5.00
 
 VAR:
   var_1st:
-    Mean: 1.12, Std: 1.58, Min: 0.00, Max: 11.00
+    Mean: 1.07, Std: 1.49, Min: 0.00, Max: 11.00
   var_2nd:
-    Mean: 0.96, Std: 1.45, Min: 0.00, Max: 8.00
+    Mean: 0.90, Std: 1.39, Min: 0.00, Max: 9.00
   ot_var_45:
-    Mean: 0.06, Std: 0.30, Min: 0.00, Max: 3.00
+    Mean: 0.07, Std: 0.36, Min: 0.00, Max: 4.00
   ot_var_90:
-    Mean: 0.10, Std: 0.43, Min: 0.00, Max: 3.00
+    Mean: 0.09, Std: 0.40, Min: 0.00, Max: 3.00
 
 Injuries:
   injuries_1st:
-    Mean: 0.66, Std: 0.95, Min: 0.00, Max: 6.00
+    Mean: 0.65, Std: 0.95, Min: 0.00, Max: 6.00
   injuries_2nd:
-    Mean: 0.62, Std: 0.91, Min: 0.00, Max: 6.00
+    Mean: 0.62, Std: 0.92, Min: 0.00, Max: 6.00
   ot_injuries_45:
-    Mean: 0.03, Std: 0.17, Min: 0.00, Max: 2.00
+    Mean: 0.03, Std: 0.19, Min: 0.00, Max: 2.00
   ot_injuries_90:
-    Mean: 0.02, Std: 0.15, Min: 0.00, Max: 2.00
+    Mean: 0.03, Std: 0.18, Min: 0.00, Max: 2.00
 
 Disturbances:
   disturbances_1st:
-    Mean: 0.10, Std: 0.35, Min: 0.00, Max: 3.00
+    Mean: 0.11, Std: 0.36, Min: 0.00, Max: 3.00
   disturbances_2nd:
-    Mean: 0.09, Std: 0.33, Min: 0.00, Max: 4.00
+    Mean: 0.11, Std: 0.36, Min: 0.00, Max: 4.00
   ot_disturbances_45:
     Mean: 0.01, Std: 0.09, Min: 0.00, Max: 1.00
   ot_disturbances_90:
@@ -171,7 +171,7 @@ Disturbances:
 
 11. MATCHES WITH EXCESS TIME > 3 MINUTES
 --------------------------------------------------------------------------------
-Total matches with excess_time_90 > 3 minutes: 11
+Total matches with excess_time_90 > 3 minutes: 13
 
   2018-19: Hertha BSC vs Werder Bremen (Excess: 4.00 min, Match ID: hertha-gegen-bremen-2019-bundesliga-4243459)
   2019-20: Werder Bremen vs SC Paderborn 07 (Excess: 4.00 min, Match ID: bremen-gegen-paderborn-2019-bundesliga-4588780)
@@ -184,6 +184,8 @@ Total matches with excess_time_90 > 3 minutes: 11
   2021-22: Arminia Bielefeld vs 1. FSV Mainz 05 (Excess: 4.00 min, Match ID: bielefeld-gegen-mainz-2021-bundesliga-4721584)
   2021-22: Arminia Bielefeld vs VfB Stuttgart (Excess: 4.00 min, Match ID: bielefeld-gegen-stuttgart-2022-bundesliga-4721746)
   2022-23: Werder Bremen vs FC Augsburg (Excess: 4.00 min, Match ID: bremen-gegen-augsburg-2022-bundesliga-4781485)
+  2024-25: VfB Stuttgart vs Eintracht Frankfurt (Excess: 4.00 min, Match ID: stuttgart-gegen-frankfurt-2024-bundesliga-4936866)
+  2024-25: VfB Stuttgart vs TSG Hoffenheim (Excess: 4.00 min, Match ID: stuttgart-gegen-hoffenheim-2024-bundesliga-4936831)
 
 ================================================================================
 END OF REPORT

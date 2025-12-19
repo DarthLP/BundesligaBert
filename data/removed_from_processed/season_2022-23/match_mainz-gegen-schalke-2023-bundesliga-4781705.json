@@ -1,0 +1,214 @@
+{
+  "match_id": "mainz-gegen-schalke-2023-bundesliga-4781705",
+  "season": "2022-23",
+  "metadata": {
+    "home": "1. FSV Mainz 05",
+    "away": "FC Schalke 04",
+    "attendance": 33305,
+    "final_score": "2:3",
+    "matchday": 31,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 10,
+        "away": 16
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 68,
+        "away": 64
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 57,
+        "away": 43
+      }
+    }
+  },
+  "score_timeline": {
+    "26": [
+      0,
+      1
+    ],
+    "53": [
+      1,
+      1
+    ],
+    "60": [
+      1,
+      2
+    ],
+    "70": [
+      2,
+      2
+    ],
+    "90+12": [
+      2,
+      3
+    ]
+  },
+  "yellow_cards": {
+    "40": 1,
+    "90+11": 1,
+    "90+14": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {},
+  "substitutes": {
+    "46": 1,
+    "65": 1,
+    "90+3": 1,
+    "74": 1,
+    "78": 1,
+    "79": 1,
+    "86": 1,
+    "88": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": true,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 0,
+    "actual_45": 1,
+    "excess_45": 1,
+    "announced_90": 9,
+    "actual_90": 14,
+    "excess_90": 5,
+    "targets_raw": {
+      "announced_time_45": null,
+      "announced_time_90": null,
+      "actual_played_45": 1,
+      "actual_played_90": 14
+    }
+  },
+  "features_regular": {
+    "goals_1st": 1,
+    "goals_2nd": 3,
+    "subs_1st": 0,
+    "subs_2nd": 9,
+    "cards_1st": 1,
+    "cards_2nd": 0,
+    "var_1st": 0,
+    "var_2nd": 1,
+    "injuries_1st": 0,
+    "injuries_2nd": 1,
+    "disturbances_1st": 1,
+    "disturbances_2nd": 0,
+    "home_score_90": 2,
+    "away_score_90": 2
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 1,
+    "ot_subs_45": 0,
+    "ot_subs_90": 1,
+    "ot_cards_45": 0,
+    "ot_cards_90": 4,
+    "ot_var_45": 0,
+    "ot_var_90": 2,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 2,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[22] FSV Mainz 05 Schalke 04 33305 2: Krauß unterbindet direkt einen Mainzer Angriff mit einer Grätsche gegen Barreiro. Die Karte bleibt verständlicherweise erst einmal stecken. 5: Die Hausherren setzen sich erstmals in Schalkes Hälfte fest, doch Königsblau kontert über Terodde und Zalazar, der im Sechzehner abschließt - sein Schuss wird von Bell ins Toraus geblockt. Der anschließende Standard bringt keine Gefahr. 11: Aus dem Rückraum trifft Brunner den Ball nicht richtig, seine Bogenlampe segelt in die Arme von Zentner. 13: Diesmal muss Kohr im linken Halbfeld ganz schön viel wegstecken. Sein getretener Standard bringt keine Gefahr, Schalke verteidigt das eigene Tor bis dato sehr erfolgreich. 14: Onisiwo wird auf der linken Seite in den Lauf geschickt und flankt aufs Tor von Schalke, wo Schwolow zur Stelle ist und den Ball aufnimmt. 23: Schalke nähert sich dem Mainzer Tor wieder etwas mehr an, doch Bülters Flanke auf Terodde, der mit dem Rücken zum Gehäuse steht, ist zu ungenau. 26: tor (Schalke 04) 28: Nach einem Freistoß der Mainzer klärt Matriciani ins Toraus. 34: Bei Zentners misslungenem Versuch des Ballfangens hat er seinen Mitspieler da Costa an der Achillessehne getroffen. Nach kurzer Unterbrechung geht es für den Widmer-Ersatz aber weiter. 35: Wieder ist Mainz viel zu offen in der Mitte: Terodde legt ab für Karaman, der Meter macht und sich gegen die Abspielmöglichkeit und für den Abschluss entscheidet. Sein Schuss mit links streift den rechten Pfosten und geht dann ins Toraus. Glück für den FSV! 37: Seit dem Führungstreffer haben die Gäste das Spielgeschehen ganz gut unter Kontrolle und machen sehr vieles richtig. 40: gelbe karte 45:",
+  "bert_input_90": "[22] FSV Mainz 05 Schalke 04 33305 Stand 0:1 46: wechsel 51: Bülter hat die Riesenchance aufs Zweite! Schalke läuft in Überzahl aufs Mainzer Tor zu, Terodde nimmt Bülter mit, der alleine auf Zentner zuläuft und am Keeper scheitert, der sein Bein noch rechtzeitig ausfährt und die Hausherren stark im Spiel hält. 53: tor (Mainz 05) 56: Das muss die Mainzer Führung sein! Lee steckt an der Strafraumgrenze klasse durch auf den freistehenden Kohr, der alleine vor Schwolow den Ball nicht richtig trifft und die hundertprozentige Möglichkeit liegenlässt. 60: tor (Schalke 04) 65: wechsel 65: wechsel 70: tor (Mainz 05) 74: wechsel 75: Bei einer Flanke von Brunner ist Zentner aufmerksam, kommt aus seinem Tor und nimmt den Ball ohne Probleme auf. 78: verletzung 78: wechsel 79: wechsel 79: Missverständnis im Offensivspiel von Königsblau: Bülters Pass rollt ins Toraus. 83: Wieder ist Zentner auf dem Posten und hält das Remis fest! Über Drexler und Bülter kommt der Ball im Zentrum zum eingewechselten Polter, der sich an Zentner die Zähne ausbeißt. 86: wechsel 86: Zentner kommt bei einem Schalker Standard weit aus seinem Tor und trifft den Ball nicht richtig. Krauß geht aus 20 Metern Risiko und verzieht deutlich. 87: Onisiwo bedient Aaron auf links, der Weiper die perfekte Flanke serviert. Sein Kopfball geht daneben. 88: wechsel 89: Drexler flankt scharf in die Mitte zu Kral, der am Ball vorbeifliegt. 90: Wie viel Zeit bekommt Schalke nach obendrauf?",
+  "bert_input_45_tokens": 388,
+  "bert_input_90_tokens": 364,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+1",
+      "text": "In einen Schuss von Kohr schmeißt sich Kral hinein, die anschließende Flanke von Aaron wird gerade so von Kaminski zur Ecke geklärt."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+3",
+      "text": "Spielerwechsel 90' +3 Spielerwechsel"
+    },
+    {
+      "minute": "90+1",
+      "text": "Latza darf aus 16 Metern abschließen und zwingt Zentner zur nächsten Glanztat! Ecke Schalke."
+    },
+    {
+      "minute": "90+2",
+      "text": "Mainz klärt erst einmal und dann wird Foul gegen Matriciani gepfiffen."
+    },
+    {
+      "minute": "90+2",
+      "text": "Matriciani liegt am Boden und muss behandelt werden. Der Verteidiger blutet am Kopf."
+    },
+    {
+      "minute": "90+4",
+      "text": "Noch immer ist die Partie unterbrochen."
+    },
+    {
+      "minute": "90+6",
+      "text": "Matriciani steht wieder und wird gleich mit blauem Turban weiterspielen."
+    },
+    {
+      "minute": "90+6",
+      "text": "Das Spiel läuft wieder..."
+    },
+    {
+      "minute": "90+7",
+      "text": "Bülter taucht tatsächlich nochmal alleine vor Zentner auf und wieder ist der Mainzer Schlussmann da!"
+    },
+    {
+      "minute": "90+7",
+      "text": "Bülter wird im Strafraum zu Boden gezogen, Jöllenbeck lässt weiterlaufen."
+    },
+    {
+      "minute": "90+8",
+      "text": "Die Partie ist unterbrochen, Caci hat Bülter ziemlich unnötig am Trikot gezogen."
+    },
+    {
+      "minute": "90+9",
+      "text": "VAR-Prüfung 90' +9 VAR-Prüfung Dr. Jöllenbeck schaut sich die Szene an, gibt es nochmal die Großchance für Schalke?"
+    },
+    {
+      "minute": "90+10",
+      "text": "Entscheidung nach VAR-Prüfung 90' +10 Entscheidung nach VAR-Prüfung Jöllenbeck zeigt nach dem Videostudium auf den Punkt."
+    },
+    {
+      "minute": "90+11",
+      "text": "Foulelfmeter für Schalke 90' +11 Foulelfmeter für Schalke"
+    },
+    {
+      "minute": "90+11",
+      "text": "Gelbe Karte 90' +11 Gelbe Karte Caci sieht zusätzlich die Gelbe Karte."
+    },
+    {
+      "minute": "90+12",
+      "text": "Das ist der absolute Wahnsinn! Der Schuss ins rechte Eck kann von Zentner nicht gehalten werden."
+    },
+    {
+      "minute": "90+13",
+      "text": "Nach einem Angriff der Mainzer gibt es Abstoß für Schalke."
+    },
+    {
+      "minute": "90+14",
+      "text": "Gelbe Karte 90' +14 Gelbe Karte"
+    },
+    {
+      "minute": "90+14",
+      "text": "Gelbe Karte 90' +14 Gelbe Karte"
+    },
+    {
+      "minute": "90+14",
+      "text": "Gelbe Karte 90' +14 Gelbe Karte"
+    }
+  ]
+}

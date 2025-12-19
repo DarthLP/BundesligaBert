@@ -1,0 +1,175 @@
+{
+  "match_id": "union-gegen-freiburg-2024-bundesliga-4862264",
+  "season": "2023-24",
+  "metadata": {
+    "home": "1. FC Union Berlin",
+    "away": "SC Freiburg",
+    "attendance": 22012,
+    "final_score": "2:1",
+    "matchday": 34,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "xgoals": {
+        "title": "xGoals",
+        "home": 2.31,
+        "away": 0.98
+      },
+      "shots": {
+        "title": "Torschüsse",
+        "home": 13,
+        "away": 13
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 77,
+        "away": 85
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 37,
+        "away": 63
+      }
+    }
+  },
+  "score_timeline": {
+    "68": [
+      1,
+      0
+    ],
+    "85": [
+      1,
+      1
+    ],
+    "90+2": [
+      2,
+      1
+    ]
+  },
+  "yellow_cards": {
+    "37": 1,
+    "52": 1,
+    "54": 1,
+    "67": 1,
+    "70": 1,
+    "75": 2,
+    "85": 1,
+    "90+2": 1,
+    "90+7": 1,
+    "90+8": 1
+  },
+  "red_cards": {
+    "86": 1
+  },
+  "yellow_red_cards": {},
+  "substitutes": {
+    "60": 1,
+    "62": 1,
+    "63": 1,
+    "77": 1,
+    "80": 1,
+    "83": 1,
+    "84": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 2,
+    "actual_45": 3,
+    "excess_45": 1,
+    "announced_90": 2,
+    "actual_90": 8,
+    "excess_90": 6,
+    "targets_raw": {
+      "announced_time_45": 2,
+      "announced_time_90": null,
+      "actual_played_45": 3,
+      "actual_played_90": 8
+    }
+  },
+  "features_regular": {
+    "goals_1st": 0,
+    "goals_2nd": 2,
+    "subs_1st": 0,
+    "subs_2nd": 7,
+    "cards_1st": 1,
+    "cards_2nd": 8,
+    "var_1st": 2,
+    "var_2nd": 0,
+    "injuries_1st": 0,
+    "injuries_2nd": 1,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 1,
+    "away_score_90": 1
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 1,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 0,
+    "ot_cards_90": 3,
+    "ot_var_45": 0,
+    "ot_var_90": 0,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[23] FC Union Berlin Freiburg 22012 19: Aaronson versucht aus rund 23 Metern aus der Distanz. Der Ball rauscht ein paar Meter am Tor vorbei. 24: +++ Heidenheim ist mit 2:0 in Führung gegangen. +++ 25: Nun versucht es der SCF mit direktem Spiel. Ein Zuspiel zu Höler ist jedoch etwas zu steil. 29: Juranovic misslingt eine Ecke von rechts völlig. Der Ball rauscht Richtung linke Eckfahne. 31: Beide Teams verteidigen konzentriert und verschieben sich in der Defensive gut. Klare Chancen sind bislang Mangelware. 35: Nach Flanke von links von Gosens springt der Ball im Zentrum von Vertessen an die ausgestreckte Hand von Makengo. Die Partie läuft erst einmal weiter. Gosens schießt letztlich knapp rechts am Tor vorbei. 36: VAR-Prüfung 36' VAR-Prüfung Der VAR schaltet sich ein, dann geht Referee Dingert selbst an die Seitenlinie. 37: Dingert gibt nach Video-Check den Handelfmeter. 37: Handelfmeter für Union 37' Handelfmeter für Union 37:  38: Union vergibt 38' Union vergibt Nachdem Dingert erst Einwände hatte, weil der Ball wohl etwas zu weit vorne lag, tritt Juranovic an und schiebt Richtung rechtes Toreck. Doch da ist Atubolu und wehrt zur Seite ab. 40: +++ Heidenheim hat mittlerweile auf 3:0 erhöht. +++ 41: Wieder geht es schnell bei Union. Aaronson spielt Vertessen halbrechts an. Dessen Schuss rauscht rund eineinhalb Meter am Tor vorbei. 44: Doan hat Schmerzen und hat sich auf den Rasen gesetzt. Freiburg spielt den Ball ins Aus. 44: Leicht humpelnd macht Doan weiter.",
+  "bert_input_90": "[23] FC Union Berlin Freiburg 22012 Stand 0:0 59: Nun schließt Eggestein vom Strafraumrand ab. Der Schuss rauscht - noch abgefälscht - rechts am Tor vorbei. 60: Spielerwechsel 60: Diogo Leite und Kübler prallen nach einem Eckball mit den Köpfen zusammen. Vor allem den Berliner hat es heftig erwischt. Er muss behandelt werden. 62: Diogo Leite geht von einem Betreuer gestützt zur Seitenlinie, ihn hat es heftiger erwischt. 62: Spielerwechsel 63: wechsel 67: Nach Halten auf der rechten Abwehrseite Mitte der Berliner Hälfte. 68: tor (Union Berlin) 70: Nach Grätsche gegen Sallai nahe der Mittellinie. Zuvor war Aaronson links im Freiburger Strafraum sehr leicht gefallen. 71: Im Moment hat Union den Klassenerhalt sicher, während Bochum auf den Relegationsplatz rutscht. Freiburg ist durch das Gegentor plötzlich nur noch Zehnter. 73: Gregoritsch kommt zentral aus neun Metern zur Volleyabnahme, diese wird aber geblockt. 74: Aaronson liegt auf dem Rasen, Kübler unterstellt diesem wohl Zeitspiel - dann geraten er und Gosens, der seinem Kollegen zur Seite eilt, aneinander. 75:  75: Die beiden Streithähne werden verwarnt. 76: Tousart schließt zentral aus der Distanz ab, Atubolu hält sicher. 77: Spielerwechsel 79: Nach der Pause ist von Freiburg in Strafraumnähe - trotz stetem Bemühens - weiterhin recht wenig zu sein. 80: Union kontert über rechts. Hollerbachs Schuss aus spitzem Winkel wird ins Toraus geblockt. 80: wechsel 82: +++ Bremen führt mittlerweile mit 3:0 gegen Bochum. Bei einem Freiburger Tor müsste Union dennoch in die Relegation. +++ 83: wechsel 84: Spielerwechsel 85:  85: tor (Freiburg) 86: Rot (Trainer) 86' Rot (Trainer) 88: Union ist nunmehr wieder auf dem Relegationsplatz.",
+  "bert_input_45_tokens": 368,
+  "bert_input_90_tokens": 403,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+3",
+      "text": "Nach einer Ecke von links kommt Doan rechts noch zur Abnahme. Doch Rönnow packt mühelos zu."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Foulelfmeter für Union 90' +1 Foulelfmeter für Union Nach einer Freistoßflanke hält Eggestein Doekhi mit beiden Armen fest. Elfmeter."
+    },
+    {
+      "minute": "90+2",
+      "text": "Gelbe Karte 90' +2 Gelbe Karte"
+    },
+    {
+      "minute": "90+2",
+      "text": "Union vergibt 90' +2 Union vergibt Volland tritt an, Atubolu ist wieder dran und lenkt die Kugel an den Pfosten..."
+    },
+    {
+      "minute": "90+2",
+      "text": "Tor für Union 90' +2 Tor für Union ... der Ball prallt nach dem Elfmeter vom Aluminium ins Zentrum zurück, wo Haberer aus rund 13 Metern im Nachschuss ins linke Toreck vollstreckt."
+    },
+    {
+      "minute": "90+3",
+      "text": "Sieben Minuten waren angezeigt."
+    },
+    {
+      "minute": "90+6",
+      "text": "Freiburg versucht erneut zu antworten. Dies aber bietet Union-Konterchancen."
+    },
+    {
+      "minute": "90+7",
+      "text": "Gelbe Karte 90' +7 Gelbe Karte Taktisches Halten."
+    },
+    {
+      "minute": "90+8",
+      "text": "Gelbe Karte 90' +8 Gelbe Karte Wegen Zeitspiels an der Torauslinie der Freiburger."
+    }
+  ]
+}

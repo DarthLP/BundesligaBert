@@ -24,11 +24,11 @@ Announced Time (45 minutes):
 --------------------------------------------------------------------------------
 model_type calibration_bias residual_mean residual_std  t_stat p_value ci_lower ci_upper  n_obs  n_hinrunde  n_ruckrunde
       bert           1.0374       -0.0430       1.3418 -0.2603  0.7954  -0.3729   0.2869     66          59           66
-  baseline          -0.5476       -0.0615       1.2301 -0.4064  0.6858  -0.3639   0.2409     66          59           66
+  baseline          -0.4743        0.1189       1.5019  0.9437  0.3469  -0.1302   0.3681    142         135          142
 
 Announced Time (90 minutes):
 --------------------------------------------------------------------------------
 model_type calibration_bias residual_mean residual_std  t_stat p_value ci_lower ci_upper  n_obs  n_hinrunde  n_ruckrunde
       bert           1.0361        0.4908       2.2192  1.7694  0.0817  -0.0635   1.0452     64          60           64
-  baseline          -0.4516       -0.0578       2.0760 -0.2228  0.8244  -0.5764   0.4608     64          60           64
+  baseline          -0.1004       -0.0435       1.7833 -0.2875  0.7742  -0.3426   0.2556    139         137          139
 

@@ -1,0 +1,166 @@
+{
+  "match_id": "koeln-gegen-augsburg-2019-bundesliga-4588773",
+  "season": "2019-20",
+  "metadata": {
+    "home": "1. FC Köln",
+    "away": "FC Augsburg",
+    "attendance": 49200,
+    "final_score": "1:1",
+    "matchday": 13,
+    "is_sold_out": false,
+    "is_ghost_game": false,
+    "is_corona_season": true,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 13,
+        "away": 11
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 81,
+        "away": 76
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 55,
+        "away": 45
+      }
+    }
+  },
+  "score_timeline": {
+    "43": [
+      0,
+      1
+    ],
+    "86": [
+      1,
+      1
+    ]
+  },
+  "yellow_cards": {
+    "8": 1,
+    "17": 1,
+    "20": 1,
+    "23": 1,
+    "45+1": 1,
+    "45+4": 1,
+    "62": 1,
+    "88": 1,
+    "90+3": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {
+    "39": 1,
+    "44": 1,
+    "45+1": 1,
+    "45+4": 1
+  },
+  "substitutes": {
+    "28": 1,
+    "46": 1,
+    "57": 1,
+    "64": 1,
+    "84": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 3,
+    "actual_45": 4,
+    "excess_45": 1,
+    "announced_90": 1,
+    "actual_90": 6,
+    "excess_90": 5,
+    "targets_raw": {
+      "announced_time_45": 3,
+      "announced_time_90": 1,
+      "actual_played_45": 4,
+      "actual_played_90": 6
+    }
+  },
+  "features_regular": {
+    "goals_1st": 1,
+    "goals_2nd": 1,
+    "subs_1st": 1,
+    "subs_2nd": 4,
+    "cards_1st": 4,
+    "cards_2nd": 2,
+    "var_1st": 2,
+    "var_2nd": 3,
+    "injuries_1st": 0,
+    "injuries_2nd": 0,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 1,
+    "away_score_90": 1
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 2,
+    "ot_cards_90": 1,
+    "ot_var_45": 0,
+    "ot_var_90": 0,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[19] FC Köln Augsburg 49200 Krank 3: Guter Diagonalpass vom Hector auf Jakobs, der links gegen Framberger einen Freistoß herausholt ... 20: Dritte Gelbe für einen Kölner. Diesmal für Höger, der gegen Cordova die Schere ansetzt. Klare Sache. 23: Czichos und Hahn beackern sich, Hahns Attacke gegen den Kölner mündet in die erste Gelbe für den FCA. 27: Nach Niederlechners Solo legt der Stürmer überlegt quer auf Vargas, der aus 16 Metern das rechte Eck anvisiert, aber verzieht. 28: Spielerwechsel 31: Vargas zu unentschlossen. Der Stürmer umdribbelt Czichos, statt von halbrechts abzuziehen und legt dann ungenau ab auf Hahn. Chance vorbei. 33: Der FC ist spielerisch stärker und hat das Kommando Zug um Zug übernommen. 35: Der FCA unterbindet eine Konterchance des FC mit Verstraete durch cleveres Zweikampfverhalten im Mittelfeld. 37: Lichtsteiners Hereingabe fliegt an Freund und Feind vorbei ins Toraus. 39: Zu riskantes Zuspiel von Jakobs zu Czichos, dem Niederlechner den Ball wegschnappt und dann auf dem Weg zum gefoult wird. Klare Angelegenheit - Köln ab sofort in Unterzahl. 42: Augsburg lässt den Ball zirkulieren und den Gegner laufen. 43: Tor für Augsburg Und da ist die Führung. Jakobs verpasst rechts den Ball, Hahn flankt auf Max, der vom linken Strafraumeck wohl abziehen will. Der Ball fliegt in den Fünfer, wo Niederlechner nur noch den Fuß hinzuhalten braucht. 44: Hahn trifft Drexler beim Versuch, den Ball wegzuschlagen. Damit ist der personelle Gleichstand auf dem Rasen wieder hergestellt.",
+  "bert_input_90": "[19] FC Köln Augsburg 49200 Stand 0:1 Krank 46: Spielerwechsel 53: Ehizibue bringt frischen Schwung, auch wenn seine Flanke zu nah vors Tor fliegt und von Koubek sicher abgefangen wird. 57: wechsel 62: Zu harter Einsatz gegen Khedira - erste Gelbe nach Wiederanpfiff. 64: Spielerwechsel 71: Nächster Hochkaräter: Terodde nickt nach einer Flanke von Kainz gegen Koubeks Laufrichtung, aber aus sieben Metern auch zu hoch. 74: Köln schnuppert erneut am 1:1, aber Cordoba platziert nach Kainz-Freistoßflanke aus sechs Metern genau auf Koubek. 76: Terodde fällt an der Strafraumgrenze, Stieler winkt sofort ab. 78: Entlastung für den FCA. Niederlechner zieht eine Ecke. Die bringt Max, und Vargas köpft vollkommen blank aus fünf Metern links vorbei. 81: Koubek segelt unter Drexlers Flanke hindurch, aber dahinter findet sich kein Kölner Abnehmer. 82: Cordoba kommt halbrechts aus elf Metern zum Abschluss, Koubek macht rechtzeitig die Tür, sprich die Beine, zu. 83: Eine Linksflanke zischt durch den Sechzehner knapp rechts am Pfosten vorbei - erneut Glück für den FCA. 84: Spielerwechsel 85: Ehizibue prüft Koubek aus 16 Metern. 86: Tor für Köln Der verdiente Ausgleich! Cordoba nimmt Hectors Zuspiel auf, Koubek kommt unnötig aus seinem Tor. Rechts am Strafraum umspielt der Stürmer den Keeper und trifft dann durch Gouweleeuws in verlassene Tor. 88: Der Torschütze reißt sich glücklich das Trikot vom Leib - und kassiert natürlich ebenfalls Gelb. 89: Das 1:1 ist der verdiente Lohn nimmermüder Offensivbemühungen der Gisdol-Elf.",
+  "bert_input_45_tokens": 377,
+  "bert_input_90_tokens": 397,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+1",
+      "text": "Gelbe Karte 45' +1 Gelbe Karte Ein echtes Kartenfestival! Max trifft Verstraete in der Luft mit der Hacke am Kopf."
+    },
+    {
+      "minute": "45+4",
+      "text": "Gelbe Karte 45' +4 Gelbe Karte Und nochmal Gelb ... Drexler läuft Cordova in die Hacken."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Ecke durch Max, es ist die dritte in Folge."
+    },
+    {
+      "minute": "90+2",
+      "text": "Jetzt bereinigt der FC die Situation und startet zum Gegenangriff."
+    },
+    {
+      "minute": "90+3",
+      "text": "Gelbe Karte 90' +3 Gelbe Karte"
+    },
+    {
+      "minute": "90+4",
+      "text": "Durchatmen, Köln: Eine Max-Freistoßflanke springt auf und senkt sich gefährlich nahe am Winkel vorbei."
+    },
+    {
+      "minute": "90+5",
+      "text": "Auf der anderen Seite ist Cordoba in vielversprechender Position, doch der Torschütze entscheidet sich gegen einen Abschluss."
+    },
+    {
+      "minute": "90+6",
+      "text": "Es gibt noch einmal Ecke für Köln."
+    },
+    {
+      "minute": "90+6",
+      "text": "Und jetzt ist Schluss."
+    }
+  ]
+}

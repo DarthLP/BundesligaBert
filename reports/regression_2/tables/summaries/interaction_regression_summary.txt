@@ -20,18 +20,18 @@ MODELS RUN:
 INTERACTION TERM SUMMARY:
 
        model     pressure_var coefficient p_value significant
-announced_45  pressure_add_45      0.1660  0.8245          No
-announced_45 pressure_draw_45      0.1620  0.6951          No
-announced_45  pressure_end_45      0.5386  0.1873          No
-announced_90  pressure_add_90     -1.0824  0.2557          No
-announced_90 pressure_draw_90      0.6366  0.4317          No
-announced_90  pressure_end_90      0.9142  0.1917          No
-   excess_45  pressure_add_45     -0.2549  0.4365          No
-   excess_45 pressure_draw_45      0.0813  0.6209          No
-   excess_45  pressure_end_45     -0.1247  0.5478          No
-   excess_90  pressure_add_90     -0.0612  0.8709          No
-   excess_90 pressure_draw_90     -0.3119  0.3604          No
-   excess_90  pressure_end_90     -0.1858  0.5101          No
+announced_45  pressure_add_45     -0.0597  0.9015          No
+announced_45 pressure_draw_45      0.3305  0.3019          No
+announced_45  pressure_end_45      0.6222  0.0984          No
+announced_90  pressure_add_90     -0.3795  0.5252          No
+announced_90 pressure_draw_90      0.2337  0.6689          No
+announced_90  pressure_end_90      0.2631  0.6324          No
+   excess_45  pressure_add_45     -0.2525  0.4059          No
+   excess_45 pressure_draw_45      0.1302  0.4800          No
+   excess_45  pressure_end_45     -0.3413  0.1617          No
+   excess_90  pressure_add_90     -0.5789  0.0507          No
+   excess_90 pressure_draw_90     -0.2545  0.3497          No
+   excess_90  pressure_end_90     -0.3588  0.1785          No
 
 DETAILED RESULTS:
 See interaction_announced_45_summary.txt, interaction_announced_90_summary.txt,

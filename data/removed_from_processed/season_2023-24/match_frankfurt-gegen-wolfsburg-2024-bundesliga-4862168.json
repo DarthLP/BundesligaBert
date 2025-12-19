@@ -1,0 +1,153 @@
+{
+  "match_id": "frankfurt-gegen-wolfsburg-2024-bundesliga-4862168",
+  "season": "2023-24",
+  "metadata": {
+    "home": "Eintracht Frankfurt",
+    "away": "VfL Wolfsburg",
+    "attendance": 56500,
+    "final_score": "2:2",
+    "matchday": 23,
+    "is_sold_out": false,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "xgoals": {
+        "title": "xGoals",
+        "home": 0.92,
+        "away": 1.02
+      },
+      "shots": {
+        "title": "Torschüsse",
+        "home": 12,
+        "away": 14
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 78,
+        "away": 71
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 56,
+        "away": 44
+      }
+    }
+  },
+  "score_timeline": {
+    "2": [
+      0,
+      1
+    ],
+    "14": [
+      1,
+      1
+    ],
+    "36": [
+      1,
+      2
+    ],
+    "90+2": [
+      2,
+      2
+    ]
+  },
+  "yellow_cards": {
+    "40": 1,
+    "41": 1,
+    "44": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {},
+  "substitutes": {
+    "67": 1,
+    "72": 1,
+    "73": 1,
+    "77": 1,
+    "89": 1,
+    "90": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": true,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 4,
+    "actual_45": 4,
+    "excess_45": 0,
+    "announced_90": 1,
+    "actual_90": 10,
+    "excess_90": 9,
+    "targets_raw": {
+      "announced_time_45": 4,
+      "announced_time_90": 1,
+      "actual_played_45": 2,
+      "actual_played_90": 10
+    }
+  },
+  "features_regular": {
+    "goals_1st": 3,
+    "goals_2nd": 0,
+    "subs_1st": 0,
+    "subs_2nd": 7,
+    "cards_1st": 3,
+    "cards_2nd": 0,
+    "var_1st": 4,
+    "var_2nd": 0,
+    "injuries_1st": 0,
+    "injuries_2nd": 1,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 1,
+    "away_score_90": 2
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 1,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 0,
+    "ot_cards_90": 0,
+    "ot_var_45": 0,
+    "ot_var_90": 0,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[23] Eintracht Frankfurt Wolfsburg 56500 2: tor (Wolfsburg) 4: VAR-Prüfung 4' VAR-Prüfung Die Szene wird geprüft, da Jenz womöglich Lacroix' Kopfball noch mit der Hand abgefälscht haben könnte. 4: Entscheidung nach VAR-Prüfung 4' Entscheidung nach VAR-Prüfung Kein Handspiel, Treffer zählt. 14: tor (Eintracht Frankfurt) 21: Bei einem langen Ball legt Paredes für Behrens ab, der aus 19 Metern sofort abzieht und das Tor knapp verfehlt. 32: Nachdem es in den ersten 30 Minute sehr temporeich zur Sache gegangen war, gönnt sich die Partie nun eine Verschnaufpause. 34: Dina Ebimbe setzt zum Dribbling an, nimmt es dabei auf seinem Weg von rechts quer nach innen mit der halben Wolfsburger Hintermannschaft auf - und wird schlussendlich bei seinem Schussversuch aus 18 Metern geblockt. 36: tor (Wolfsburg) 37: VAR-Prüfung 37' VAR-Prüfung Auch dieses Tor wird überprüft. Die Frage. Stand Wind in der Entstehung im Abseits? 38: Entscheidung nach VAR-Prüfung 38' Entscheidung nach VAR-Prüfung Kein Abseits, Treffer zählt. 39: Bei einem langen Diagonalball über das halbe Feld entwischt Paredes seinem Bewacher, kommt dann aber aus vollem Tempo und unter Bedrängnis nicht kontrolliert zum Abschluss - drüber. 40: Taktischer Zupfer im Zentrum gegen Marmoush. 41: Ekitiké redet vor einem Frankfurter Freistoß auf den Schiedsrichter ein, der mag das nicht und quittiert das Verhalten des Franzosen sofort mit Gelb. 42: Gerade nicht viel los im weiten Rund. Viele Zweikämpfe, wenig Spielfluss. 44: Foulspiel an Maehle. 44: Majers Freistoßflanke von links wird lang und länger und lande schließlich bei Gerhardt, der wiederum unter Druck aus sechs Metern über das Tor köpft.",
+  "bert_input_90": "[23] Eintracht Frankfurt Wolfsburg 56500 Stand 1:2 46: Weiter geht's, keine Wechsel. 48: Der Investorendeal ist abgeblasen, die Fan-Szene protestiert aber weiter - mit Tennisbällen, Flummis und einem Plakat, das sich explizit gegen den VfL Wolfsburg richtet. Das Spiel muss unterbrochen werden. 67: wechsel 72: Konterchance der Wölfe: Paredes kreuzt, ist aber ein bisschen zu spät und kann deshalb Trapp mit seinem Versuch aus 17 Metern zentraler Position nicht wirklich fordern. 72: Spielerwechsel 73: wechsel 75: Ekitikité liegt am Boden, zeigt an, dass er einen Wadenkrampf hat - schmerzhaft für den Franzosen. Marmoush hilft und dehnt seinen Sturmkollegen. 77: wechsel 79: Es wird laut auf den Tribünen. Bei einer Flanke von rechts kommt es im Sechzehner zum Kontakt zwischen Lacroix und Marmoush, kurz darauf rettet Baku unter hohem Risiko gegen Dina Ebimbe und erleidet dabei eine blutende Wunde.SGE-Fans fordern Elfmeter, den es aber nicht gibt. Das Spiel wird aber unterbrochen, Baku muss behandelt werden. 82: Mittlerweile rollt der Ball wieder, auch Baku ist zurück auf dem Rasen. 84: Die Eintracht drängt, rennt sich aber fast immer fest. Der VfL ist derzeit nur noch darauf aus, den Sieg über die Zeit zu bringen. 86: Nkounkou setzt sich zunächst auf links gut durch, flankt dann aber ins Toraus - und zuckt anschließend frustriert mit den Schultern. 88: Auf einmal taucht Dina Ebimbe im Sechzehner auf und kommt zum Abschluss, jagt das Leder jedoch aus neun Metern drüber. Ein Treffer hätte wegen Abseits wohl aber ohnehin nicht gezählt. 89: Spielerwechsel 90: Spielerwechsel",
+  "bert_input_45_tokens": 399,
+  "bert_input_90_tokens": 382,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+2",
+      "text": "Im Anschluss an einem Majer-Ecke kriegen die Frankfurter den Ball nicht gut geklärt, am Ende wittert Jenz seine Chance - im Strafraum ist er mit seinem Flugkopfballversuch aber um Haaresbreite zu spät dran."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+2",
+      "text": "Tor für Frankfurt 90' +2 Tor für Frankfurt Ein lange Befreiungsschlag kommt postwendend zurück, Chandler leitet per Kopf weiter in den Lauf von Marmoush. Der sieht die Lücke und zimmert das Leder wuchtig in die Maschen zum 2:2."
+    },
+    {
+      "minute": "90+5",
+      "text": "Marmoush setzt sich zunächst gut gegen Lacroix durch, zündet dann den Turbo und wird wiederum vom Wolfsburger rechtzeitig abgegrätscht. Gute Szene von Marmoush und von Lacroix."
+    },
+    {
+      "minute": "90+8",
+      "text": "Arnolds Freistoßflanke von links wird abgefangen."
+    },
+    {
+      "minute": "90+10",
+      "text": "Wieder rettet Lacroix mit dem langen Bein, diesmal bei einer Flanke von rechts - Dina Ebimbe wäre da gewesen."
+    }
+  ]
+}

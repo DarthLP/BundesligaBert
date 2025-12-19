@@ -1,0 +1,163 @@
+{
+  "match_id": "freiburg-gegen-frankfurt-2019-bundesliga-4588753",
+  "season": "2019-20",
+  "metadata": {
+    "home": "SC Freiburg",
+    "away": "Eintracht Frankfurt",
+    "attendance": 24000,
+    "final_score": "1:0",
+    "matchday": 11,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": true,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 13,
+        "away": 17
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 79,
+        "away": 75
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 51,
+        "away": 49
+      }
+    }
+  },
+  "score_timeline": {
+    "77": [
+      1,
+      0
+    ]
+  },
+  "yellow_cards": {
+    "26": 1,
+    "74": 1,
+    "89": 1,
+    "90+10": 1,
+    "90+4": 1,
+    "90+6": 1,
+    "90+7": 1
+  },
+  "red_cards": {
+    "90+10": 1,
+    "90+4": 1,
+    "90+6": 1,
+    "90+7": 1
+  },
+  "yellow_red_cards": {
+    "45": 1
+  },
+  "substitutes": {
+    "46": 1,
+    "57": 1,
+    "67": 1,
+    "76": 1,
+    "83": 1,
+    "90+4": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": true,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 0,
+    "actual_45": 1,
+    "excess_45": 1,
+    "announced_90": 4,
+    "actual_90": 10,
+    "excess_90": 6,
+    "targets_raw": {
+      "announced_time_45": null,
+      "announced_time_90": 4,
+      "actual_played_45": 1,
+      "actual_played_90": 10
+    }
+  },
+  "features_regular": {
+    "goals_1st": 0,
+    "goals_2nd": 1,
+    "subs_1st": 0,
+    "subs_2nd": 7,
+    "cards_1st": 1,
+    "cards_2nd": 3,
+    "var_1st": 3,
+    "var_2nd": 1,
+    "injuries_1st": 0,
+    "injuries_2nd": 0,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 1,
+    "away_score_90": 0
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 1,
+    "ot_cards_45": 1,
+    "ot_cards_90": 4,
+    "ot_var_45": 0,
+    "ot_var_90": 1,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[19] Freiburg Eintracht Frankfurt 24000 Krank 14: Die Partie wogt hin und her. Frankfurt hat aktuell Feldvorteile - und nach fast 15 Minuten die beste Torchance vorzuweisen. 26: Fernandes begeht ein klares taktisches Foul, reißt Höfler von hinten ohne Chance auf den Ball um. Der Schweizer hebt schon den Daumen, als Brych sich nähert und ihm den Gelben Karton zeigt. 30: VAR-Prüfung 30' VAR-Prüfung Brych bekommt einen Hinweis aus Köln, er will sich die Szene selbst nochmal anschauen. 31: Entscheidung nach VAR-Prüfung 31' Entscheidung nach VAR-Prüfung Brych schaut zwei-, dreimal hin und spricht sich dann gegen einen Strafstoß aus - nachvollziehbare Entscheidung. 35: Aus der Ecke wird postwendend ein Konter! Hinteregger geht mit nach vorne, am Strafraum springt dem Österreicher der Ball etwas weg. Sein Schuss - letztlich mehr eine Grätsche - rauscht knapp über das Tor. Flekken war noch dran, doch die nachfolgende Ecke bringt nichts ein. 38: Paciencia hat links im Strafraum Platz, Lienhart will er mit einem Übersteiger narren. Der Portugiese kommt mit links sogar zum Schuss, verfehlt sein Ziel aber deutlich. 39: Kamada geht tief in der Freiburger Hälfte zu Boden, doch Brych winkt sofort ab. 41: Keine fünf Minuten mehr bis zur Pause. Kann sich eine der beiden Mannschaften noch einen Vorteil verschaffen? 43: Technisch anspruchsvoll behauptet Paciencia an der Strafraumkante die Kugel, wird bei seinem Schuss aber geblockt. 45: Beiden Mannschaften geht im letzten Drittel die nötige Präzision im Passspiel und auch die Durchschlagskraft abhanden. Es geht wohl mit 0:0 in die Pause.",
+  "bert_input_90": "[19] Freiburg Eintracht Frankfurt 24000 Stand 0:0 Krank 46: wechsel 57: wechsel 67: wechsel 74: Gute Konterchance für die Frankfurter, die Höler mit einem taktischen Foul an Höler unterbindet. Gelb. 75: Hinteregger übernimmt Verantwortung - aus großer Distanz haut er den Ball aber in die Mauer. 76: wechsel 77: tor (Freiburg) 79: Frankfurt drängt nach vorne, sucht nach einer Antwort - doch Höler spurtet mit zurück und klärt resolut zur Ecke. 80: Aus dieser entsteht Gefahr, weil sich Durm einmal mehr aus der zweiten Reihe ein Herz fasst. Flekken macht sich ganz lang und lenkt das Leder über den Querbalken. 81: Kwon hilft auf rechts mit und holt immerhin den nächsten Eckball für Freiburg raus. Das bringt auch Zeit. 82: Günter schnuppert am 2:0! Der Linksfuß zieht von rechts in die Mitte und schlenzt Richtung langes Eck. Rönnow fliegt und lenkt die Kugel um den Pfosten. 83: wechsel 84: Um ein Haar der Ausgleich! Sow bringt den Ball von links in die Mitte, wo Hinteregger eingelaufen ist. Der Österreicher kommt zum Kopfball, doch Flekken klärt mit einem starken Reflex - und dem Oberschenkel - zur Ecke. 86: Kohr probiert es einmal mehr aus der Distanz, doch diesem Versuch fehlt Wucht und Präzision. Flekken ist da. 89: Kostic geht auf der linken Seite klar mit der Hand zum Ball, doch sieht für die Szene nicht die Gelbe Karte. 90: Entscheidung nach VAR-Prüfung 90' Entscheidung nach VAR-Prüfung Brych sieht auf den TV-Bildern, dass Grifo sich den \"Übeltäter\" gepackt und ihn auch mit den Händen im Gesicht angefasst hatte. Dafür sieht der bereits ausgewechselte SCF-Profi auch noch die Rote Karte.",
+  "bert_input_45_tokens": 371,
+  "bert_input_90_tokens": 390,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+1",
+      "text": "Gelb-Rote Karte 45' +1 Gelb-Rote Karte Fernandes lässt an der Seitenlinie die nötige Cleverness vermissen. Schmid legt den Ball am Schweizer vorbei - eigentlich ins Aus. Doch Fernandes stellt dem Außenverteidiger trotzdem noch ein Bein. Brych reicht das für die zweite Gelbe Karte."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+2",
+      "text": "Hinteregger, jetzt nur noch vorne zu finden, kommt nach Kopfball-Ablage von Silva nochmal zum Schuss. Der Österreicher verfehlt knapp sein Ziel. Aufatmen beim SCF."
+    },
+    {
+      "minute": "90+3",
+      "text": "Dost verlängert den Ball per Kopf gefährlich in den Strafraum, doch Flekken ist aufmerksam und packt sich das Leder vor Silva."
+    },
+    {
+      "minute": "90+4",
+      "text": "Gelbe Karte 90' +4 Gelbe Karte Abraham geht zu heftig in den Zweikampf mit Höler und sieht dafür zurecht Gelb. Da schwang auch Frust mit."
+    },
+    {
+      "minute": "90+4",
+      "text": "Spielerwechsel 90' +4 Spielerwechsel Schlotterbeck soll den Sieg mit festhalten."
+    },
+    {
+      "minute": "90+6",
+      "text": "Rote Karte 90' +6 Rote Karte Was für eine Szene! Der Ball fliegt aus der Freiburger Hälfte und in Richtung Streich. Der Trainer lässt den Ball an die Bank rollen, Abraham kommt angesprintet und checkt Streich um. Eine höchst unsportliche und unnötige Aktion."
+    },
+    {
+      "minute": "90+7",
+      "text": "Gelb (Trainer) 90' +7 Gelb (Trainer) Co-Trainer Bruns hat in die Szene eingegriffen und sieht dafür von Brych Gelb."
+    },
+    {
+      "minute": "90+9",
+      "text": "VAR-Prüfung 90' +9 VAR-Prüfung Brych sieht sich die Szene nochmal an. Er hat einen Hinweis bekommen. Nach der Aktion von Abraham hatte es eine riesige Rudelbildung gegeben."
+    },
+    {
+      "minute": "90+10",
+      "text": "Rote Karte 90' +10 Rote Karte Streich will keine Diskussionen aufkommen lassen. Er schickt Grifo weg."
+    }
+  ]
+}

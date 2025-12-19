@@ -1,0 +1,187 @@
+{
+  "match_id": "hoffenheim-gegen-dortmund-2025-bundesliga-4937060",
+  "season": "2024-25",
+  "metadata": {
+    "home": "TSG Hoffenheim",
+    "away": "Borussia Dortmund",
+    "attendance": null,
+    "final_score": "2:3",
+    "matchday": 31,
+    "is_sold_out": false,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {}
+  },
+  "score_timeline": {
+    "20": [
+      0,
+      1
+    ],
+    "61": [
+      1,
+      1
+    ],
+    "74": [
+      1,
+      2
+    ],
+    "90+5": [
+      2,
+      3
+    ]
+  },
+  "yellow_cards": {
+    "42": 1,
+    "64": 1,
+    "90+12": 1,
+    "90+13": 1,
+    "90+7": 1,
+    "90+8": 1
+  },
+  "red_cards": {
+    "90+12": 1,
+    "90+13": 1,
+    "90+7": 1,
+    "90+8": 1
+  },
+  "yellow_red_cards": {},
+  "substitutes": {
+    "30": 1,
+    "68": 1,
+    "71": 1,
+    "77": 1,
+    "81": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": true,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 4,
+    "actual_45": 4,
+    "excess_45": 0,
+    "announced_90": 5,
+    "actual_90": 13,
+    "excess_90": 8,
+    "targets_raw": {
+      "announced_time_45": 4,
+      "announced_time_90": 5,
+      "actual_played_45": 3,
+      "actual_played_90": 13
+    }
+  },
+  "features_regular": {
+    "goals_1st": 1,
+    "goals_2nd": 2,
+    "subs_1st": 0,
+    "subs_2nd": 5,
+    "cards_1st": 1,
+    "cards_2nd": 1,
+    "var_1st": 3,
+    "var_2nd": 0,
+    "injuries_1st": 2,
+    "injuries_2nd": 1,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 1,
+    "away_score_90": 2
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 2,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 0,
+    "ot_cards_90": 5,
+    "ot_var_45": 0,
+    "ot_var_90": 2,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 1,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[23] TSG Hoffenheim Borussia Dortmund 2: verletzung 9: Erste Torannäherung vom BVB. Brandt zieht aus halbrechter Position in die Mitte und hält dann drauf. Baumann taucht ab und hält die Kugel fest. 19: Tückischer Ball für Baumann. Guirassy köpft die Kugel nach einer Flanke von Bensebaini aus spitzem Winkel direkt aufs Tor - kein Problem für den Schlussmann. 20: tor (Borussia Dortmund) 20: Tor für Dortmund Mit Verspätung darf Guirassy sein 17. Saisontor feiern. 21: tor (Borussia Dortmund) 22: tor 24: Fast sofort das 2:0. Arthur Chaves lässt den Rückpass nach dem Anstoß für Baumann liegen. Guirassy setzt stark nach, sodass Baumann die Kugel unkontrolliert klären muss. Über Umwege landet der Ball dann bei Gittens, der sofort aus rund 40 Metern abzieht, weil Baumann weit vor seinem Tor steht - links vorbei. 27: Touré versucht an der rechten Strafraumkante mit dem Rücken zum Tor den Ball zu halten, wird dort jedoch von Bensebaini getroffen. Das Foul findet nur knapp außerhalb des Sechzehners statt. 28: Geiger versucht den Freistoß direkt aufs Tor zu ziehen - deutlich drüber. 30: wechsel 42: Zu hohes Bein von Anton. Er trifft Hlozek im Gesicht. 42: Kläglich vergeben: Dortmund kontert über Can, der aber genau in die Füße von Arthur Chaves passt. 44: Baumann verhindert das 0:2. Süle erobert rechts neben der Seitenlinie den Ball von Nsoki und taucht nach einem Doppelpass mit Nmecha rechts im Sechzehner auf. Seinen Schuss aus rund 14 Metern entschärft Baumann. 45: Wieder ist Baumann gefordert. Gittens nutzt auf der linken Seite seinen Tempovorteil gegen Arthur Chaves und hält anschließend aus spitzem Winkel drauf - Baumann pariert auf Kosten eines Eckballs.",
+  "bert_input_90": "[23] TSG Hoffenheim Borussia Dortmund Stand 0:1 52: Ryerson kehrt nach der kurzen Behandlung wieder auf den Platz zurück. 61: tor (TSG Hoffenheim) 68: Spielerwechsel 68: Stach steckt auf die rechte Seite zu Kaderabek durch. Dessen Flanke segelt an Mit- und Gegenspieler vorbei. 70: Bülters weite Flanke aus dem linken Halbfeld nimmt Kramaric aus der Luft. Svensson blockt den Abschluss ins Toraus. Es geht trotzdem mit Ballbesitz für den BVB weiter, weil Kramaric im Abseits stand. 71: Spielerwechsel 73: Touré geht auf der rechten Seite ins Eins-gegen-eins mit Svensson, bleibt jedoch am Verteidiger hängen. 74: tor (Borussia Dortmund) 76: Kann Hoffenheim auch auf den Rückschlag antworten? Eine Viertelstunde bleibt den Hausherren noch. 77: Spielerwechsel 78: Tohumcu gleich im Mittelpunkt. Seine Eckball-Flanke köpft Svensson raus. 79: Der Ball liegt im Tor der Borussen. Tabakovics flache Flanke bugsiert Anton per Grätsche ins eigene Tor. Tabakovic stand zuvor aber deutlich im Abseits. 80: Wieder stehen zwei Joker im Mittelpunkt. Tabakovic köpft Tohumcus Freistoßflanke links vorbei. 81: Spielerwechsel 81: wechsel 82: Adeyemi tankt sich auf der linken Seite zur Grundlinie und flankt flach in die Mitte. Östigaard blockt. 84: Adeyemi lässt die Vorentscheidung liegen. Er verschafft sich halbrechts im Sechzehner mit einem kurzen Antritt gegen Östigaard Platz und hält im Anschluss drauf. Baumann hat das Leder im Nachfassen. 86: Dortmund spielt es kontrolliert runter. Hoffenheim kommt kaum in den gefährlichen Räumen an den Ball. 88: Hoffenheim versucht es vermehrt mit hohen Bällen, die die BVB-Dreierkette vor keine Probleme stellen.",
+  "bert_input_45_tokens": 396,
+  "bert_input_90_tokens": 392,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+1",
+      "text": "Die dritte Chance binnen weniger Augenblicke. Ryersons Eckball-Flanke landet über Guirassys Kopf und Nsokis Rücken an der Fünferkante, wo Nmecha zum Fallrückzieher ansetzt. Der Ball fliegt nur knapp rechts vorbei."
+    },
+    {
+      "minute": "45+3",
+      "text": "Nmecha schließt aus rund 25 Metern nochmals ab. Östigaard steht richtig und klärt per Kopf."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Tor für Hoffenheim 90' +1 Tor für Hoffenheim Der späte Ausgleich der Gastgeber. Nach einem Einwurf lässt Nsoki die Kugel zu Jurasek klatschen. Dessen Flanke von der linken Seite auf die Höhe des zweiten Pfostens köpft Kaderabek in die linke Ecke."
+    },
+    {
+      "minute": "90+2",
+      "text": "Wieder taucht Kaderabek im gegnerischen Sechzehner auf. Diesmal köpft er Nsokis Hereingabe drüber."
+    },
+    {
+      "minute": "90+4",
+      "text": "Can sucht Reyna in der Tiefe. Das Zuspiel ist zu lang und landet bei Baumann."
+    },
+    {
+      "minute": "90+5",
+      "text": "Tor für Dortmund 90' +5 Tor für Dortmund Der Lucky Punch! Chukwuemeka spielt einen Doppelpass mit Guirassy und taucht dann halblinks im Sechzehner auf. Dort prallt Chukwuemeka mit Baumann zusammen. Anschließend landet die Kugel bei Guirassy, der die Übersicht behält und nach rechts zu Anton weiterleitet. Der Innenverteidiger schießt aus 13 Metern ins verwaiste Tor. Baumann fasst sich nach dem Gegentor an den Kopf und bleibt liegen."
+    },
+    {
+      "minute": "90+6",
+      "text": "VAR-Prüfung 90' +6 VAR-Prüfung Der VAR greift ein. Es wird ein mögliches Foul von Chukwuemeka an Baumann überprüft. Eine knifflige Szene."
+    },
+    {
+      "minute": "90+7",
+      "text": "Gelbe Karte 90' +7 Gelbe Karte"
+    },
+    {
+      "minute": "90+7",
+      "text": "Baumann liegt nach dem Knietreffer von Chukwuemeka weiter am Boden und muss behandelt werden."
+    },
+    {
+      "minute": "90+8",
+      "text": "Gelbe Karte 90' +8 Gelbe Karte"
+    },
+    {
+      "minute": "90+8",
+      "text": "Entscheidung nach VAR-Prüfung 90' +8 Entscheidung nach VAR-Prüfung Schiedsrichter Brand schaut sich die Szene gar nicht erst selbst an und vertraut auf den VAR. Der Treffer zählt, obwohl Chukwuemeka den Ball wohl nicht traf. Angesichts der Bedeutung hätte Brand sich die Szene selbst anschauen müssen."
+    },
+    {
+      "minute": "90+9",
+      "text": "Baumann liegt immer noch im TSG-Strafraum. Er wirkt benommen."
+    },
+    {
+      "minute": "90+11",
+      "text": "Inzwischen steht Baumann wieder, der einen großen Beule an der Stirn hat."
+    },
+    {
+      "minute": "90+12",
+      "text": "Guirassy hilft hinten aus und haut Kaderabeks Flanke ins Seitenaus."
+    },
+    {
+      "minute": "90+12",
+      "text": "Gelbe Karte 90' +12 Gelbe Karte Stach meckert und sieht Gelb."
+    },
+    {
+      "minute": "90+13",
+      "text": "Rote Karte 90' +13 Rote Karte"
+    },
+    {
+      "minute": "90+13",
+      "text": "Gelbe Karte 90' +13 Gelbe Karte Für einen Schubser sieht Tohumcu Gelb."
+    }
+  ]
+}

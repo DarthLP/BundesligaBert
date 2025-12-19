@@ -1,0 +1,201 @@
+{
+  "match_id": "union-gegen-bochum-2024-bundesliga-4936909",
+  "season": "2024-25",
+  "metadata": {
+    "home": "1. FC Union Berlin",
+    "away": "VfL Bochum",
+    "attendance": 22012,
+    "final_score": "1:1",
+    "matchday": 14,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "xgoals": {
+        "title": "xGoals",
+        "home": 2.5,
+        "away": 0.97
+      },
+      "shots": {
+        "title": "Torschüsse",
+        "home": 22,
+        "away": 13
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 84,
+        "away": 61
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 70,
+        "away": 30
+      }
+    }
+  },
+  "score_timeline": {
+    "23": [
+      0,
+      1
+    ],
+    "33": [
+      1,
+      1
+    ]
+  },
+  "yellow_cards": {
+    "37": 1,
+    "50": 1,
+    "67": 1,
+    "90+1": 1
+  },
+  "red_cards": {
+    "13": 1
+  },
+  "yellow_red_cards": {},
+  "substitutes": {
+    "37": 1,
+    "56": 1,
+    "68": 1,
+    "74": 1,
+    "80": 1,
+    "88": 1,
+    "89": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 4,
+    "actual_45": 5,
+    "excess_45": 1,
+    "announced_90": 5,
+    "actual_90": 29,
+    "excess_90": 24,
+    "targets_raw": {
+      "announced_time_45": 4,
+      "announced_time_90": 5,
+      "actual_played_45": 5,
+      "actual_played_90": 29
+    }
+  },
+  "features_regular": {
+    "goals_1st": 2,
+    "goals_2nd": 0,
+    "subs_1st": 1,
+    "subs_2nd": 6,
+    "cards_1st": 2,
+    "cards_2nd": 2,
+    "var_1st": 0,
+    "var_2nd": 2,
+    "injuries_1st": 2,
+    "injuries_2nd": 0,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 1,
+    "away_score_90": 1
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 2,
+    "ot_cards_45": 0,
+    "ot_cards_90": 1,
+    "ot_var_45": 0,
+    "ot_var_90": 0,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 1,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[23] FC Union Berlin Bochum 22012 9: rote karte 13: tor 14: Schäfer muss nach dem harten Foul behandelt werden. 15: Für Schäfer geht es nach der Behandlung weiter. 16: Hollerbach kommt nicht mehr vernünftig hinter den Ball. Skovs Eckball-Flanke verlängert Doekhi von der Höhe des ersten Pfostens ins Zentrum. Hollerbach steht ein wenig zu weit vorne, sodass er die Kugel nur links nebens Tor bugsiert. 23: tor (Bochum) 25: Sissoko ist gleich auf der Gegenseite wieder gefordert. Er schießt kurz vor der Grundlinie Rothe an und holt somit einen Abstoß raus. 29: Die Gäste kontern über Passlack, der auf der rechten Seite viel Rasen vor sich hat. Anstatt einen der drei mitgelaufenen Mitspieler zu bedienen, versucht es der Rechtsverteidiger selbst. Sein Schuss blockt Diogo Leite an Passlacks Schienbein. Von diesem springt die Kugel ins Toraus. 31: Die Köpenicker bleiben gegen tiefstehende Gäste geduldig und lassen den Ball laufen. Es fehlen letztlich die zündenden Ideen, um Torgefahr auszustrahlen. 33: tor (Union Berlin) 34: Der Treffer hatte sich nicht wirklich angedeutet, weil Union sich trotz Überzahl schwertat. 37: Hollerbach geht nach einem Zweikampf mit Wittek kurz vor der gegnerischen Sechzehnerkante zu Boden. Martin Petersen entscheidet auf Schwalbe und zeigt dem Torschützen Gelb. 37: wechsel 38: Glück für Ordets. Er klärt Rothes Kopfball im hohen Bogen aufs eigene Tor. Drewes steht richtig und fängt das Leder locker aus der Luft. 42: Skov sucht erneut Hollerbach in zentraler Position. Diesmal geht Ordets dazwischen. 45: Hollerbach hat auf der rechten Seite viel Platz und flankt ins Zentrum. Ordets köpft die Hereingabe raus.",
+  "bert_input_90": "[23] FC Union Berlin Bochum 22012 Stand 1:1 47: VAR-Prüfung 47' VAR-Prüfung Der VAR greift ein. Referee Martin Petersen geht selbst an den Monitor raus. 49: Entscheidung nach VAR-Prüfung 49' Entscheidung nach VAR-Prüfung Nach langer Ansicht der Videobilder revidiert Martin Petersen seine Entscheidung. Kein Elfmeter für Union. 56: Spielerwechsel 58: Jordan fast sofort in Aktion. Doch Rothe flankt scharf vors Tor, während Jordan sich absetzt. 62: Immer wieder Skov. Diesmal segelt seine Flanke direkt ins Toraus. 67: Vogt sieht für ein Foul an Broschinski seine fünfte Gelbe Karte und fehlt somit nächste Woche. 68: Spielerwechsel 69: Skov lässt das 2:1 liegen. Wittek klärt Rothes Hereingabe genau in die Füße von Skov. Dieser verzieht aus halbrechter Position deutlich. 74: Spielerwechsel 78: Nächster Abschluss des VfL. Medic hämmert Beros Hereingabe volley übers Tor. 79: Hollerbach verpasst das 2:1. Jordan legt eine Flanke fein per Hackenpass auf Hollerbach ab, der nur Oermann anschießt. 80: Spielerwechsel 81: Bochum verteidigt enorm leidenschaftlich. Erkämpft sich der Revierklub einen Zähler? 82: Doekhi im letzten Moment. Er klärt Passlacks Flanke per Grätsche vor dem einschussbereiten Broschinski. 84: Vertessen versucht es per Volleyabnahme. Sein Schuss nach Skovs Flanke fliegt drüber. 86: Skov ist ein echter Aktivposten. Wieder wird eine Hereingabe von ihm geblockt. 87: Diogo Leite köpft eine Eckball-Flanke von Benes links nebens Tor. 88: Spielerwechsel 89: Spielerwechsel 90: Vertessen läuft von der linken Seite ins Zentrum, schießt aber nur Losilla an.",
+  "bert_input_45_tokens": 390,
+  "bert_input_90_tokens": 402,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+1",
+      "text": "Hollerbach verzieht. Schäfer leitet Vogts tiefes Zuspiel mit der Ferse zu Hollerbach weiter. Dieser zieht halbrechts im Sechzehner zum Fünfer, wird dann beim Abschluss noch entscheidend von Wittek gestört. Daher fliegt die Kugel rechts vorbei."
+    },
+    {
+      "minute": "45+3",
+      "text": "Skov zieht erneut in Robben-Manier von der rechten Seite ins Zentrum. Anschließend schlenzt der Däne vorbei."
+    },
+    {
+      "minute": "45+4",
+      "text": "Drewes ist nochmals gefordert. Schäfer verlagert mit einem Diagonalball auf die linke Seite zu Rothe. Der Außenverteidiger sprintet in den Sechzehner, scheitert aus 14 Metern dann an Drewes."
+    },
+    {
+      "minute": "45+5",
+      "text": "Nächster Abschluss der Hausherren. Skovs Zuspiel lässt Hollerbach zu Doekhi abtropfen. Der Innenverteidiger schießt aus gut 13 Metern knapp über den Querbalken."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Hollerbach köpft eine Flanke von Benes rechts vorbei."
+    },
+    {
+      "minute": "90+1",
+      "text": "Gelbe Karte 90' +1 Gelbe Karte Drewes sieht für Zeitspiel Gelb."
+    },
+    {
+      "minute": "90+2",
+      "text": "Bei der Ausführung eines Flachabstoßes streift ein geworfenes Feuerzeug aus dem Union-Block Drewes am Kopf. Der Torwart geht erst noch ein paar Schritte zurück und dann fast auf der Torlinie zu Boden. Er fasst sich an den Kopf. Die medizinische Abteilung eilt zur Behandlung auf den Platz."
+    },
+    {
+      "minute": "90+4",
+      "text": "Schiedsrichter Martin Petersen unterbricht daraufhin die Partie. Er läuft in die Katakomben."
+    },
+    {
+      "minute": "90+5",
+      "text": "Drewes verlässt derweil gestützt von zwei Betreuern das Feld."
+    },
+    {
+      "minute": "90+6",
+      "text": "Die Bochumer sind auch in die Kabine entschwunden, während die Köpenicker draußen bleiben."
+    },
+    {
+      "minute": "90+9",
+      "text": "Die Berliner begeben sich nun auch in die Kabine."
+    },
+    {
+      "minute": "90+12",
+      "text": "Das Schiedsrichter-Team berät mit beiden Mannschaften, ob es überhaupt weitergeht."
+    },
+    {
+      "minute": "90+15",
+      "text": "Bochum hat kein Wechselfenster mehr, sodass es nur weitergeht, wenn Drewes das Spiel fortsetzen kann."
+    },
+    {
+      "minute": "90+16",
+      "text": "Die Unioner kehren aufs Feld zurück."
+    },
+    {
+      "minute": "90+23",
+      "text": "Die Berliner begeben sich nun doch wieder in die Kabine."
+    },
+    {
+      "minute": "90+25",
+      "text": "Der VfL Bochum kehrt zurück. Allerdings mit Hofmann im Tor, da Drewes nicht weiterspielen kann und Bochums Wechselfenster ausgeschöpft sind."
+    },
+    {
+      "minute": "90+26",
+      "text": "Beide Mannschaften sind wieder auf dem Platz."
+    },
+    {
+      "minute": "90+29",
+      "text": "Es geht weiter, aber mit einem Nichtangriffspakt. Beide Teams lassen gemeinsam den Ball zirkulieren."
+    }
+  ]
+}

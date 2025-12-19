@@ -1,0 +1,161 @@
+{
+  "match_id": "stuttgart-gegen-mgladbach-2023-bundesliga-4781700",
+  "season": "2022-23",
+  "metadata": {
+    "home": "VfB Stuttgart",
+    "away": "Bor. Mönchengladbach",
+    "attendance": 47700,
+    "final_score": "2:1",
+    "matchday": 30,
+    "is_sold_out": true,
+    "is_ghost_game": false,
+    "is_corona_season": false,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 17,
+        "away": 9
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 82,
+        "away": 86
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 41,
+        "away": 59
+      }
+    }
+  },
+  "score_timeline": {
+    "22": [
+      1,
+      0
+    ],
+    "78": [
+      1,
+      1
+    ],
+    "83": [
+      2,
+      1
+    ]
+  },
+  "yellow_cards": {
+    "45+1": 1,
+    "61": 1,
+    "77": 1,
+    "85": 1
+  },
+  "red_cards": {
+    "82": 2
+  },
+  "yellow_red_cards": {},
+  "substitutes": {
+    "56": 1,
+    "73": 1,
+    "84": 1,
+    "87": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": false,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 2,
+    "actual_45": 2,
+    "excess_45": 0,
+    "announced_90": 3,
+    "actual_90": 9,
+    "excess_90": 6,
+    "targets_raw": {
+      "announced_time_45": null,
+      "announced_time_90": null,
+      "actual_played_45": 2,
+      "actual_played_90": 9
+    }
+  },
+  "features_regular": {
+    "goals_1st": 1,
+    "goals_2nd": 2,
+    "subs_1st": 0,
+    "subs_2nd": 7,
+    "cards_1st": 0,
+    "cards_2nd": 5,
+    "var_1st": 3,
+    "var_2nd": 2,
+    "injuries_1st": 0,
+    "injuries_2nd": 1,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 2,
+    "away_score_90": 1
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 1,
+    "ot_cards_90": 0,
+    "ot_var_45": 0,
+    "ot_var_90": 2,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[22] Stuttgart Bor. Mönchengladbach 47700 1: var 9: Millots Steckpassversuch landet über Umwege bei Silas, der 14 Meter vor dem Tor von Lainer gestört wird. Danach unterläuft Silas und Guirassy ein Missverständnis. Am Ende wird der Ball verstolpert. 14: Guirassy ist durch und alleine vor Omlin. Der Stürmer stand eigentlich deutlich im Abseits, ist deshalb offenbar erst einmal kurz selbst verwundert, dass das Spiel weiterläuft. Dann geht der Stuttgarter doch aufs Tor und wird dort von Omlin gefoult. Den Elfmeter gibt es aber nicht, weil dann doch die Fahne des Assistenten hochgeht. 17: Zagadou kommt an einen Sosa-Freistoß mit dem Kopf erst nicht hin. Weil die Gladbacher nicht final klären können, darf Sosa von links noch einmal zur Flanke ansetzen. Diesmal erwischt Zagadou die Kugel mit dem Kopf - setzt sie aber nur aufs Tordach. 22: tor (Stuttgart) 23: tor (Stuttgart) 24: tor 34: tor 37: Neuhaus nimmt links Plea mit, dessen flache Hereingabe Zagadou klärt - dabei wird es aber fast gefährlich. Die Klärung kommt nämlich nicht weit, dann blockt sie Neuhaus. Der Gladbacher kann den Ball aber nicht sichern, Zagadou blockt Neuhaus dann, sodass die Kugel ins Toraus trudelt. 40: Sosa legt rechts für Silas zurück. Der Abschluss wird aufs Tordach abgefälscht. 40: Die folgende Ecke kann Anton nicht aufs Tor drücken. Die Kugel trudelt rechts aus dem Strafraum. Der VfB bleibt in Ballbesitz und baut neu auf. 41: Millot kommt rechts leicht an Netz vorbei, den scharfen Pass vors Tor klärt Itakura mit der Hacke vor Guirassy. 42: Silas dribbelt sich mit viel Tempo in den Strafraum, lässt dort Lainer stehen und scheitert aus spitzem Winkel an Omlin. Der Abpraller landet an Lainers Stirn und prallt von da neben das Tor.",
+  "bert_input_90": "[22] Stuttgart Bor. Mönchengladbach 47700 Stand 1:0 46: Ohne Wechsel beginnt der zweite Durchgang. 48: Ngoumou startet den ersten Angriff der zweiten Hälfte Zagadou blockt. Bei der zweiten Gladbacher Welle findet Lainer mit seiner Hereingabe in der Mitte Hofmann, der etwas verzieht und links neben das Tor schießt. 51: tor 53: Guirassy bekommt einen Verband, Zagadou deutet an, es muss gewechselt werden. 56: wechsel 57: Tiago Tomas ersetzt Guirassy positionsgetreu, er geht ins Sturmzentrum. 58: Omlin kommt bei einem weiten Ball in Richtung Silas aus seinem Tor und klärt vor dem Angreifer per Fuß. 61: Lainer läuft im Mittelfeld gegen Endo durch und trifft den ballspielenden Stuttgarter in der Folge. 64: Den Eckball von Hofmann köpft Karazor ins Toraus - die nächste Ecke folgt. 71: Zagadou steigt nach der Ecke am Fünfer am höchsten und köpft erneut aufs Tordach. 73: wechsel 74: Coulibaly trifft links im Strafraum den Ball nicht, die folgende Hereingabe läuft auch nicht besser. 77: tor (Bor. Mönchengladbach) 78: tor (Bor. Mönchengladbach) 81: tor 82: tor (Stuttgart) 83: tor (Stuttgart) 83: tor (Stuttgart) 84: wechsel 85: gelbe karte 87: Spielerwechsel Farke wechselt weiter - es soll eine Schlussoffensive folgen. 88: Bei Gladbach spielen eigentlich nur noch Friedrich und Elvedi hinten. Fraulo steht zwar nominell links hinten, genau wie Herrmann auf der rechten Seite - sollen aber mehr nach vorne arbeiten. 89: Omlin fängt Sosas Flankenversuch locker ab. 89: Telalovic kommt in der Mitte an einen Chip von Friedrich nicht heran. 90: Das erscheint viel, aber Guirassy wurde unter anderem sehr lange auf dem Feld behandelt.",
+  "bert_input_45_tokens": 430,
+  "bert_input_90_tokens": 394,
+  "overtime_ticker_45": [
+    {
+      "minute": "45+1",
+      "text": "Gelbe Karte 45' +1 Gelbe Karte Weigl hält den Tempo aufnehmenden Guirassy am Arm - klassisches taktisches Foul."
+    },
+    {
+      "minute": "45+2",
+      "text": "Sosa sieht links, dass Guirassy an der Strafraumkante etwas Platz hat. Der Abschluss des Stürmers wird dann aber doch entscheidend abgefälscht und geht nicht aufs Tor."
+    }
+  ],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "Coulibaly ist rechts nach Karazors Zuspiel rechts durch und trifft dann aus spitzem Winkel den Pfosten. Dann geht aber die Fahne nach oben. Karazor kommt im Nachgang noch gegen Weigl zu Fall. Weiter geht es aber mit Freistoß Gladbach."
+    },
+    {
+      "minute": "90+3",
+      "text": "VAR-Prüfung 90' +3 VAR-Prüfung Es wird aber gecheckt."
+    },
+    {
+      "minute": "90+3",
+      "text": "Entscheidung nach VAR-Prüfung 90' +3 Entscheidung nach VAR-Prüfung Es wurde noch einmal auf einen möglichen Elfmeter (Weigl gegen Karazor) gecheckt. Das Schiedsrichterteam macht es aber ganz schnell und gibt das Spiel wieder frei."
+    },
+    {
+      "minute": "90+5",
+      "text": "Gladbach versucht es nochmal! Telalovic nimmt aus rund 20 Metern Maß und nagelt die Kugel aufs Tor. Bredlow wischt sie zur Ecke. Diese bringt dann nichts ein."
+    },
+    {
+      "minute": "90+7",
+      "text": "Coulibaly lässt doppelt die Entscheidung liegen! Zweimal scheitert der Stuttgarter rechts im Strafraum an Omlin."
+    },
+    {
+      "minute": "90+8",
+      "text": "Fraulos langer Schlag von links geht ganz durch - bis ins Toraus."
+    },
+    {
+      "minute": "90+9",
+      "text": "Es ist immer noch nicht Schluss in Stuttgart. Anton köpft nochmal eine Flanke heraus."
+    }
+  ]
+}

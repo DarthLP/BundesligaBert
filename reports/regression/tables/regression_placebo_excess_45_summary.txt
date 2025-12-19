@@ -7,9 +7,9 @@ If significant, this suggests the model might be flawed.
 
 Formula: excess_45 ~ ot_goals_45 + ot_subs_45 + ot_cards_45 + ot_var_45 + ot_injuries_45 + ot_disturbances_45 + pressure_add_45 + pressure_draw_45 + pressure_end_45
 
-Samples: 723
-Train R² Adjusted: 0.1659
-AIC: 987.1929
+Samples: 1269
+Train R² Adjusted: 0.2460
+AIC: 2684.8968
 
 ================================================================================
 Model Summary:
@@ -17,33 +17,33 @@ Model Summary:
 
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:              excess_45   R-squared:                       0.176
-Model:                            OLS   Adj. R-squared:                  0.166
-Method:                 Least Squares   F-statistic:                     16.96
-Date:                Thu, 18 Dec 2025   Prob (F-statistic):           1.68e-25
-Time:                        20:21:27   Log-Likelihood:                -483.60
-No. Observations:                 723   AIC:                             987.2
-Df Residuals:                     713   BIC:                             1033.
+Dep. Variable:              excess_45   R-squared:                       0.251
+Model:                            OLS   Adj. R-squared:                  0.246
+Method:                 Least Squares   F-statistic:                     46.96
+Date:                Fri, 19 Dec 2025   Prob (F-statistic):           3.24e-73
+Time:                        03:31:45   Log-Likelihood:                -1332.4
+No. Observations:                1269   AIC:                             2685.
+Df Residuals:                    1259   BIC:                             2736.
 Df Model:                           9                                         
 Covariance Type:            nonrobust                                         
 ======================================================================================
                          coef    std err          t      P>|t|      [0.025      0.975]
 --------------------------------------------------------------------------------------
-Intercept              0.2529      0.025      9.938      0.000       0.203       0.303
-ot_goals_45            0.2457      0.079      3.111      0.002       0.091       0.401
-ot_subs_45            -0.1095      0.191     -0.573      0.567      -0.485       0.266
-ot_cards_45            0.2573      0.057      4.552      0.000       0.146       0.368
-ot_var_45              0.5099      0.063      8.148      0.000       0.387       0.633
-ot_injuries_45         0.3323      0.129      2.567      0.010       0.078       0.586
-ot_disturbances_45     0.0302      0.276      0.110      0.913      -0.512       0.572
-pressure_add_45        0.0303      0.063      0.479      0.632      -0.094       0.154
-pressure_draw_45      -0.0197      0.045     -0.434      0.664      -0.109       0.069
-pressure_end_45       -0.0941      0.047     -1.984      0.048      -0.187      -0.001
+Intercept              0.2377      0.030      7.949      0.000       0.179       0.296
+ot_goals_45            0.3031      0.081      3.722      0.000       0.143       0.463
+ot_subs_45             1.3607      0.154      8.820      0.000       1.058       1.663
+ot_cards_45            0.1636      0.054      3.015      0.003       0.057       0.270
+ot_var_45              0.4460      0.055      8.147      0.000       0.339       0.553
+ot_injuries_45         0.8731      0.137      6.391      0.000       0.605       1.141
+ot_disturbances_45     1.6975      0.271      6.252      0.000       1.165       2.230
+pressure_add_45       -0.0363      0.068     -0.530      0.596      -0.171       0.098
+pressure_draw_45       0.0143      0.051      0.278      0.781      -0.087       0.115
+pressure_end_45       -0.0173      0.057     -0.301      0.764      -0.130       0.095
 ==============================================================================
-Omnibus:                      111.738   Durbin-Watson:                   1.895
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):              162.484
-Skew:                           1.122   Prob(JB):                     5.21e-36
-Kurtosis:                       3.597   Cond. No.                         16.5
+Omnibus:                     1432.487   Durbin-Watson:                   2.096
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           424182.410
+Skew:                           5.080   Prob(JB):                         0.00
+Kurtosis:                      91.989   Cond. No.                         14.9
 ==============================================================================
 
 Notes:
@@ -53,14 +53,14 @@ Notes:
 Pressure Coefficient Analysis:
 ================================================================================
 
-pressure_add_45 (Losing by 1) coefficient: 0.0303
-pressure_add_45 p-value: 0.6324
+pressure_add_45 (Losing by 1) coefficient: -0.0363
+pressure_add_45 p-value: 0.5960
 pressure_add_45 significant: No
 
-pressure_draw_45 (Draw) coefficient: -0.0197
-pressure_draw_45 p-value: 0.6641
+pressure_draw_45 (Draw) coefficient: 0.0143
+pressure_draw_45 p-value: 0.7812
 pressure_draw_45 significant: No
 
-pressure_end_45 (Defending Lead) coefficient: -0.0941
-pressure_end_45 p-value: 0.0477
-pressure_end_45 significant: Yes
+pressure_end_45 (Defending Lead) coefficient: -0.0173
+pressure_end_45 p-value: 0.7636
+pressure_end_45 significant: No

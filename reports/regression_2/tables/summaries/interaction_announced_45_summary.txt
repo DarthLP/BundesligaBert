@@ -8,7 +8,7 @@ Negative interaction coefficients indicate pressure has less impact in Rückrund
 
 INPUT:
 2024-25 match data with pressure variables and structural break flag (is_ruckrunde).
-Total samples: 125
+Total samples: 277
 
 MODEL FORMULA:
 announced_45 ~ goals_1st + subs_1st + cards_1st + var_1st + injuries_1st + disturbances_1st + pressure_add_45 + pressure_draw_45 + pressure_end_45 + is_ruckrunde:pressure_add_45 + is_ruckrunde:pressure_draw_45 + is_ruckrunde:pressure_end_45
@@ -19,36 +19,36 @@ Model Summary:
 
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:           announced_45   R-squared:                       0.381
-Model:                            OLS   Adj. R-squared:                  0.314
-Method:                 Least Squares   F-statistic:                     5.735
-Date:                Fri, 19 Dec 2025   Prob (F-statistic):           1.23e-07
-Time:                        02:03:42   Log-Likelihood:                -194.84
-No. Observations:                 125   AIC:                             415.7
-Df Residuals:                     112   BIC:                             452.5
+Dep. Variable:           announced_45   R-squared:                       0.394
+Model:                            OLS   Adj. R-squared:                  0.367
+Method:                 Least Squares   F-statistic:                     14.31
+Date:                Fri, 19 Dec 2025   Prob (F-statistic):           7.16e-23
+Time:                        03:32:03   Log-Likelihood:                -463.24
+No. Observations:                 277   AIC:                             952.5
+Df Residuals:                     264   BIC:                             999.6
 Df Model:                          12                                         
 Covariance Type:            nonrobust                                         
 =================================================================================================
                                     coef    std err          t      P>|t|      [0.025      0.975]
 -------------------------------------------------------------------------------------------------
-Intercept                         0.4904      0.309      1.587      0.115      -0.122       1.103
-goals_1st                         0.4213      0.118      3.570      0.001       0.188       0.655
-subs_1st                          0.1727      0.168      1.025      0.307      -0.161       0.506
-cards_1st                         0.0007      0.105      0.006      0.995      -0.207       0.208
-var_1st                           0.1846      0.097      1.897      0.060      -0.008       0.377
-injuries_1st                      0.5542      0.119      4.652      0.000       0.318       0.790
-disturbances_1st                  0.6233      0.293      2.131      0.035       0.044       1.203
-pressure_add_45                  -0.0325      0.628     -0.052      0.959      -1.277       1.212
-pressure_draw_45                  0.4634      0.323      1.433      0.155      -0.177       1.104
-pressure_end_45                  -0.0812      0.358     -0.227      0.821      -0.791       0.629
-is_ruckrunde:pressure_add_45      0.1660      0.747      0.222      0.825      -1.314       1.646
-is_ruckrunde:pressure_draw_45     0.1620      0.412      0.393      0.695      -0.655       0.979
-is_ruckrunde:pressure_end_45      0.5386      0.406      1.327      0.187      -0.266       1.343
+Intercept                         0.4557      0.227      2.012      0.045       0.010       0.902
+goals_1st                         0.3832      0.078      4.922      0.000       0.230       0.536
+subs_1st                          0.3686      0.102      3.616      0.000       0.168       0.569
+cards_1st                         0.0854      0.062      1.387      0.166      -0.036       0.207
+var_1st                           0.1725      0.064      2.709      0.007       0.047       0.298
+injuries_1st                      0.6832      0.086      7.923      0.000       0.513       0.853
+disturbances_1st                  0.6009      0.224      2.689      0.008       0.161       1.041
+pressure_add_45                   0.3957      0.391      1.013      0.312      -0.373       1.165
+pressure_draw_45                  0.2612      0.267      0.979      0.329      -0.264       0.786
+pressure_end_45                  -0.2835      0.329     -0.861      0.390      -0.932       0.365
+is_ruckrunde:pressure_add_45     -0.0597      0.481     -0.124      0.901      -1.008       0.888
+is_ruckrunde:pressure_draw_45     0.3305      0.319      1.034      0.302      -0.299       0.960
+is_ruckrunde:pressure_end_45      0.6222      0.375      1.659      0.098      -0.116       1.361
 ==============================================================================
-Omnibus:                       15.138   Durbin-Watson:                   2.153
-Prob(Omnibus):                  0.001   Jarque-Bera (JB):               17.037
-Skew:                           0.780   Prob(JB):                     0.000200
-Kurtosis:                       3.915   Cond. No.                         23.0
+Omnibus:                       15.933   Durbin-Watson:                   2.020
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               16.998
+Skew:                           0.574   Prob(JB):                     0.000204
+Kurtosis:                       3.393   Cond. No.                         20.6
 ==============================================================================
 
 Notes:
@@ -58,15 +58,15 @@ Notes:
 Interaction Term Coefficients:
 ================================================================================
 
-is_ruckrunde:pressure_add_45: 0.1660 (p=0.8245)
+is_ruckrunde:pressure_add_45: -0.0597 (p=0.9015)
+  Significant: No
+  Interpretation: Negative coefficient indicates pressure has less impact in Rückrunde
+
+is_ruckrunde:pressure_draw_45: 0.3305 (p=0.3019)
   Significant: No
   Interpretation: Positive coefficient indicates pressure has more impact in Rückrunde
 
-is_ruckrunde:pressure_draw_45: 0.1620 (p=0.6951)
-  Significant: No
-  Interpretation: Positive coefficient indicates pressure has more impact in Rückrunde
-
-is_ruckrunde:pressure_end_45: 0.5386 (p=0.1873)
+is_ruckrunde:pressure_end_45: 0.6222 (p=0.0984)
   Significant: No
   Interpretation: Positive coefficient indicates pressure has more impact in Rückrunde
 
@@ -82,7 +82,7 @@ This model includes is_ruckrunde as a main effect only (no interactions).
 
 INPUT:
 2024-25 match data with pressure variables and structural break flag (is_ruckrunde).
-Total samples: 125
+Total samples: 277
 
 MODEL FORMULA:
 announced_45 ~ goals_1st + subs_1st + cards_1st + var_1st + injuries_1st + disturbances_1st + pressure_add_45 + pressure_draw_45 + pressure_end_45 + is_ruckrunde
@@ -93,34 +93,34 @@ Model Summary:
 
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:           announced_45   R-squared:                       0.372
-Model:                            OLS   Adj. R-squared:                  0.317
-Method:                 Least Squares   F-statistic:                     6.746
-Date:                Fri, 19 Dec 2025   Prob (F-statistic):           3.50e-08
-Time:                        02:03:42   Log-Likelihood:                -195.73
-No. Observations:                 125   AIC:                             413.5
-Df Residuals:                     114   BIC:                             444.6
+Dep. Variable:           announced_45   R-squared:                       0.391
+Model:                            OLS   Adj. R-squared:                  0.368
+Method:                 Least Squares   F-statistic:                     17.06
+Date:                Fri, 19 Dec 2025   Prob (F-statistic):           8.31e-24
+Time:                        03:32:03   Log-Likelihood:                -464.01
+No. Observations:                 277   AIC:                             950.0
+Df Residuals:                     266   BIC:                             989.9
 Df Model:                          10                                         
 Covariance Type:            nonrobust                                         
 ====================================================================================
                        coef    std err          t      P>|t|      [0.025      0.975]
 ------------------------------------------------------------------------------------
-Intercept            0.4264      0.347      1.228      0.222      -0.261       1.114
-goals_1st            0.4253      0.116      3.654      0.000       0.195       0.656
-subs_1st             0.1433      0.165      0.869      0.387      -0.183       0.470
-cards_1st           -0.0025      0.103     -0.024      0.981      -0.207       0.202
-var_1st              0.1770      0.097      1.828      0.070      -0.015       0.369
-injuries_1st         0.5706      0.118      4.817      0.000       0.336       0.805
-disturbances_1st     0.5906      0.291      2.028      0.045       0.014       1.168
-pressure_add_45      0.0482      0.399      0.121      0.904      -0.742       0.838
-pressure_draw_45     0.5482      0.285      1.926      0.057      -0.016       1.112
-pressure_end_45      0.2472      0.247      1.001      0.319      -0.242       0.736
-is_ruckrunde         0.1381      0.231      0.597      0.551      -0.320       0.596
+Intercept            0.3336      0.246      1.357      0.176      -0.151       0.818
+goals_1st            0.3918      0.078      5.049      0.000       0.239       0.545
+subs_1st             0.3558      0.101      3.510      0.001       0.156       0.555
+cards_1st            0.0860      0.061      1.406      0.161      -0.034       0.207
+var_1st              0.1678      0.063      2.643      0.009       0.043       0.293
+injuries_1st         0.6886      0.086      8.002      0.000       0.519       0.858
+disturbances_1st     0.5820      0.223      2.615      0.009       0.144       1.020
+pressure_add_45      0.3298      0.293      1.124      0.262      -0.248       0.907
+pressure_draw_45     0.4183      0.229      1.826      0.069      -0.033       0.869
+pressure_end_45      0.0747      0.226      0.331      0.741      -0.370       0.519
+is_ruckrunde         0.2496      0.163      1.534      0.126      -0.071       0.570
 ==============================================================================
-Omnibus:                       16.206   Durbin-Watson:                   2.175
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):               18.999
-Skew:                           0.792   Prob(JB):                     7.49e-05
-Kurtosis:                       4.068   Cond. No.                         11.8
+Omnibus:                       15.771   Durbin-Watson:                   2.018
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               16.851
+Skew:                           0.560   Prob(JB):                     0.000219
+Kurtosis:                       3.451   Cond. No.                         13.7
 ==============================================================================
 
 Notes:
@@ -130,7 +130,7 @@ Notes:
 Main Effect Coefficient (is_ruckrunde):
 ================================================================================
 
-is_ruckrunde: 0.1381 (p=0.5514)
+is_ruckrunde: 0.2496 (p=0.1263)
   Significant: No
   Interpretation: Positive coefficient indicates higher announced_45 in Rückrunde compared to Hinrunde
 

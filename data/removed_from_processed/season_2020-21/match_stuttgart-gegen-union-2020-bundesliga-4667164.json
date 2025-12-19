@@ -1,0 +1,150 @@
+{
+  "match_id": "stuttgart-gegen-union-2020-bundesliga-4667164",
+  "season": "2020-21",
+  "metadata": {
+    "home": "VfB Stuttgart",
+    "away": "1. FC Union Berlin",
+    "attendance": null,
+    "final_score": "2:2",
+    "matchday": 12,
+    "is_sold_out": false,
+    "is_ghost_game": null,
+    "is_corona_season": true,
+    "stats": {
+      "shots": {
+        "title": "Torschüsse",
+        "home": 14,
+        "away": 15
+      },
+      "pass_accuracy": {
+        "title": "angekommene Pässe",
+        "home": 78,
+        "away": 66
+      },
+      "possession": {
+        "title": "Ballbesitz",
+        "home": 62,
+        "away": 38
+      }
+    }
+  },
+  "score_timeline": {
+    "4": [
+      0,
+      1
+    ],
+    "77": [
+      0,
+      2
+    ],
+    "85": [
+      1,
+      2
+    ],
+    "90": [
+      2,
+      2
+    ]
+  },
+  "yellow_cards": {
+    "4": 1,
+    "31": 1,
+    "35": 1,
+    "55": 1,
+    "56": 1,
+    "90+3": 1
+  },
+  "red_cards": {},
+  "yellow_red_cards": {},
+  "substitutes": {
+    "46": 1,
+    "53": 1,
+    "61": 1,
+    "68": 1,
+    "80": 1,
+    "87": 1
+  },
+  "flags": {
+    "is_inferred_zero_45": true,
+    "is_inferred_zero_90": false,
+    "target_missing_45": false,
+    "target_missing_90": false,
+    "is_imputed_actual_45": false,
+    "is_imputed_actual_90": false,
+    "is_imputed_announced_45": false,
+    "is_imputed_announced_90": false,
+    "missing_cutoff_markers": null,
+    "score_timeline_valid": true
+  },
+  "targets": {
+    "announced_45": 0,
+    "actual_45": 0,
+    "excess_45": 0,
+    "announced_90": 1,
+    "actual_90": 6,
+    "excess_90": 5,
+    "targets_raw": {
+      "announced_time_45": null,
+      "announced_time_90": null,
+      "actual_played_45": null,
+      "actual_played_90": 6
+    }
+  },
+  "features_regular": {
+    "goals_1st": 1,
+    "goals_2nd": 3,
+    "subs_1st": 0,
+    "subs_2nd": 6,
+    "cards_1st": 3,
+    "cards_2nd": 2,
+    "var_1st": 0,
+    "var_2nd": 1,
+    "injuries_1st": 0,
+    "injuries_2nd": 0,
+    "disturbances_1st": 0,
+    "disturbances_2nd": 0,
+    "home_score_90": 1,
+    "away_score_90": 2
+  },
+  "features_overtime": {
+    "ot_goals_45": 0,
+    "ot_goals_90": 0,
+    "ot_subs_45": 0,
+    "ot_subs_90": 0,
+    "ot_cards_45": 0,
+    "ot_cards_90": 1,
+    "ot_var_45": 0,
+    "ot_var_90": 2,
+    "ot_injuries_45": 0,
+    "ot_injuries_90": 0,
+    "ot_disturbances_45": 0,
+    "ot_disturbances_90": 0
+  },
+  "bert_input_45": "[20] Stuttgart FC Union Berlin Krank 4: tor (Union Berlin) 4: Tor für Union Die fällige Freistoßflanke schlenzt Trimmel hoch nach halblinks an den Fünfmeterraum. Dort steigt Friedrich am höchsten und köpft akkurat ins rechte Toreck ein. 12: Das war knapp! Klimowicz kommt nach flacher Rückgabe von Sosa an den Strafraumrand in Bedrängnis zum Abschluss. Luthe wehrt zur Seite, wo Lenz vor Gonzalez ins Toraus klärt. 16: Wieder die Schwaben: Nach Hereingabe von Förster kommt Gonzalez in arger Bedrängnis von Friedrich zur Direktabnahme, die einige Meter rechts neben dem Tor ins Aus rauscht. 18: Nun wieder die Eisernen: Becker dringt links mit Tempo in den Strafraum ein und gibt nahe der Torauslinie nach innen. Kobel klärt im Fünfmeterraum. 23: Gute Gelegenheit. Teuchert zieht aus zentraler Position vor dem Sechzehner mit rechts ab. Kobel wehrt den Schuss Richtung linkes Toreck mit Mühe zur Seite ab. Becker will den Nachschuss aus sehr spitzem Winkel nehmen, wird aber geblockt. 35: Nun kommt Prömel einen Schritt zu spät gegen Gonzalez und bringt diesen recht ruppig per Beinstellen zu Fall. 39: Gonzalez setzt zum Solo an, steigt dann jedoch vor dem Strafraum der Berliner Prömel unbeabsichtigt in die Beine. Freistoß Union. 41: Drei-auf-Zwei-Situation für die Gäste: Kempf klärt schon im Strafraum per Grätsche riskant gegen Prömel, der abschließen will. So kommt der Ball allerdings zu Becker, der mit rechts sofort abzieht - aber knapp über die Querlatte zielt! 43: Union weiter mit mehr Zug zum Tor. Nun schießt Teuchert aus 18 Metern mit rechts rund eineinhalb Meter über das rechte obere Toreck.",
+  "bert_input_90": "[20] Stuttgart FC Union Berlin Stand 0:1 Krank 46: wechsel 48: Aluminiumtreffer! Gonzalez wird halblinks im Strafraum mit Gefühl von Didavi hoch angespielt und setzt zum spektakulären Seitfallzieher an. Der Ball prallt von der Querlatte des rechten Torecks wieder zurück. Glück für Union. 53: wechsel 59: Erstmals wird Union nach der Pause ein wenig gefährlich. Becker hat rechts Platz, seine Hereingabe wird im Zentrum ins Toraus entschärft. 61: Spielerwechsel 64: Dicke Chance nach einem dicken Berliner Fehler! Luthe spielt einen viel zu riskanten Pass vor den Strafraum, den Castro abfängt und dann den Ball im Zentrum des Sechzehners wiederbekommt. Erst blockt Friedrich gerade noch, den zweiten Versuch des VfB-Kapitäns entschärft dann Luthe im Verbund mit Knoche vor der Torlinie. 68: Spielerwechsel 71: Union stemmt sich gegen die nun bissigeren und offensivfreudigeren Hausherren. Hält das Bollwerk der Köpenicker? 75: Im Moment hat der Drang des VfB ein wenig nachgelassen. 77: tor (Union Berlin) 80: Kann der VfB noch zurückkommen? 80: wechsel 81: Nun ist es nach Freistoßflanke von Trimmel von rechts wieder Friedrich, dessen Kopfballaufsetzer diesmal allerdings rechts rund zwei Meter vorbeigeht. 85: tor (Stuttgart) 87: Spielerwechsel Letzter Wechsel bei Union. 90: Der Ausgleich? Kalajdzic nimmt eine hohe Flanke im Strafraum mit der Brust an und trifft dann gekonnt per Dropkick ins rechte Toreck. Stegemann hat aber ein Handspiel bei der Annahme erkannt. 90: Tor für Stuttgart Wie auf den Video-Bildern zu sehen, hat Kalajdzic die Flanke mit der Brust angenommen und anschließend den Ball trocken rechts im Tor untergebracht.",
+  "bert_input_45_tokens": 397,
+  "bert_input_90_tokens": 397,
+  "overtime_ticker_45": [],
+  "overtime_ticker_90": [
+    {
+      "minute": "90+1",
+      "text": "VAR-Prüfung 90' +1 VAR-Prüfung Der VAR überprüft, ob ein Handspiel vorlag. Auf den Video-Bildern ist kein Handspiel zu erkennen."
+    },
+    {
+      "minute": "90+2",
+      "text": "Entscheidung nach VAR-Prüfung 90' +2 Entscheidung nach VAR-Prüfung Das Tor zählt nach erstaunlich langem Video-Studium."
+    },
+    {
+      "minute": "90+3",
+      "text": "Plötzlich noch eine Riesenchance zum 3:2 für Union! Gogia kommt nach Flanke von links frei im Strafraum zum Abschluss, doch Kobel hält und sichert den Ball im Nachfassen."
+    },
+    {
+      "minute": "90+3",
+      "text": "Gelbe Karte 90' +3 Gelbe Karte Taktisches Foul an Gonzalez."
+    },
+    {
+      "minute": "90+6",
+      "text": "Es gibt Freistoß für Union im eigenen Strafraum nach Foul von Didavi an Gießelmann."
+    }
+  ]
+}
