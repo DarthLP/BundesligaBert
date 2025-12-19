@@ -1,0 +1,56 @@
+================================================================================
+Historical Excess Model (45 minutes - Excess Time)
+================================================================================
+
+PURPOSE:
+Refitting historical models on seasons 2018-19 through 2023-24 for comparison with previous results.
+
+INPUT DATA:
+Historical processed match data from data/processed/season_*/
+Filtered according to exclusion criteria: target_missing_45 == False, is_imputed_actual_45 == False, is_imputed_announced_45 == False, excess_45 not null
+Total samples: 469
+
+MODEL FORMULA:
+excess_45 ~ ot_goals_45 + ot_subs_45 + ot_cards_45 + ot_var_45 + ot_injuries_45 + ot_disturbances_45 + pressure_add_45 + pressure_draw_45 + pressure_end_45
+
+RESULTS:
+Train R² Adjusted: 0.1686
+AIC: 712.5744
+
+================================================================================
+Model Summary:
+================================================================================
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:              excess_45   R-squared:                       0.185
+Model:                            OLS   Adj. R-squared:                  0.169
+Method:                 Least Squares   F-statistic:                     11.54
+Date:                Fri, 19 Dec 2025   Prob (F-statistic):           2.17e-16
+Time:                        02:03:42   Log-Likelihood:                -346.29
+No. Observations:                 469   AIC:                             712.6
+Df Residuals:                     459   BIC:                             754.1
+Df Model:                           9                                         
+Covariance Type:            nonrobust                                         
+======================================================================================
+                         coef    std err          t      P>|t|      [0.025      0.975]
+--------------------------------------------------------------------------------------
+Intercept              0.2928      0.031      9.298      0.000       0.231       0.355
+ot_goals_45            0.3183      0.106      3.016      0.003       0.111       0.526
+ot_subs_45            -0.1315      0.207     -0.634      0.526      -0.539       0.276
+ot_cards_45            0.2972      0.070      4.237      0.000       0.159       0.435
+ot_var_45              0.4754      0.077      6.210      0.000       0.325       0.626
+ot_injuries_45         0.3010      0.140      2.150      0.032       0.026       0.576
+ot_disturbances_45     0.1134      0.366      0.310      0.757      -0.605       0.832
+pressure_add_45        0.0709      0.091      0.783      0.434      -0.107       0.249
+pressure_draw_45      -0.0206      0.066     -0.311      0.756      -0.151       0.110
+pressure_end_45       -0.0967      0.072     -1.352      0.177      -0.237       0.044
+==============================================================================
+Omnibus:                       49.063   Durbin-Watson:                   1.951
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               62.396
+Skew:                           0.889   Prob(JB):                     2.82e-14
+Kurtosis:                       3.177   Cond. No.                         16.1
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.

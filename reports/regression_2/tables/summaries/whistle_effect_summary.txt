@@ -1,0 +1,33 @@
+================================================================================
+Whistle Effect Test Results
+================================================================================
+
+PURPOSE:
+Test for 'Whistle Effect' - hypothesis that transparency prevents referees from adding
+'secret' time, so Excess Time should drop in Rückrunde.
+
+INPUT:
+- OLS excess model predictions on 2024-25 data
+- Split by Hinrunde (matchday < 18) and Rückrunde (matchday >= 18)
+- Exclusion filters applied: target_missing == False, is_imputed_actual == False, is_imputed_announced == False
+
+METHODOLOGY:
+1. Calibrate bias using Hinrunde: Mean(Actual_Excess - OLS_Predicted)
+2. Correct Rückrunde predictions by adding calibration bias
+3. Test residuals with one-sample t-test against 0
+
+INTERPRETATION:
+Significant negative mean implies Whistle Effect exists (Actual < Predicted after correction).
+
+RESULTS:
+
+Excess Time (45 minutes):
+--------------------------------------------------------------------------------
+ half calibration_bias residual_mean residual_std  t_stat p_value ci_lower ci_upper  n_obs  n_hinrunde  n_ruckrunde
+   45           0.0001       -0.0380       0.4919 -0.5411  0.5910  -0.1793   0.1033     49          40           49
+
+Excess Time (90 minutes):
+--------------------------------------------------------------------------------
+ half calibration_bias residual_mean residual_std  t_stat p_value ci_lower ci_upper  n_obs  n_hinrunde  n_ruckrunde
+   90          -0.1094       -0.1048       0.5561 -1.2500  0.2180  -0.2739   0.0643     44          44           44
+

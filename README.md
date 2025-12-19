@@ -51,7 +51,9 @@ BundesligaBert/
 │   │   └── export_for_kaggle.py      # Export processed data to JSON for Kaggle
 │   ├── analysis/
 │   │   ├── descriptive_stats.py      # Descriptive statistics and visualizations
-│   │   └── diagnose_negative_correlation.py  # Diagnostic analysis
+│   │   ├── diagnose_negative_correlation.py  # Diagnostic analysis
+│   │   ├── regression_analysis.py    # Econometric regression analysis
+│   │   └── structural_break_analysis.py  # Structural break analysis (Board/Whistle Effects)
 │   ├── features/
 │   │   └── preprocessing.py          # Additional text preprocessing (if needed)
 │   ├── models/
@@ -67,10 +69,30 @@ BundesligaBert/
 │   ├── processed_data/
 │   │   ├── figures/            # Generated plots (19 figures from descriptive_stats.py)
 │   │   └── tables/             # Generated tables and reports
-│   └── regression/
-│       ├── tables/             # Regression model summaries and residuals
-│       ├── figures/            # Regression visualizations
-│       └── baseline_comparison_data.json  # Comparison metrics JSON
+│   ├── regression/
+│   │   ├── tables/             # Regression model summaries and residuals
+│   │   ├── figures/            # Regression visualizations
+│   │   └── baseline_comparison_data.json  # Comparison metrics JSON
+│   └── regression_2/
+│       ├── tables/             # Structural break analysis outputs
+│       │   ├── historical_*_summary.txt  # Historical model summaries
+│       │   ├── historical_residuals_*.csv  # Historical model residuals
+│       │   ├── baseline_comparison_*.csv  # BERT vs OLS comparison metrics
+│       │   ├── csv/                # CSV data files
+│       │   │   ├── historical_residuals_*.csv
+│       │   │   ├── baseline_comparison_*.csv
+│       │   │   ├── board_effect_*.csv
+│       │   │   ├── whistle_effect_*.csv
+│       │   │   └── main_effect_*.csv  # Main effect regression coefficients
+│       │   └── summaries/          # Summary text files
+│       │       ├── historical_*_summary.txt
+│       │       ├── baseline_comparison_*.txt
+│       │       ├── board_effect_summary.txt
+│       │       ├── whistle_effect_summary.txt
+│       │       └── interaction_*.txt  # Contains both interaction and main effect regressions
+│       ├── historical_models_coefficients.json  # Historical model coefficients
+│       ├── baseline_comparison_2024_25.json  # Comparison metrics JSON
+│       └── README.txt  # Structural break analysis documentation
 ├── environment.yml             # Conda environment specification
 └── README.md                  # This file
 ```
@@ -518,10 +540,23 @@ python -m src.models.train_bert
 - **Force Majeure Filter**: Automatically excludes matches with excess_90 > 4.0 minutes (structural breaks, not bias)
 - Four-set split: train, validation, test_history, test_future
 - Automatic device detection (MPS > CUDA > CPU)
-- Early stopping with patience
 - Comprehensive diagnostic plots (10 plots)
 - Saves predictions, metrics, and training logs
-- **Force Majeure Filter**: Automatically excludes matches with excess_90 > 4.0 minutes (structural breaks, not bias)
+
+**Training Strategy (The "Safety Net" Approach):**
+- **Extended Horizon**: 15 epochs (increased from ~4 epochs) to force full exploration of loss landscape
+- **Forced Exploration**: No EarlyStoppingCallback (removed to allow full exploration)
+- **Safety Net**: `load_best_model_at_end=True` with `metric_for_best_model="rmse"` ensures the system automatically reverts to the checkpoint with lowest Validation RMSE, even if later epochs overfit
+- **Result**: Benefits of long training with zero risk of using overfitted weights
+
+**Mathematical Transformations (Log-Space):**
+- **Training**: Target variable (stoppage time) is positively skewed (mostly 1-4 mins, rarely 10+). Model trains on log-transformed targets: $y' = \log(1 + y)$
+- **Inference**: Inverse transformation applied in prediction pipeline: $\hat{y} = \exp(\hat{y}') - 1$
+- **Constraint**: `np.maximum(0, ...)` ensures no negative time predictions (physically impossible)
+
+**Data Pipeline Robustness:**
+- **Lazy Evaluation Fix**: Switched from direct dictionary access to explicit `list()` conversion for metadata (match_id, season) to fix KeyError caused by Hugging Face library's memory mapping when switching between PyTorch tensors and CPU strings
+- **Signature Fix**: `RegressionTrainer` accepts `num_items_in_batch=None` parameter to be compatible with latest transformers library update
 
 **Output:**
 - Model checkpoints: `models/checkpoints/bert_unified/`
@@ -551,6 +586,12 @@ python -m src.models.train_bert
 - Evaluates and generates predictions for ALL splits (train, val, test_history, test_future)
 - All 10 diagnostic plots from `train_bert.py`
 - Comprehensive outputs including aggregated statistics for local comparison
+
+**Training Strategy (Same as `train_bert.py`):**
+- **Extended Horizon**: 15 epochs with forced exploration (no early stopping)
+- **Safety Net**: `load_best_model_at_end=True` with `metric_for_best_model="rmse"`
+- **Log-Space Transformation**: Trains on $\log(1 + y)$, applies $\exp(\hat{y}') - 1$ in inference
+- **Data Pipeline Robustness**: Uses `list()` conversion for metadata, `RegressionTrainer` with `num_items_in_batch` parameter
 
 **Outputs** (saved to `/kaggle/working/`):
 - Predictions CSV: `bert_predictions_train.csv`, `bert_predictions_val.csv`, `bert_predictions_history.csv`, `bert_predictions_future.csv`
@@ -604,6 +645,74 @@ python src/analysis/diagnose_negative_correlation.py
 - Analyzes extreme cases (high events, low announced time)
 
 **Output:** Console output with diagnostic analysis
+
+### `src/analysis/structural_break_analysis.py`
+
+**Purpose:** Rigorous econometric analysis to detect structural breaks in referee behavior during the 2024/25 Bundesliga season around the policy change date (January 1st, 2025). Compares BERT predictions against OLS baselines and tests for "Board Effects" (Announced Time inflation) and "Whistle Effects" (Excess Time constraining).
+
+**Usage:**
+```bash
+# Run from project root
+python src/analysis/structural_break_analysis.py
+
+# Or as module
+python -m src.analysis.structural_break_analysis
+```
+
+**Key Features:**
+- **Module 1: Data Ingestion & The Golden Join**
+  - Loads BERT predictions from `reports/Bert/tables/bert_predictions_future.csv`
+  - Constructs metadata DataFrame from 2024-25 season match files
+  - Engineers pressure variables for both 45 and 90 minutes
+  - Creates structural break flag (`is_ruckrunde`: matchday >= 18)
+  - Merges BERT predictions with match metadata (handles long→wide format conversion)
+
+- **Module 2: Exclusion Logic**
+  - Filters for announced time analysis (excludes `target_missing_45/90 == True`)
+  - Filters for excess time analysis (excludes imputed values and missing targets)
+
+- **Module 3: OLS Baseline Comparison**
+  - Refits 4 historical models on seasons 2018-19 to 2023-24:
+    * Baseline 45 (announced_45)
+    * Baseline 90 (announced_90)
+    * Excess 45 (excess_45)
+    * Excess 90 (excess_90)
+  - Predicts on 2024-25 data using "season proxy trick" (2024-25 → 2023-24 coefficient)
+  - Computes comparative metrics (R² and RMSE) for BERT vs OLS
+  - Splits analysis by half (45 vs 90) and period (Hinrunde vs Rückrunde)
+
+- **Module 4: Calibration & Deviation Tests (Structural Break)**
+  - **Board Effect Test**: Tests if referees inflate Announced Time in Rückrunde
+    - Calibrates bias using Hinrunde: Mean(Actual_Announced - Predicted)
+    - Corrects Rückrunde predictions by adding calibration bias
+    - Performs one-sample t-test on residuals
+    - Tests for both BERT and Baseline OLS models (both halves)
+  - **Whistle Effect Test**: Tests if Excess Time drops in Rückrunde
+    - Uses OLS excess models (BERT doesn't predict excess)
+    - Same calibration approach as Board Effect
+    - Significant negative mean implies Whistle Effect (Actual < Predicted)
+
+- **Module 5: Interaction Regression (Pressure Sensitivity)**
+  - **Interaction models**: Tests if pressure sensitivity changed after structural break
+    - Uses interaction terms: `is_ruckrunde:pressure_add`, `is_ruckrunde:pressure_draw`, `is_ruckrunde:pressure_end`
+    - Negative interaction coefficients indicate pressure has less impact in Rückrunde
+    - Runs for both announced and excess time (both halves)
+  - **Main effect models**: Tests for overall structural break effect (intercept shift)
+    - Uses `is_ruckrunde` as main effect dummy only (no interactions)
+    - Captures overall shift between Hinrunde and Rückrunde, separate from pressure sensitivity changes
+    - Runs for both announced and excess time (both halves)
+    - Results appended to same summary files as interaction regressions
+
+**Output:**
+- Historical model outputs: `reports/regression_2/tables/summaries/historical_*.txt`, `reports/regression_2/tables/csv/historical_residuals_*.csv`
+- Historical model coefficients: `reports/regression_2/historical_models_coefficients.json`
+- Comparison tables: `reports/regression_2/tables/csv/baseline_comparison_announced_*_2024_25.csv`
+- Comparison metrics: `reports/regression_2/baseline_comparison_2024_25.json`
+- Structural break tests: `reports/regression_2/tables/csv/board_effect_*.csv`, `reports/regression_2/tables/csv/whistle_effect_*.csv`
+- Interaction regressions: `reports/regression_2/tables/summaries/interaction_*.txt` (contains both interaction and main effect results)
+- Main effect regression CSVs: `reports/regression_2/tables/csv/main_effect_*.csv` (coefficients, p-values, significance flags)
+- Summary files: `reports/regression_2/tables/summaries/*_summary.txt`
+- README: `reports/regression_2/README.txt`
 
 ### `src/analysis/regression_analysis.py`
 
@@ -752,7 +861,12 @@ All seasons contain **1st Bundesliga** matches only (top tier German football le
 6. **Model Training**: 
    - **Local**: `src/models/train_bert.py` fine-tunes BERT (supports MPS/CUDA/CPU)
    - **Kaggle**: `notebooks/kaggle_bert_training.ipynb` for GPU-accelerated training
-7. **Residual Analysis**: Calculate residuals (Actual - Predicted) and perform Placebo DID analysis (TODO)
+7. **Structural Break Analysis**: `src/analysis/structural_break_analysis.py` detects structural breaks in 2024/25 season
+   - Compares BERT vs OLS predictions
+   - Tests for Board Effects (Announced Time inflation)
+   - Tests for Whistle Effects (Excess Time constraining)
+   - Runs interaction regressions to test pressure sensitivity changes
+   - Runs main effect regressions to test overall structural break effect (intercept shift)
 
 ## Next Steps
 
@@ -762,8 +876,9 @@ All seasons contain **1st Bundesliga** matches only (top tier German football le
 4. ✅ **Econometric Analysis**: Regression analysis with pressure variables implemented
 5. ✅ **BERT Fine-Tuning**: Training scripts implemented (`train_bert.py` and Kaggle notebook)
 6. ✅ **Kaggle Export**: Export script for GPU-accelerated training on Kaggle
-7. **Residual Analysis**: Calculate residuals (Actual - Predicted) and perform Placebo DID analysis (TODO)
-8. **Model Comparison**: Compare BERT predictions with econometric regression results (TODO)
+7. ✅ **Structural Break Analysis**: Detects structural breaks in 2024/25 season, tests Board/Whistle Effects
+8. **Residual Analysis**: Calculate residuals (Actual - Predicted) and perform Placebo DID analysis (TODO)
+9. **Model Comparison Visualization**: Structural break analysis provides metrics, visualization TODO
 
 ## License
 

@@ -1,0 +1,61 @@
+================================================================================
+Historical Baseline Model (45 minutes - Announced Time)
+================================================================================
+
+PURPOSE:
+Refitting historical models on seasons 2018-19 through 2023-24 for comparison with previous results.
+
+INPUT DATA:
+Historical processed match data from data/processed/season_*/
+Filtered according to exclusion criteria: announced_45 not null
+Total samples: 538
+
+MODEL FORMULA:
+announced_45 ~ goals_1st + subs_1st + cards_1st + var_1st + injuries_1st + disturbances_1st + pressure_add_45 + pressure_draw_45 + pressure_end_45 + C(season)
+
+RESULTS:
+Train R² Adjusted: 0.2469
+AIC: 1759.3422
+
+================================================================================
+Model Summary:
+================================================================================
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:           announced_45   R-squared:                       0.267
+Model:                            OLS   Adj. R-squared:                  0.247
+Method:                 Least Squares   F-statistic:                     13.57
+Date:                Fri, 19 Dec 2025   Prob (F-statistic):           1.15e-27
+Time:                        02:03:42   Log-Likelihood:                -864.67
+No. Observations:                 538   AIC:                             1759.
+Df Residuals:                     523   BIC:                             1824.
+Df Model:                          14                                         
+Covariance Type:            nonrobust                                         
+========================================================================================
+                           coef    std err          t      P>|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------
+Intercept                0.3824      0.203      1.881      0.061      -0.017       0.782
+C(season)[T.2019-20]    -0.6683      0.254     -2.632      0.009      -1.167      -0.170
+C(season)[T.2020-21]    -0.5965      0.207     -2.886      0.004      -1.003      -0.190
+C(season)[T.2021-22]    -0.0243      0.169     -0.144      0.886      -0.357       0.308
+C(season)[T.2022-23]     0.0221      0.196      0.113      0.910      -0.363       0.407
+C(season)[T.2023-24]     1.4280      0.264      5.406      0.000       0.909       1.947
+goals_1st                0.0886      0.048      1.834      0.067      -0.006       0.184
+subs_1st                 0.3066      0.078      3.951      0.000       0.154       0.459
+cards_1st                0.0327      0.042      0.769      0.442      -0.051       0.116
+var_1st                  0.0763      0.035      2.165      0.031       0.007       0.146
+injuries_1st             0.2932      0.060      4.865      0.000       0.175       0.412
+disturbances_1st         0.5558      0.187      2.974      0.003       0.189       0.923
+pressure_add_45          0.4182      0.220      1.898      0.058      -0.015       0.851
+pressure_draw_45         0.0569      0.178      0.319      0.750      -0.294       0.408
+pressure_end_45          0.1958      0.175      1.119      0.264      -0.148       0.539
+==============================================================================
+Omnibus:                      242.484   Durbin-Watson:                   2.083
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             2756.866
+Skew:                           1.663   Prob(JB):                         0.00
+Kurtosis:                      13.579   Cond. No.                         22.8
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.

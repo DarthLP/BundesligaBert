@@ -1,0 +1,31 @@
+================================================================================
+BERT vs OLS Baseline Model Comparison (2024-25 Season)
+================================================================================
+
+PURPOSE:
+Compare BERT vs OLS baseline models on 2024-25 season data.
+
+INPUT:
+- BERT predictions from bert_predictions_future.csv
+- OLS predictions from refit historical models (seasons 2018-19 to 2023-24)
+- 2024-25 match metadata from data/processed/season_2024-25/
+
+METHODOLOGY:
+R² and RMSE calculated separately for 45/90 halves and Hinrunde/Rückrunde periods.
+
+RESULTS:
+
+Announced Time (45 minutes):
+--------------------------------------------------------------------------------
+   period bert_r2 bert_rmse ols_r2 ols_rmse
+ Hinrunde -0.3261    1.7722 0.1726   1.3999
+Rückrunde -0.4438    1.6619 0.0270   1.3643
+  Overall -0.3771    1.7149 0.1066   1.3812
+
+Announced Time (90 minutes):
+--------------------------------------------------------------------------------
+   period bert_r2 bert_rmse  ols_r2 ols_rmse
+ Hinrunde -0.3141    2.0763 -0.0547   1.8602
+Rückrunde -0.4566    2.6794  0.0866   2.1218
+  Overall -0.4001    2.4066  0.0335   1.9995
+

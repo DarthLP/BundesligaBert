@@ -1,0 +1,57 @@
+================================================================================
+Historical Excess Model (90 minutes - Excess Time)
+================================================================================
+
+PURPOSE:
+Refitting historical models on seasons 2018-19 through 2023-24 for comparison with previous results.
+
+INPUT DATA:
+Historical processed match data from data/processed/season_*/
+Filtered according to exclusion criteria: target_missing_90 == False, is_imputed_actual_90 == False, is_imputed_announced_90 == False, excess_90 not null
+Also excluded force majeure matches: excess_90 > 4.0 minutes
+Total samples: 519
+
+MODEL FORMULA:
+excess_90 ~ ot_goals_90 + ot_subs_90 + ot_cards_90 + ot_var_90 + ot_injuries_90 + ot_disturbances_90 + pressure_add_90 + pressure_draw_90 + pressure_end_90
+
+RESULTS:
+Train R² Adjusted: 0.2038
+AIC: 1266.2694
+
+================================================================================
+Model Summary:
+================================================================================
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:              excess_90   R-squared:                       0.218
+Model:                            OLS   Adj. R-squared:                  0.204
+Method:                 Least Squares   F-statistic:                     15.73
+Date:                Fri, 19 Dec 2025   Prob (F-statistic):           8.85e-23
+Time:                        02:03:42   Log-Likelihood:                -623.13
+No. Observations:                 519   AIC:                             1266.
+Df Residuals:                     509   BIC:                             1309.
+Df Model:                           9                                         
+Covariance Type:            nonrobust                                         
+======================================================================================
+                         coef    std err          t      P>|t|      [0.025      0.975]
+--------------------------------------------------------------------------------------
+Intercept              0.2465      0.047      5.271      0.000       0.155       0.338
+ot_goals_90            0.3533      0.096      3.679      0.000       0.165       0.542
+ot_subs_90             0.2202      0.082      2.689      0.007       0.059       0.381
+ot_cards_90            0.3028      0.049      6.139      0.000       0.206       0.400
+ot_var_90              0.3578      0.074      4.820      0.000       0.212       0.504
+ot_injuries_90         0.5891      0.184      3.194      0.001       0.227       0.951
+ot_disturbances_90     0.5726      0.577      0.992      0.322      -0.561       1.706
+pressure_add_90        0.0415      0.156      0.267      0.790      -0.264       0.347
+pressure_draw_90      -0.0226      0.135     -0.167      0.867      -0.288       0.243
+pressure_end_90        0.0218      0.107      0.204      0.839      -0.189       0.232
+==============================================================================
+Omnibus:                      168.125   Durbin-Watson:                   1.804
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              473.908
+Skew:                           1.582   Prob(JB):                    1.24e-103
+Kurtosis:                       6.451   Cond. No.                         19.5
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.

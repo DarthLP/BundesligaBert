@@ -1,0 +1,136 @@
+================================================================================
+Interaction Regression: ANNOUNCED 90 minutes
+================================================================================
+
+PURPOSE:
+Test if pressure sensitivity changed after structural break (Rückrunde).
+Negative interaction coefficients indicate pressure has less impact in Rückrunde.
+
+INPUT:
+2024-25 match data with pressure variables and structural break flag (is_ruckrunde).
+Total samples: 124
+
+MODEL FORMULA:
+announced_90 ~ goals_2nd + subs_2nd + cards_2nd + var_2nd + injuries_2nd + disturbances_2nd + pressure_add_90 + pressure_draw_90 + pressure_end_90 + is_ruckrunde:pressure_add_90 + is_ruckrunde:pressure_draw_90 + is_ruckrunde:pressure_end_90
+
+================================================================================
+Model Summary:
+================================================================================
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:           announced_90   R-squared:                       0.301
+Model:                            OLS   Adj. R-squared:                  0.226
+Method:                 Least Squares   F-statistic:                     3.991
+Date:                Fri, 19 Dec 2025   Prob (F-statistic):           3.98e-05
+Time:                        02:03:42   Log-Likelihood:                -241.74
+No. Observations:                 124   AIC:                             509.5
+Df Residuals:                     111   BIC:                             546.1
+Df Model:                          12                                         
+Covariance Type:            nonrobust                                         
+=================================================================================================
+                                    coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------------------------
+Intercept                         3.1520      0.905      3.485      0.001       1.360       4.944
+goals_2nd                        -0.1678      0.150     -1.121      0.265      -0.464       0.129
+subs_2nd                          0.0447      0.121      0.371      0.711      -0.194       0.284
+cards_2nd                         0.1205      0.108      1.113      0.268      -0.094       0.335
+var_2nd                           0.5030      0.138      3.653      0.000       0.230       0.776
+injuries_2nd                      0.3053      0.180      1.700      0.092      -0.051       0.661
+disturbances_2nd                  2.0675      0.627      3.296      0.001       0.824       3.311
+pressure_add_90                   1.6658      0.784      2.125      0.036       0.112       3.219
+pressure_draw_90                  0.1665      0.642      0.259      0.796      -1.106       1.439
+pressure_end_90                  -0.0070      0.456     -0.015      0.988      -0.910       0.896
+is_ruckrunde:pressure_add_90     -1.0824      0.947     -1.142      0.256      -2.960       0.795
+is_ruckrunde:pressure_draw_90     0.6366      0.807      0.789      0.432      -0.962       2.235
+is_ruckrunde:pressure_end_90      0.9142      0.696      1.314      0.192      -0.465       2.293
+==============================================================================
+Omnibus:                       24.490   Durbin-Watson:                   2.178
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               37.787
+Skew:                           0.952   Prob(JB):                     6.23e-09
+Kurtosis:                       4.921   Cond. No.                         54.3
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+================================================================================
+Interaction Term Coefficients:
+================================================================================
+
+is_ruckrunde:pressure_add_90: -1.0824 (p=0.2557)
+  Significant: No
+  Interpretation: Negative coefficient indicates pressure has less impact in Rückrunde
+
+is_ruckrunde:pressure_draw_90: 0.6366 (p=0.4317)
+  Significant: No
+  Interpretation: Positive coefficient indicates pressure has more impact in Rückrunde
+
+is_ruckrunde:pressure_end_90: 0.9142 (p=0.1917)
+  Significant: No
+  Interpretation: Positive coefficient indicates pressure has more impact in Rückrunde
+
+
+
+================================================================================
+Main Effect Regression (is_ruckrunde dummy only)
+================================================================================
+
+PURPOSE:
+Test for overall structural break effect (intercept shift) between Hinrunde and Rückrunde.
+This model includes is_ruckrunde as a main effect only (no interactions).
+
+INPUT:
+2024-25 match data with pressure variables and structural break flag (is_ruckrunde).
+Total samples: 124
+
+MODEL FORMULA:
+announced_90 ~ goals_2nd + subs_2nd + cards_2nd + var_2nd + injuries_2nd + disturbances_2nd + pressure_add_90 + pressure_draw_90 + pressure_end_90 + is_ruckrunde
+
+================================================================================
+Model Summary:
+================================================================================
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:           announced_90   R-squared:                       0.279
+Model:                            OLS   Adj. R-squared:                  0.215
+Method:                 Least Squares   F-statistic:                     4.378
+Date:                Fri, 19 Dec 2025   Prob (F-statistic):           3.41e-05
+Time:                        02:03:42   Log-Likelihood:                -243.68
+No. Observations:                 124   AIC:                             509.4
+Df Residuals:                     113   BIC:                             540.4
+Df Model:                          10                                         
+Covariance Type:            nonrobust                                         
+====================================================================================
+                       coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------------
+Intercept            3.5539      0.927      3.833      0.000       1.717       5.391
+goals_2nd           -0.1978      0.149     -1.324      0.188      -0.494       0.098
+subs_2nd             0.0118      0.121      0.097      0.923      -0.227       0.251
+cards_2nd            0.0850      0.106      0.801      0.425      -0.125       0.295
+var_2nd              0.4835      0.138      3.502      0.001       0.210       0.757
+injuries_2nd         0.3276      0.178      1.841      0.068      -0.025       0.680
+disturbances_2nd     1.8715      0.620      3.017      0.003       0.643       3.100
+pressure_add_90      0.9776      0.495      1.974      0.051      -0.004       1.959
+pressure_draw_90     0.5031      0.470      1.071      0.286      -0.428       1.434
+pressure_end_90      0.3222      0.390      0.825      0.411      -0.451       1.096
+is_ruckrunde        -0.0439      0.335     -0.131      0.896      -0.707       0.620
+==============================================================================
+Omnibus:                       27.704   Durbin-Watson:                   2.147
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               47.287
+Skew:                           1.015   Prob(JB):                     5.39e-11
+Kurtosis:                       5.244   Cond. No.                         43.5
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+
+================================================================================
+Main Effect Coefficient (is_ruckrunde):
+================================================================================
+
+is_ruckrunde: -0.0439 (p=0.8960)
+  Significant: No
+  Interpretation: Negative coefficient indicates lower announced_90 in Rückrunde compared to Hinrunde
+
